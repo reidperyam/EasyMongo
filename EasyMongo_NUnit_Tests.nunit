@@ -1,0 +1,9 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Debug" />
+  <Config name="Debug" binpathtype="Auto">
+    <assembly path="EasyMongo.Test\bin\Debug\EasyMongo.Test.dll" />
+    <assembly path="EasyMongo.Database.Test\bin\Debug\EasyMongo.Database.Test.dll" />
+    <assembly path="EasyMongo.Collection.Test\bin\Debug\EasyMongo.Collection.Test.dll" />
+  </Config>
+  <Config name="Release" binpathtype="Auto" />
+</NUnitProject>

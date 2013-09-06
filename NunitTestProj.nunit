@@ -1,8 +1,0 @@
-﻿<NUnitProject>
-  <Settings activeconfig="Default" />
-  <Config name="Default" binpathtype="Auto">
-    <assembly path="MongoDB.Test\bin\Debug\MongoDB.Test.dll" />
-    <assembly path="MongoDB.Database.Test\bin\Debug\MongoDB.Database.Test.dll" />
-    <assembly path="MongoDB.Collection.Test\bin\Debug\MongoDB.Collection.Test.dll" />
-  </Config>
-</NUnitProject>

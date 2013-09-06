@@ -1,0 +1,100 @@
+﻿
+CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
+
+** Refactor DistinctAsyncompleted event and ASyncReadCompleted events into one event
+
+General
+
+    // TODO - Rename EasyMongoAsync to EasyMongo
+    //
+    // TODO - refactor async operations into separate child assemblies:
+	//        EasyMongoAsync.Database -> EasyMongo.Database & EasyMongo.Database.Async
+	//
+	// TODO - revisit purpose of "Create" Method - where is this used and why? Seems like a polymorphic hack to circumvent
+	//        poor design...
+	//
+	// TODO - refactor callback methods of asyncReader and AsyncUPdater to be templated to remove code duplications
+	// TODO - refactor ReaderAsync,WriterAsync,UpdaterAsync to take callback Action<,> as argument to Async methods instead of 
+	//        subscribing to Connection event (See example of ServerConnection and DatabaseConnection)
+	//
+	// TODO - refactor WriterAsync, UpdaterAsync, ReaderAsync to handle errors during async operations and return information in case of failure
+	//        via Completion event
+	//
+	// TODO - Add asynchronous constructor logic... so that no timeout ever occurs on object creation
+	// using BeginInvoke with a callback method that in turn calls EndInvoke:
+	// 
+	// http://msdn.microsoft.com/en-us/library/2e08f6yc.aspx
+	//
+	// UPDATE - have implemented this construct in ServerConnection class; however a current trouble is that dependent objects
+	// that leverage an embedded, asynchronous ServerConnection class utilize it before it has asynchronously connected to the server
+	// need to add thread waits untiil the underlying mongoDB connection becomes usable...
+	// TODO - combine TestBase classes into shared base used by all test fixtures instead of having repeated code and logic
+	//        in three places (MongoDB.Test, MongoDB.Database.Test, MongoDB.Collection.Test)
+	// TODO - add asynchronous functionality for Database/Server operations
+	// TODO - Warning	1	CA1001 : Microsoft.Design : Implement IDisposable
+	//        on 'TestBase' because it creates members of the following IDisposable types: 
+	//        'AutoResetEvent'. If 'TestBase' has previously shipped, adding new members 
+	//         that implement IDisposable to this type is considered a breaking change to 
+	//         existing consumers.	C:\Users\rperyam.rperyam-win7\SkyDrive\Documents\Code\MongoDB.Database.Test\TestBase.cs	15	MongoDB.Database.Test
+	// TODO - when future need dictates support of MongoServerSettings for MongoServerConnection, finish implementing MongoServerSettings adapter class
+	//        in order to absolve consumer from need to reference MongoDB C# driver assemblies along with our own. I've done most of the work - ServerSettings.cs
+	//        but still need to decouple classes defined in c# driver assemblies from the public contract by replacing them with component parts
+	//
+	// TODO - implement asynchronous implementations of "GetCollection" methods - Connect(), Write(), Read() methods shouldn't be the only asynchronous functions
+	// 
+	// 
+	// TODO - refactor  tests to use TestBase methods for async connections
+	//
+	//
+	***// TODO - refactor asynchronous operations to take argument delegate callback method instead of being Observer/event-driven
+	//        using Func<string, int>; currently working on IReaderAsync<T> for this...
+	//
+	// TODO - refactor ServerConnection and DatabaseConnection to take Exception argument to callback methods instead of string message
+	//        to better handle client handling
+	// TODO - create post build events to copy .dlls to deployment assymbly.
+
+
+Reader classes
+
+	// TODO - support functionality of underlying MongoServerConnection.Enabled
+	// TODO - add unit tests to verify functionality of Enabled/Disabled behavior
+	// TODO - move GetCollectionNames() from IDatabaseReader to IReader and IReaderAsync
+	// TODO - add support for iQuery reads to give consumers more dynamic control over querying
+
+Updater
+
+	// TODO - add RemoveAll();
+
+Writer
+
+
+WriterAsync
+
+
+CollectionWriter
+
+	// TODO - add RemoveAll();
+
+CollectionUpdater
+
+
+DatabaseWriter
+
+	// TODO - add RemoveAll();
+	// TODO - implement Remove() against List<string> collections
+
+DatabaseUpdater
+
+ServerConnection
+
+	//TODO: add GetTotalDataSize()//For All Databases
+	//TODO: add GetTotalStorageSize()//For All Databases
+
+DatabaseConnection
+
+	//TODO: add GetTotalDataSize()//For Database
+	//TODO: add GetTotalStorageSize()//For Database
+
+Updater
+
+UpdaterAsync

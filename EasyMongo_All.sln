@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo", "EasyMongo\EasyMongo.csproj", "{3719B940-D317-4AAD-BDC0-5996B4A9289F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Test", "EasyMongo.Test\EasyMongo.Test.csproj", "{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Contract", "EasyMongo.Contract\EasyMongo.Contract.csproj", "{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Database", "EasyMongo.Database\EasyMongo.Database.csproj", "{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Database.Test", "EasyMongo.Database.Test\EasyMongo.Database.Test.csproj", "{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Collection", "EasyMongo.Collection\EasyMongo.Collection.csproj", "{52C5EE32-B556-433F-AC6C-47CA8D377DD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Collection.Test", "EasyMongo.Collection.Test\EasyMongo.Collection.Test.csproj", "{7BE4117F-EB45-45F9-9701-D62E64A274CA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3719B940-D317-4AAD-BDC0-5996B4A9289F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3719B940-D317-4AAD-BDC0-5996B4A9289F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3719B940-D317-4AAD-BDC0-5996B4A9289F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3719B940-D317-4AAD-BDC0-5996B4A9289F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
