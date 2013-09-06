@@ -31,13 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=1.4.2.4500, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdPartyLib\MongoDB_drivers\CSharpDriver-1.8.2\MongoDB.Bson.dll</HintPath>
+    <Reference Include="MongoDB.Bson, Version=1.8.2.34, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.4.2.4500, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdPartyLib\MongoDB_drivers\CSharpDriver-1.8.2\MongoDB.Driver.dll</HintPath>
+    <Reference Include="MongoDB.Driver, Version=1.8.2.34, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
+      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,6 +61,9 @@
     <Compile Include="IWriter.cs" />
     <Compile Include="IWriterAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -31,17 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MongoDB.Bson, Version=1.4.2.4500, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdPartyLib\MongoDB_drivers\CSharpDriver-1.8.2\MongoDB.Bson.dll</HintPath>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
-    <Reference Include="MongoDB.Driver, Version=1.4.2.4500, Culture=neutral, PublicKeyToken=f686731cfb9cc103, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdPartyLib\MongoDB_drivers\CSharpDriver-1.8.2\MongoDB.Driver.dll</HintPath>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\3rdPartyLib\nunit_2.6.1\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,6 +70,9 @@
       <Project>{3719B940-D317-4AAD-BDC0-5996B4A9289F}</Project>
       <Name>MongoDB</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
