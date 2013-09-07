@@ -8,7 +8,7 @@ using EasyMongo;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 
-namespace EasyMongo.Test
+namespace EasyMongo.Async.Test
 {
     [TestFixture]
     public class ReaderAsyncTest : TestBase

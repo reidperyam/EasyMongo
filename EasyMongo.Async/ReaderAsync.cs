@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 using Microsoft.CSharp.RuntimeBinder;
 using EasyMongo.Contract;
 
-namespace EasyMongo
+namespace EasyMongo.Async
 {
     public class ReaderAsync<T> : IReaderAsync<T> where T : EntryBase
     {

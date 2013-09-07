@@ -51,14 +51,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdaterAsync.cs" />
     <Compile Include="Updater.cs" />
     <Compile Include="Exceptions\MongoServerConnectionException.cs" />
     <Compile Include="Exceptions\MongoDatabaseConnectionException.cs" />
     <Compile Include="Exceptions\MongoWriteException.cs" />
     <Compile Include="EntryBase.cs" />
-    <Compile Include="WriterAsync.cs" />
-    <Compile Include="ReaderAsync.cs" />
     <Compile Include="Exceptions\InvalidSearchException.cs" />
     <Compile Include="ServerConnection.cs" />
     <Compile Include="Exceptions\MongoDisabledException.cs" />

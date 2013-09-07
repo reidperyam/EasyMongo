@@ -7,7 +7,7 @@ using MongoDB.Driver;
 using System.Threading;
 using Microsoft.CSharp.RuntimeBinder;
 
-namespace EasyMongo
+namespace EasyMongo.Async
 {
     public class UpdaterAsync<T> : IUpdaterAsync<T> where T : EntryBase
     {

@@ -5,6 +5,12 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 
 General
 
+    // TODO - Refactor EntryBase (class) into an interface - move it to EasyMongo.Contract assembly. Because of this can remove dependency to EasyMongo Assembly 
+	//        in other, downstream test assemblies that require EntryBase. Also may allow decoupling of assemblies from MongoDB dependency b/c EntryBase requires
+	//		  reference to attributes here
+	//
+    // TODO - Decouple DatabaseConnection and ServerConnection into async implmentations  
+	//
     // TODO - Rename EasyMongoAsync to EasyMongo
     //
     // TODO - refactor async operations into separate child assemblies:

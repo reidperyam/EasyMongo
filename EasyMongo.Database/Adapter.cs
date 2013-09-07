@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EasyMongo;
+using EasyMongo.Async;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
@@ -38,9 +39,9 @@ namespace EasyMongo.Database
         }
 
         private Adapter(IReader<T> reader, IWriter<T> writer, IUpdater<T> updater)
-            : this(new EasyMongo.ReaderAsync<T>(reader),
-                   new EasyMongo.WriterAsync<T>(writer),
-                   new EasyMongo.UpdaterAsync<T>(updater))
+            : this(new ReaderAsync<T>(reader),
+                   new WriterAsync<T>(writer),
+                   new UpdaterAsync<T>(updater))
         {
             _mongoReader  = reader;
             _mongoWriter  = writer;

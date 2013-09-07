@@ -53,6 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">
+      <Project>{96F8E3FA-F867-4863-840B-C27B99012A6E}</Project>
+      <Name>EasyMongo.Async</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Contract\EasyMongo.Contract.csproj">
       <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>
       <Name>EasyMongo.Contract</Name>

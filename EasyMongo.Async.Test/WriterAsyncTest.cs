@@ -5,11 +5,11 @@ using System.Text;
 using System.Diagnostics;
 using NUnit.Framework;
 using EasyMongo;
-using MongoDB.Driver;
-using MongoDB.Driver.Builders;
+//using MongoDB.Driver;
+//using MongoDB.Driver.Builders;
 using System.Threading;
 
-namespace EasyMongo.Test
+namespace EasyMongo.Async.Test
 {
     [TestFixture]
     public class WriterAsyncTest : TestBase

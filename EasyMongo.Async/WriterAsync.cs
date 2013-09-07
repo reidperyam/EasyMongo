@@ -5,7 +5,7 @@ using System.Runtime.Remoting.Messaging;
 using EasyMongo.Contract;
 using MongoDB.Driver;
 
-namespace EasyMongo
+namespace EasyMongo.Async
 {
     public class WriterAsync<T> : IWriterAsync<T> where T : EntryBase
     {

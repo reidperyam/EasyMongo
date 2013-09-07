@@ -9,7 +9,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using System.Threading;
 
-namespace EasyMongo.Test
+namespace EasyMongo.Async.Test
 {
     [TestFixture]
     public class UpdaterAsyncTest : TestBase
