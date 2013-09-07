@@ -1,15 +1,24 @@
-EasyMongoAsync
+EasyMongo Overview
+==================
+
+- A C# facade to the official 10gen MongoDB C# driver that aims to obfuscates underlying complexity when convenient.
+- Simplifies and objectifies servers, databases and collections. 
+- Provides "Readers", "Writers", "Updaters" for simplified CRUD operations.
+- Provides both synchronous and asynchronous implementations of CRUD operations
+
+Implementation
 ==============
+- .Net 4.0
+- Built on top of MongoDB C# driver 1.8.2
 
-A C# facade providing asynchronous operations supplied by the official 10gen MongoDB C# driver
-
-using MongoDB C# driver 1.8.2
+Tests
+=====
+- Over 150 end-to-end NUnit integration tests designed to execute against local mongoDB server included in src.
 
 QuickStart
 ==============
 
-(TODO- take a look at the unit test projects in the meantime; namely the TestFixture's baseclase, TestBase for hints on utilization)
-
+//TODO
 
 
 
