@@ -9,7 +9,7 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace EasyMongo.Async
 {
-    public class UpdaterAsync<T> : IUpdaterAsync<T> where T : EntryBase
+    public class UpdaterAsync<T> : IUpdaterAsync<T> where T : IEasyMongoEntry
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;

@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using EasyMongo.Base.Test;
 
 namespace EasyMongo.Database.Test
 {

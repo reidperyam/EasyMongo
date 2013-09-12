@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}</ProjectGuid>
+    <ProjectGuid>{A8010916-62A5-4563-9250-D40C00F466E7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EasyMongo.Database.Test</RootNamespace>
-    <AssemblyName>EasyMongo.Database.Test</AssemblyName>
+    <RootNamespace>EasyMongo.Base.Test</RootNamespace>
+    <AssemblyName>EasyMongo.Base.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -50,21 +50,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdaterTest.cs" />
-    <Compile Include="ReaderTest.cs" />
+    <Compile Include="CollectionTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestBase_old.cs" />
-    <Compile Include="TestEntry_old.cs" />
-    <Compile Include="WriterTest.cs" />
+    <Compile Include="TestBase.cs" />
+    <Compile Include="DatabaseTestBase.cs" />
+    <Compile Include="TestBase_.cs" />
+    <Compile Include="TestEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">
       <Project>{96F8E3FA-F867-4863-840B-C27B99012A6E}</Project>
       <Name>EasyMongo.Async</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EasyMongo.Base.Test\EasyMongo.Base.Test.csproj">
-      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
-      <Name>EasyMongo.Base.Test</Name>
+    <ProjectReference Include="..\EasyMongo.Collection\EasyMongo.Collection.csproj">
+      <Project>{52C5EE32-B556-433F-AC6C-47CA8D377DD4}</Project>
+      <Name>EasyMongo.Collection</Name>
     </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Contract\EasyMongo.Contract.csproj">
       <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>

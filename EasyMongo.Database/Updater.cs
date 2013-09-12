@@ -9,7 +9,7 @@ using EasyMongo.Async;
 
 namespace EasyMongo.Database
 {
-    public class Updater<T> : Adapter<T>, IDatabaseUpdater<T> where T : EntryBase
+    public class Updater<T> : Adapter<T>, IDatabaseUpdater<T> where T : IEasyMongoEntry
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;

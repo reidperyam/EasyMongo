@@ -5,6 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using EasyMongo.Base.Test;
 
 namespace EasyMongo.Database.Test
 {
@@ -27,7 +28,7 @@ namespace EasyMongo.Database.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _updater.Remove(MONGO_COLLECTION_1_NAME, searchQuery);
+            _databaseUpdater.Remove(MONGO_COLLECTION_1_NAME, searchQuery);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -54,7 +55,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
+            _databaseUpdater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -80,7 +81,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
+            _databaseUpdater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -104,7 +105,7 @@ namespace EasyMongo.Database.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _updater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
+            _databaseUpdater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -131,7 +132,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
+            _databaseUpdater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -157,7 +158,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
+            _databaseUpdater.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -180,7 +181,7 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            var findAndModifyResult = _updater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update);
+            var findAndModifyResult = _databaseUpdater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -206,13 +207,13 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            var findAndModifyResult = _updater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true);
+            var findAndModifyResult = _databaseUpdater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(findAndModifyResult.ModifiedDocument);
 
-            findAndModifyResult = _updater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, false);
+            findAndModifyResult = _databaseUpdater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, false);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -238,13 +239,13 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            var findAndModifyResult = _updater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, true);
+            var findAndModifyResult = _databaseUpdater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, true);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(findAndModifyResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
 
-            findAndModifyResult = _updater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, false);
+            findAndModifyResult = _databaseUpdater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, false);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -271,7 +272,7 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Include("TimeStamp");
-            var findAndModifyResult = _updater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, fields, true, true);
+            var findAndModifyResult = _databaseUpdater.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, fields, true, true);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -297,7 +298,7 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Null;
-            var findAndModifyResult = _updater.FindAndRemove(MONGO_COLLECTION_1_NAME, searchQuery, sortBy);
+            var findAndModifyResult = _databaseUpdater.FindAndRemove(MONGO_COLLECTION_1_NAME, searchQuery, sortBy);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -324,7 +325,7 @@ namespace EasyMongo.Database.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _updater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery);
+            _databaseUpdater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery);
             _updaterAutoResetEvent.WaitOne();
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
@@ -352,7 +353,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
+            _databaseUpdater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
             _updaterAutoResetEvent.WaitOne();
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
@@ -379,7 +380,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
+            _databaseUpdater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
             _updaterAutoResetEvent.WaitOne();
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
@@ -404,7 +405,7 @@ namespace EasyMongo.Database.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _updater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
+            _databaseUpdater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
             _updaterAutoResetEvent.WaitOne();
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
@@ -432,7 +433,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
+            _databaseUpdater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
             _updaterAutoResetEvent.WaitOne();
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
@@ -459,7 +460,7 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
+            _databaseUpdater.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
             _updaterAutoResetEvent.WaitOne();
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
@@ -483,12 +484,13 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            _updater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update);
+            _databaseUpdater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update);
             _updaterAutoResetEvent.WaitOne();
 
-            Assert.IsTrue(_updaterResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_updaterResult.ErrorMessage);
-            Assert.IsNotNull(_updaterResult.ModifiedDocument);
+            Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");
+            Assert.IsTrue(_findAndModifyResult.Ok, "_findAndModifyResult not 'OK'");
+            Assert.IsNull(_findAndModifyResult.ErrorMessage);
+            Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -510,19 +512,21 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            _updater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true);
+            _databaseUpdater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true);
+            _updaterAutoResetEvent.WaitOne();
+            _updaterAutoResetEvent.Reset();
+
+            Assert.IsNotNull(_findAndModifyResult, "_findAndModifyResult uninitialized");
+            Assert.IsTrue(_findAndModifyResult.Ok, "_findAndModifyResult not 'OK'");
+            Assert.IsNull(_findAndModifyResult.ErrorMessage);
+            Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
+
+            _databaseUpdater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, false);
             _updaterAutoResetEvent.WaitOne();
 
-            Assert.IsTrue(_updaterResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_updaterResult.ErrorMessage);
-            Assert.IsNotNull(_updaterResult.ModifiedDocument);
-
-            _updater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, false);
-            _updaterAutoResetEvent.WaitOne();
-
-            Assert.IsTrue(_updaterResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_updaterResult.ErrorMessage);
-            Assert.IsNull(_updaterResult.ModifiedDocument);
+            Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
+            Assert.IsNull(_findAndModifyResult.ErrorMessage);
+            Assert.IsNull(_findAndModifyResult.ModifiedDocument);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -544,19 +548,20 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            _updater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, true);
+            _databaseUpdater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, true);
             _updaterAutoResetEvent.WaitOne();
 
-            Assert.IsTrue(_updaterResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_updaterResult.ErrorMessage);
-            Assert.IsNotNull(_updaterResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
+            Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");
+            Assert.IsTrue(_findAndModifyResult.Ok, "_findAndModifyResult not 'OK'");
+            Assert.IsNull(_findAndModifyResult.ErrorMessage);
+            Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
 
-            _updater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, false);
+            _databaseUpdater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, false);
             _updaterAutoResetEvent.WaitOne();
 
-            Assert.IsTrue(_updaterResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_updaterResult.ErrorMessage);
-            Assert.IsNull(_updaterResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
+            Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
+            Assert.IsNull(_findAndModifyResult.ErrorMessage);
+            Assert.IsNull(_findAndModifyResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -578,12 +583,13 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Include("TimeStamp");
-            _updater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, fields, true, true);
+            _databaseUpdater.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, fields, true, true);
             _updaterAutoResetEvent.WaitOne();
 
-            Assert.IsTrue(_updaterResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_updaterResult.ErrorMessage);
-            Assert.IsNotNull(_updaterResult.ModifiedDocument);
+            Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");
+            Assert.IsTrue(_findAndModifyResult.Ok, "_findAndModifyResult not 'OK'");
+            Assert.IsNull(_findAndModifyResult.ErrorMessage);
+            Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -605,12 +611,13 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Null;
-            _updater.FindAndRemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy);
+            _databaseUpdater.FindAndRemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy);
             _updaterAutoResetEvent.WaitOne();
 
-            Assert.IsTrue(_updaterResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_updaterResult.ErrorMessage);
-            Assert.IsNotNull(_updaterResult.ModifiedDocument);
+            Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");
+            Assert.IsTrue(_findAndModifyResult.Ok, "_findAndModifyResult not 'OK'");
+            Assert.IsNull(_findAndModifyResult.ErrorMessage);
+            Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
 
             results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(0, results.Count());/*we deleted the entry via FindAndRemove...*/

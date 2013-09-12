@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Collection
 {
-    public class Writer<T> : ICollectionWriter<T> where T : EntryBase
+    public class Writer<T> : ICollectionWriter<T> where T : IEasyMongoEntry
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
         IDatabaseWriter<T> _mongoDBWriter;

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="IDatabaseUpdater.cs" />
     <Compile Include="ICollectionUpdater.cs" />
+    <Compile Include="IEasyMongoEntry.cs" />
     <Compile Include="IUpdaterAsync.cs" />
     <Compile Include="IUpdater.cs" />
     <Compile Include="ICollectionReader.cs" />

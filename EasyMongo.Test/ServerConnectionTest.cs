@@ -7,6 +7,7 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
+using EasyMongo.Base.Test;
 
 namespace EasyMongo.Test
 {
@@ -42,14 +43,14 @@ namespace EasyMongo.Test
             List<string> databaseNames = _mongoServerConnection.GetDbNamesForConnection();
             Assert.AreEqual(0, databaseNames.Count, "There should be no mongo databases on the server");
 
-            _mongoWriter.Write(MONGO_COLLECTION_1_NAME, new TestEntry());//create a db in the process of writing an entry to a child collection
+            _writer.Write(MONGO_COLLECTION_1_NAME, new TestEntry());//create a db in the process of writing an entry to a child collection
 
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_2_NAME);
             _mongoDatabaseConnection.Connect();
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
-            _mongoWriter.Write(MONGO_COLLECTION_1_NAME, new TestEntry());//create a db in the process of writing an entry to a child collection
+            _writer.Write(MONGO_COLLECTION_1_NAME, new TestEntry());//create a db in the process of writing an entry to a child collection
 
             databaseNames = _mongoServerConnection.GetDbNamesForConnection();
             Assert.AreEqual(2, databaseNames.Count, "There should be two mongo databases on the server");
@@ -108,8 +109,8 @@ namespace EasyMongo.Test
 
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_2_NAME);
             _mongoDatabaseConnection.Connect();
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);// uses MONGO_DATABASE_2_NAME
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
@@ -146,8 +147,8 @@ namespace EasyMongo.Test
 
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_2_NAME);
             _mongoDatabaseConnection.Connect();
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);// uses MONGO_DATABASE_2_NAME
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
@@ -157,8 +158,8 @@ namespace EasyMongo.Test
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_3_NAME);
             _mongoDatabaseConnection.Connect();
 
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);// uses MONGO_DATABASE_3_NAME
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
@@ -197,8 +198,8 @@ namespace EasyMongo.Test
 
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_2_NAME);
             _mongoDatabaseConnection.Connect();
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);// uses MONGO_DATABASE_2_NAME
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
@@ -208,8 +209,8 @@ namespace EasyMongo.Test
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_3_NAME);
             _mongoDatabaseConnection.Connect();
 
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);// uses MONGO_DATABASE_3_NAME
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
@@ -250,8 +251,8 @@ namespace EasyMongo.Test
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_2_NAME);
             _mongoDatabaseConnection.Connect();
 
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);// uses MONGO_DATABASE_2_NAME
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
@@ -261,8 +262,8 @@ namespace EasyMongo.Test
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_3_NAME);
             _mongoDatabaseConnection.Connect();
 
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoWriter = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _writer = new Writer<TestEntry>(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);// uses MONGO_DATABASE_3_NAME
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);

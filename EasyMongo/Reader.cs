@@ -13,7 +13,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo
 {
-    public class Reader<T> : IReader<T> where T : EntryBase
+    public class Reader<T> : IReader<T> where T : IEasyMongoEntry
     {
         IDatabaseConnection<T> _mongoDatabaseConnection;
 

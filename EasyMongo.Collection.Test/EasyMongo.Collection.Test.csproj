@@ -58,6 +58,10 @@
     <Compile Include="ReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EasyMongo.Base.Test\EasyMongo.Base.Test.csproj">
+      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
+      <Name>EasyMongo.Base.Test</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Collection\EasyMongo.Collection.csproj">
       <Project>{52C5EE32-B556-433F-AC6C-47CA8D377DD4}</Project>
       <Name>EasyMongo.Collection</Name>

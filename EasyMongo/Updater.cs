@@ -8,7 +8,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo
 {
-    public class Updater<T> : IUpdater<T> where T : EntryBase
+    public class Updater<T> : IUpdater<T> where T : IEasyMongoEntry
     {
         private IDatabaseConnection<T> _databaseConnection;
 

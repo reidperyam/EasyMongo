@@ -8,6 +8,7 @@ using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Async;
+using EasyMongo.Base.Test;
 
 namespace EasyMongo.Async.Test
 {
@@ -205,10 +206,10 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(_mongoDatabaseConnection.ConnectionState, ConnectionState.Connected);
             Assert.IsNotNull(_serverConnectionReturnMessage);
             Assert.IsNotNull(_databaseConnectionReturnMessage);
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
             
             // this call doesn't wait for asynchronous connection to finish
-           _results.AddRange(_mongoReader.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
+           _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
            Assert.AreEqual(1, _results.Count());
         }
 
@@ -233,10 +234,10 @@ namespace EasyMongo.Async.Test
             Assert.IsNotNull(_serverConnectionReturnMessage);
             Assert.IsNotNull(_databaseConnectionReturnMessage);
 
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
 
             // this call doesn't wait for asynchronous connection to finish
-            _results.AddRange(_mongoReader.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
 
             Assert.AreEqual(1, _results.Count());        
         }
@@ -252,16 +253,16 @@ namespace EasyMongo.Async.Test
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoDatabaseConnection = new DatabaseConnection<TestEntry>(_mongoServerConnection, MONGO_DATABASE_1_NAME);
 
-            _mongoReader = new Reader<TestEntry>(_mongoDatabaseConnection);
-            _mongoReaderAsync = new ReaderAsync<TestEntry>(_mongoReader);
-            _mongoReaderAsync.AsyncReadCompleted += new ReadCompletedEvent<TestEntry>(_mongoReaderAsync_ReadCompleted);
+            _reader = new Reader<TestEntry>(_mongoDatabaseConnection);
+            _readerAsync = new ReaderAsync<TestEntry>(_reader);
+            _readerAsync.AsyncReadCompleted += new ReadCompletedEvent<TestEntry>(_reader_AsyncReadCompleted);
 
             // testBase class receives the connection call back after the asynch connection occurs
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
             // this call doesn't wait for asynchronous connection to complete
-            _mongoReaderAsync.ReadAsync(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
+            _readerAsync.ReadAsync(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
 
             _readerAutoResetEvent.WaitOne();// wait for async read to return
             Assert.AreEqual(1, _asyncReadResults.Count());

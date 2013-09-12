@@ -10,7 +10,7 @@ using EasyMongo.Database;
 
 namespace EasyMongo.Collection
 {
-    public class Reader<T> : ICollectionReader<T> where T : EntryBase
+    public class Reader<T> : ICollectionReader<T> where T : IEasyMongoEntry
     {
         public event ReadCompletedEvent<T> AsyncReadCompleted;
         public event DistinctCompletedEvent AsyncDistinctCompleted;
@@ -21,8 +21,14 @@ namespace EasyMongo.Collection
         {
             _mongoDBReader  = mongoDatabaseReader;
             _collectionName = collectionName;
-            _mongoDBReader.AsyncReadCompleted += new ReadCompletedEvent<T>(_mongoDBReader_AsyncReadCompleted);
-            _mongoDBReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoDBReader_AsyncDistinctCompleted);
+
+            // TODO - check to see if the existing event is null before adding new handler
+
+            // why on earth is this downstream class subscribing to upstream events???
+            // EVENTUALLY probably need to remove this handler and the methods...
+
+           // _mongoDBReader.AsyncReadCompleted += new ReadCompletedEvent<T>(_mongoDBReader_AsyncReadCompleted);
+           // _mongoDBReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoDBReader_AsyncDistinctCompleted);
         }
 
         #region   Synchronous

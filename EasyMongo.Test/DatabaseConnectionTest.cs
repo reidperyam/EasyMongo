@@ -8,6 +8,7 @@ using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Async;
+using EasyMongo.Base.Test;
 
 namespace EasyMongo.Test
 {
@@ -36,13 +37,13 @@ namespace EasyMongo.Test
             List<string> collectionNames = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(0, collectionNames.Count, "The database should be empty of collections right now");
 
-            _mongoWriter.Write(MONGO_COLLECTION_1_NAME, new TestEntry());
+            _writer.Write(MONGO_COLLECTION_1_NAME, new TestEntry());
             collectionNames = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(2, collectionNames.Count, "The database should have one collection");
             Assert.AreEqual(MONGO_COLLECTION_1_NAME, collectionNames[0], MONGO_COLLECTION_1_NAME + " is missing");
             Assert.AreEqual("system.indexes", collectionNames[1], "system.indexes missing; was expected to be created");
 
-            _mongoWriter.Write(MONGO_COLLECTION_2_NAME, new TestEntry());
+            _writer.Write(MONGO_COLLECTION_2_NAME, new TestEntry());
             collectionNames = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(3, collectionNames.Count, "The database should have two collections");
             Assert.AreEqual(MONGO_COLLECTION_1_NAME, collectionNames[0], MONGO_COLLECTION_1_NAME + " is missing");

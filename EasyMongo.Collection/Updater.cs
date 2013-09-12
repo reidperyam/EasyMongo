@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Collection
 {
-    public class Updater<T> : ICollectionUpdater<T> where T : EntryBase
+    public class Updater<T> : ICollectionUpdater<T> where T : IEasyMongoEntry
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;

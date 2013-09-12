@@ -11,7 +11,7 @@ using EasyMongo.Contract;
 namespace EasyMongo.Database
 {
     // TODO - move the implementations of the embedded interfaces to the constructor instead of hard-coding them?
-    public abstract class Adapter<T> where T : EntryBase
+    public abstract class Adapter<T> where T : IEasyMongoEntry
     {
         protected IReader<T>  _mongoReader;
         protected IWriter<T>  _mongoWriter;

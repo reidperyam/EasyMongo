@@ -8,7 +8,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo
 {
-    public class Writer<T> : IWriter<T> where T : EntryBase
+    public class Writer<T> : IWriter<T> where T : IEasyMongoEntry
     {
         private IDatabaseConnection<T> _databaseConnection;
 

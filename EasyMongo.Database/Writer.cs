@@ -9,7 +9,7 @@ using EasyMongo.Async;
 
 namespace EasyMongo.Database
 {
-    public class Writer<T> : Adapter<T>, IDatabaseWriter<T> where T : EntryBase
+    public class Writer<T> : Adapter<T>, IDatabaseWriter<T> where T : IEasyMongoEntry
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 

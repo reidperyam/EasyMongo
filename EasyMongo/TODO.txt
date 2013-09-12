@@ -9,6 +9,14 @@ General
 	//        in other, downstream test assemblies that require EntryBase. Also may allow decoupling of assemblies from MongoDB dependency b/c EntryBase requires
 	//		  reference to attributes here
 	//
+	//		  EDIT - unfortunately downstream test fixtures rely on EasyMongoDB's assembly to access DataBaseConnection and ServerConnection objects in order
+	//		         to teardown entered test data between tests. However once code is centralized the refactored result will be better, simpler
+	//
+	//        Merge common code into newly-created EasyMongo.Base.Test assmebly. This project will define a common, abstract TestFixture base class defining
+	//		  all interface implementations that other test assmeblies derive from and assign specific implementations to within the [Setup] method. [Teardown],
+	//        [TestFixtureTeardown] will be defined in the base class TestBase -- this will greatly simplify the scaffolding of all Testing assemblies within the 
+	//		  .sln
+	//
     // TODO - Decouple DatabaseConnection and ServerConnection into async implmentations  
 	//
     // TODO - Rename EasyMongoAsync to EasyMongo
@@ -58,7 +66,8 @@ General
 	// TODO - refactor ServerConnection and DatabaseConnection to take Exception argument to callback methods instead of string message
 	//        to better handle client handling
 	// TODO - create post build events to copy .dlls to deployment assymbly.
-
+	//
+	// TODO - implement Ninject within the .sln (somehow?)
 
 Reader classes
 

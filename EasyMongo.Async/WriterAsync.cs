@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Async
 {
-    public class WriterAsync<T> : IWriterAsync<T> where T : EntryBase
+    public class WriterAsync<T> : IWriterAsync<T> where T : IEasyMongoEntry
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 

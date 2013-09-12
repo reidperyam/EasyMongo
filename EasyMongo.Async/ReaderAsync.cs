@@ -14,7 +14,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Async
 {
-    public class ReaderAsync<T> : IReaderAsync<T> where T : EntryBase
+    public class ReaderAsync<T> : IReaderAsync<T> where T : IEasyMongoEntry
     {
         private IReader<T> _mongoReader;
 

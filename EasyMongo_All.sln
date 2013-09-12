@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Async", "EasyMong
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Async.Test", "EasyMongo.Async.Test\EasyMongo.Async.Test.csproj", "{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Base.Test", "EasyMongo.Base.Test\EasyMongo.Base.Test.csproj", "{A8010916-62A5-4563-9250-D40C00F466E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8010916-62A5-4563-9250-D40C00F466E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8010916-62A5-4563-9250-D40C00F466E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8010916-62A5-4563-9250-D40C00F466E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8010916-62A5-4563-9250-D40C00F466E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

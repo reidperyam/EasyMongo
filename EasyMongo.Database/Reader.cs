@@ -10,7 +10,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Database
 {
-    public class Reader<T> : Adapter<T>, IDatabaseReader<T> where T : EntryBase
+    public class Reader<T> : Adapter<T>, IDatabaseReader<T> where T : IEasyMongoEntry
     {
         public event ReadCompletedEvent<T> AsyncReadCompleted;
         public event DistinctCompletedEvent AsyncDistinctCompleted;

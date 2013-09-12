@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="UpdaterTest.cs" />
     <Compile Include="RANDOM_AD_HOC_TESTS.cs" />
-    <Compile Include="TestBase.cs" />
+    <Compile Include="TestBase_old.cs" />
     <Compile Include="TestEntry.cs" />
     <Compile Include="WriterTest.cs" />
     <Compile Include="ReaderTest.cs" />
@@ -64,6 +64,10 @@
     <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">
       <Project>{96F8E3FA-F867-4863-840B-C27B99012A6E}</Project>
       <Name>EasyMongo.Async</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EasyMongo.Base.Test\EasyMongo.Base.Test.csproj">
+      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
+      <Name>EasyMongo.Base.Test</Name>
     </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Contract\EasyMongo.Contract.csproj">
       <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>

@@ -16,7 +16,7 @@ namespace EasyMongo
     /// TODO: BsonClassMap.RegisterClassMap<T>(); investigation -- is this thing needed?
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class DatabaseConnection<T> : IDatabaseConnection<T> where T : EntryBase
+    public class DatabaseConnection<T> : IDatabaseConnection<T> where T : IEasyMongoEntry
     {
         static readonly object _object = new object();
         //private event ConnectAsyncCompletedEvent ConnectAsyncCompleted;
