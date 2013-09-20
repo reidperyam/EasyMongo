@@ -5,13 +5,14 @@ using System.Text;
 using System.Diagnostics;
 using NUnit.Framework;
 using EasyMongo;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
 using System.Threading;
+using EasyMongo.Test.Model;
 
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class WriterAsyncTest : TestBase
+    public class WriterAsyncTest : IntegrationTestBase
     {
         /// <summary>
         /// Asynchronously writes a MongoTestEntry to a MongoDB and verifies that it was retrieved 

@@ -6,12 +6,13 @@ using NUnit.Framework;
 using EasyMongo.Contract;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
+using EasyMongo.Test.Model;
 
 namespace EasyMongo.Collection.Test
 {
     [TestFixture]
-    public class WriterTest : TestBase
+    public class WriterTest : IntegrationTestBase
     {
         [Test]
         public void ConstructorTest()

@@ -54,8 +54,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReaderAsyncTest.cs" />
     <Compile Include="ServerConnectionTest.cs" />
-    <Compile Include="TestBase_old.cs" />
-    <Compile Include="TestEntry.cs" />
     <Compile Include="UpdaterAsyncTest.cs" />
     <Compile Include="WriterAsyncTest.cs" />
   </ItemGroup>
@@ -64,17 +62,25 @@
       <Project>{96F8E3FA-F867-4863-840B-C27B99012A6E}</Project>
       <Name>EasyMongo.Async</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EasyMongo.Base.Test\EasyMongo.Base.Test.csproj">
-      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
-      <Name>EasyMongo.Base.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Contract\EasyMongo.Contract.csproj">
       <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>
       <Name>EasyMongo.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EasyMongo.Test.Base\EasyMongo.Test.Base.csproj">
+      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
+      <Name>EasyMongo.Test.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EasyMongo.Test.Model\EasyMongo.Test.Model.csproj">
+      <Project>{66C33FBA-2CD9-40B2-9CA0-16A0B2C73182}</Project>
+      <Name>EasyMongo.Test.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EasyMongo\EasyMongo.csproj">
       <Project>{3719B940-D317-4AAD-BDC0-5996B4A9289F}</Project>
       <Name>EasyMongo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ninject.Extensions.EasyMongo\Ninject.Extensions.EasyMongo.csproj">
+      <Project>{691A8A30-D0D6-405A-A317-C370AD2CC8C6}</Project>
+      <Name>Ninject.Extensions.EasyMongo</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

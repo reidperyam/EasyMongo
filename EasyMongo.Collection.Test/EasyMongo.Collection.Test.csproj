@@ -51,17 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UpdaterTest.cs" />
-    <Compile Include="TestBase.cs" />
-    <Compile Include="TestEntry.cs" />
     <Compile Include="WriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyMongo.Base.Test\EasyMongo.Base.Test.csproj">
-      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
-      <Name>EasyMongo.Base.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Collection\EasyMongo.Collection.csproj">
       <Project>{52C5EE32-B556-433F-AC6C-47CA8D377DD4}</Project>
       <Name>EasyMongo.Collection</Name>
@@ -73,6 +67,14 @@
     <ProjectReference Include="..\EasyMongo.Database\EasyMongo.Database.csproj">
       <Project>{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}</Project>
       <Name>EasyMongo.Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EasyMongo.Test.Base\EasyMongo.Test.Base.csproj">
+      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
+      <Name>EasyMongo.Test.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EasyMongo.Test.Model\EasyMongo.Test.Model.csproj">
+      <Project>{66C33FBA-2CD9-40B2-9CA0-16A0B2C73182}</Project>
+      <Name>EasyMongo.Test.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\EasyMongo\EasyMongo.csproj">
       <Project>{3719B940-D317-4AAD-BDC0-5996B4A9289F}</Project>

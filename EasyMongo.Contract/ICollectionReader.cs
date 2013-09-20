@@ -7,8 +7,8 @@ namespace EasyMongo.Contract
 {
     public interface ICollectionReader<T>
     {
-        event ReadCompletedEvent<T> AsyncReadCompleted;
-        event DistinctCompletedEvent AsyncDistinctCompleted;
+       // event ReadCompletedEvent<T> AsyncReadCompleted;
+       // event DistinctCompletedEvent AsyncDistinctCompleted;
 
         IEnumerable<T> Read(string fieldName, string regexPattern);
         IEnumerable<T> Read(string dateTimeFieldName, DateTime start, DateTime end);

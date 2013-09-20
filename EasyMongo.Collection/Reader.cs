@@ -12,8 +12,6 @@ namespace EasyMongo.Collection
 {
     public class Reader<T> : ICollectionReader<T> where T : IEasyMongoEntry
     {
-        public event ReadCompletedEvent<T> AsyncReadCompleted;
-        public event DistinctCompletedEvent AsyncDistinctCompleted;
         private string _collectionName;
         private IDatabaseReader<T> _mongoDBReader;
 
@@ -21,14 +19,6 @@ namespace EasyMongo.Collection
         {
             _mongoDBReader  = mongoDatabaseReader;
             _collectionName = collectionName;
-
-            // TODO - check to see if the existing event is null before adding new handler
-
-            // why on earth is this downstream class subscribing to upstream events???
-            // EVENTUALLY probably need to remove this handler and the methods...
-
-           // _mongoDBReader.AsyncReadCompleted += new ReadCompletedEvent<T>(_mongoDBReader_AsyncReadCompleted);
-           // _mongoDBReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoDBReader_AsyncDistinctCompleted);
         }
 
         #region   Synchronous
@@ -81,17 +71,5 @@ namespace EasyMongo.Collection
             _mongoDBReader.DistinctAsync(_collectionName, fieldName, query);
         }
         #endregion Asynchronous
-
-        void _mongoDBReader_AsyncReadCompleted(IEnumerable<T> e, Exception ex)
-        {
-            if (AsyncReadCompleted != null)
-                AsyncReadCompleted(e, ex);
-        }
-
-        void _mongoDBReader_AsyncDistinctCompleted( IEnumerable<BsonValue> e, Exception ex)
-        {
-            if (AsyncDistinctCompleted != null)
-                AsyncDistinctCompleted(e, ex);
-        }
     }
 }

@@ -22,6 +22,32 @@ namespace EasyMongo.Database
             _mongoUpdaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
         }
 
+        public Updater(IDatabaseConnection<T> databaseConnection)
+            : this(databaseConnection.MongoServerConnection.ConnectionString, databaseConnection.Db.Name)
+        {
+        }
+
+        public Updater(string           connectionString, 
+                       string           databaseName,
+                       IReader<T>       reader, 
+                       IWriter<T>       writer, 
+                       IUpdater<T>      updater,
+                       IReaderAsync<T>  readerAsync, 
+                       IWriterAsync<T>  writerAsync,
+                       IUpdaterAsync<T> updaterAsync)
+            : base(new ServerConnection(connectionString), 
+                   databaseName,
+                   reader,
+                   writer,
+                   updater,
+                   readerAsync,
+                   writerAsync,
+                   updaterAsync)
+        {
+            _mongoUpdaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_mongoUpdaterAsync_AsyncFindAndModifyCompleted);
+            _mongoUpdaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
+        }
+
         public WriteConcernResult Remove(string collectionName, IMongoQuery query)
         {
             return _mongoUpdater.Remove(collectionName, query);

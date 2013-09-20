@@ -7,12 +7,12 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
 
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class ReaderAsyncTest : TestBase
+    public class ReaderAsyncTest : IntegrationTestBase
     {
         /// <summary>
         /// Writes a MongoTestEntry to a MongoDB and verifies that it was asynchronously retrieved using

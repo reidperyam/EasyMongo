@@ -7,13 +7,19 @@ using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using EasyMongo.Contract;
 
-namespace EasyMongo.Contract
+namespace EasyMongo.Test.Model
 {
-    public interface IEasyMongoEntry
+    public class TestEntry : IEasyMongoEntry
     {
+        public TestEntry()
+        {
+            TimeStamp = DateTime.Now;
+        }
+
         [BsonId(IdGenerator = typeof(BsonObjectIdGenerator))]
-        BsonObjectId ID
+        public BsonObjectId ID
         {
             get;
             set;
@@ -23,7 +29,7 @@ namespace EasyMongo.Contract
         /// A description of activity to be logged
         /// </summary>
         [BsonIgnoreIfNull]
-        string Message
+        public string Message
         {
             get;
             set;
@@ -32,11 +38,10 @@ namespace EasyMongo.Contract
         /// <summary>
         /// A field representing the time the Log Entry was initialized
         /// </summary>
-        DateTime TimeStamp
+        public DateTime TimeStamp
         {
             get;
             set;
         }
-
     }
 }

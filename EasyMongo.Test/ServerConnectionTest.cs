@@ -7,12 +7,14 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
+using EasyMongo.Test.Model;
+using Ninject.Extensions.EasyMongo;
 
 namespace EasyMongo.Test
 {
     [TestFixture]
-    public class ServerConnectionTest : TestBase
+    public class ServerConnectionTest : IntegrationTestBase
     {
         #region Synchronous
         [Test,ExpectedException(typeof(MongoConnectionException))]

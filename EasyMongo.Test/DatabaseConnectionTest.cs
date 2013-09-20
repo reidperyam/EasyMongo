@@ -8,12 +8,13 @@ using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Async;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
+using EasyMongo.Test.Model;
 
 namespace EasyMongo.Test
 {
     [TestFixture]
-    public class DatabaseConnectionTest : TestBase
+    public class DatabaseConnectionTest : IntegrationTestBase
     {
         [Test]
         public void ConnectionStateTest()

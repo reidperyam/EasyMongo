@@ -10,9 +10,6 @@ namespace EasyMongo.Collection
 {
     public class Updater<T> : ICollectionUpdater<T> where T : IEasyMongoEntry
     {
-        public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
-        public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
-
         IDatabaseUpdater<T> _mongoDBUpdater;
         string _collectionName; 
 
@@ -20,12 +17,9 @@ namespace EasyMongo.Collection
         {
             _mongoDBUpdater = mongoDatabaseUpdater;
             _collectionName = collectionName;
-
-            // hook class events to base class' members'
-            _mongoDBUpdater.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_mongoUpdaterAsync_AsyncFindAndModifyCompleted);
-            _mongoDBUpdater.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
         }
 
+        #region    Synchronous
         public void Remove(IMongoQuery query)
         {
             _mongoDBUpdater.Remove(_collectionName, query);
@@ -41,23 +35,6 @@ namespace EasyMongo.Collection
         public void Remove(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
             _mongoDBUpdater.Remove(_collectionName, query, removeFlags, writeConcern);
-        }
-
-        public void RemoveAsync(IMongoQuery query)
-        {
-            _mongoDBUpdater.RemoveAsync(_collectionName, query);
-        }
-        public void RemoveAsync(IMongoQuery query, RemoveFlags removeFlags)
-        {
-            _mongoDBUpdater.RemoveAsync(_collectionName, query, removeFlags);
-        }
-        public void RemoveAsync(IMongoQuery query, WriteConcern writeConcern)
-        {
-            _mongoDBUpdater.RemoveAsync(_collectionName, query, writeConcern);
-        }
-        public void RemoveAsync(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
-        {
-            _mongoDBUpdater.RemoveAsync(_collectionName, query, removeFlags, writeConcern);
         }
 
         public FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
@@ -80,10 +57,29 @@ namespace EasyMongo.Collection
         {
             return _mongoDBUpdater.FindAndRemove(_collectionName, mongoQuery, mongoSortBy);
         }
+        #endregion Synchronous
+
+        #region    Asynchronous
+        public void RemoveAsync(IMongoQuery query)
+        {
+            _mongoDBUpdater.RemoveAsync(_collectionName, query);
+        }
+        public void RemoveAsync(IMongoQuery query, RemoveFlags removeFlags)
+        {
+            _mongoDBUpdater.RemoveAsync(_collectionName, query, removeFlags);
+        }
+        public void RemoveAsync(IMongoQuery query, WriteConcern writeConcern)
+        {
+            _mongoDBUpdater.RemoveAsync(_collectionName, query, writeConcern);
+        }
+        public void RemoveAsync(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
+        {
+            _mongoDBUpdater.RemoveAsync(_collectionName, query, removeFlags, writeConcern);
+        }
 
         public void FindAndModifyAsync(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
         {
-            _mongoDBUpdater.FindAndModifyAsync(_collectionName,mongoQuery, mongoSortBy, mongoUpdate);
+            _mongoDBUpdater.FindAndModifyAsync(_collectionName, mongoQuery, mongoSortBy, mongoUpdate);
         }
         public void FindAndModifyAsync(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
         {
@@ -101,17 +97,6 @@ namespace EasyMongo.Collection
         {
             _mongoDBUpdater.FindAndRemoveAsync(_collectionName, mongoQuery, mongoSortBy);
         }
-
-        void _mongoUpdaterAsync_AsyncFindAndRemoveCompleted(WriteConcernResult result)
-        {
-            if (AsyncFindAndRemoveCompleted != null)
-                AsyncFindAndRemoveCompleted(result);
-        }
-
-        void _mongoUpdaterAsync_AsyncFindAndModifyCompleted(FindAndModifyResult result)
-        {
-            if (AsyncFindAndModifyCompleted != null)
-                AsyncFindAndModifyCompleted(result);
-        }
+        #endregion Asynchronous
     }
 }

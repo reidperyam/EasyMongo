@@ -18,7 +18,33 @@ namespace EasyMongo.Database
         public Reader(string connectionString, string databaseName)
             : base(new ServerConnection(connectionString), databaseName)
         {
-            _mongoReaderAsync.AsyncReadCompleted += new ReadCompletedEvent<T>(_mongoReaderAsync_ReadCompleted);
+            _mongoReaderAsync.AsyncReadCompleted     += new ReadCompletedEvent<T>(_mongoReaderAsync_ReadCompleted);
+            _mongoReaderAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
+        }
+
+        public Reader(IDatabaseConnection<T> databaseConnection)
+            : this(databaseConnection.MongoServerConnection.ConnectionString, databaseConnection.Db.Name)
+        {
+        }
+
+        public Reader(string           connectionString, 
+                      string           databaseName,
+                      IReader<T>       reader, 
+                      IWriter<T>       writer, 
+                      IUpdater<T>      updater,
+                      IReaderAsync<T>  readerAsync, 
+                      IWriterAsync<T>  writerAsync,
+                      IUpdaterAsync<T> updaterAsync)
+            : base(new ServerConnection(connectionString), 
+                   databaseName,
+                   reader,
+                   writer,
+                   updater,
+                   readerAsync,
+                   writerAsync,
+                   updaterAsync)
+        {
+            _mongoReaderAsync.AsyncReadCompleted     += new ReadCompletedEvent<T>(_mongoReaderAsync_ReadCompleted);
             _mongoReaderAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
         }
 

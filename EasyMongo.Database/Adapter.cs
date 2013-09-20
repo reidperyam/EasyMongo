@@ -23,6 +23,47 @@ namespace EasyMongo.Database
 
         protected MongoCollection _mongoCollection;
 
+        #region    In Development - TODO - These constructors will replace existing constructors
+        // TODO: This is why we need to implement Ninject to replace these hard-coded interface implementations with injectable dependencies 
+        protected Adapter(IServerConnection serverConnection, 
+                          string            dbName,
+                          IReader<T>        reader, 
+                          IWriter<T>        writer, 
+                          IUpdater<T>       updater,
+                          IReaderAsync<T>   readerAsync, 
+                          IWriterAsync<T>   writerAsync,
+                          IUpdaterAsync<T>  updaterAsync)
+        {
+           // IDatabaseConnection<T> mongoDatabaseConnection = ConnectToDatabase(serverConnection, dbName);
+           // InitializeAdapter(mongoDatabaseConnection);
+            _mongoReader       = reader;
+            _mongoWriter       = writer;
+            _mongoUpdater      = updater;
+            _mongoReaderAsync  = readerAsync;
+            _mongoWriterAsync  = writerAsync;
+            _mongoUpdaterAsync = updaterAsync;
+        }
+
+        // TODO: This is why we need to implement Ninject to replace these hard-coded interface implementations with injectable dependencies 
+        protected Adapter(IServerConnection      mongoServerConnection,
+                          IDatabaseConnection<T> mongoDatabaseConnection,
+                          IReader<T>             reader,
+                          IWriter<T>             writer,
+                          IUpdater<T>            updater,
+                          IReaderAsync<T>        readerAsync,
+                          IWriterAsync<T>        writerAsync,
+                          IUpdaterAsync<T>       updaterAsync)
+        {
+           // InitializeAdapter(mongoDatabaseConnection);
+            _mongoReader       = reader;
+            _mongoWriter       = writer;
+            _mongoUpdater      = updater;
+            _mongoReaderAsync  = readerAsync;
+            _mongoWriterAsync  = writerAsync;
+            _mongoUpdaterAsync = updaterAsync;
+        }
+        #endregion In Development
+
         protected Adapter(IServerConnection serverConnection, string dbName) 
             : this(serverConnection, new DatabaseConnection<T>(serverConnection, dbName))
         {
@@ -30,8 +71,9 @@ namespace EasyMongo.Database
             InitializeAdapter(mongoDatabaseConnection);
         }
 
+        // TODO: This is why we need to implement Ninject to replace these hard-coded interface implementations with injectable dependencies 
         private Adapter(IServerConnection mongoServerConnection,
-                       IDatabaseConnection<T> mongoDatabaseConnection)
+                        IDatabaseConnection<T> mongoDatabaseConnection)
             : this(new EasyMongo.Reader<T>(mongoDatabaseConnection),
                    new EasyMongo.Writer<T>(mongoDatabaseConnection),
                    new EasyMongo.Updater<T>(mongoDatabaseConnection))

@@ -10,32 +10,27 @@ namespace EasyMongo.Collection
 {
     public class Writer<T> : ICollectionWriter<T> where T : IEasyMongoEntry
     {
-        public event WriteCompletedEvent AsyncWriteCompleted;
         IDatabaseWriter<T> _mongoDBWriter;
-        string _collectionName;
-        //WriteConcern 
+        string _collectionName; 
 
         public Writer(IDatabaseWriter<T> mongoDatabaseWriter, string collectionName)
         {
             _mongoDBWriter = mongoDatabaseWriter;
             _collectionName = collectionName;
-            _mongoDBWriter.AsyncWriteCompleted += new WriteCompletedEvent(_mongoDBWriter_AsyncWriteCompleted);
         }
 
-        void _mongoDBWriter_AsyncWriteCompleted(object sender)
-        {
-            if (AsyncWriteCompleted != null)
-                AsyncWriteCompleted(sender);
-        }
-
+        #region    Synchronous
         public void Write(T entry)
         {
             _mongoDBWriter.Write(_collectionName, entry);
         }
+        #endregion Synchronous
 
+        #region    Asynchronous
         public void WriteAsync(T entry)
         {
             _mongoDBWriter.Write(_collectionName, entry);
         }
+        #endregion Asynchronous
     }
 }

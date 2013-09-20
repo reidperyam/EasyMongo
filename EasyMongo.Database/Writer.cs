@@ -24,6 +24,26 @@ namespace EasyMongo.Database
         {
         }
 
+        public Writer(string           connectionString, 
+                      string           databaseName,
+                      IReader<T>       reader, 
+                      IWriter<T>       writer, 
+                      IUpdater<T>      updater,
+                      IReaderAsync<T>  readerAsync, 
+                      IWriterAsync<T>  writerAsync,
+                      IUpdaterAsync<T> updaterAsync)
+            : base(new ServerConnection(connectionString), 
+                   databaseName,
+                   reader,
+                   writer,
+                   updater,
+                   readerAsync,
+                   writerAsync,
+                   updaterAsync)
+        {
+            _mongoWriterAsync.AsyncWriteCompleted += new WriteCompletedEvent(_mongoWriterAsync_WriteCompleted);
+        }
+
         public void Write(string collectionName, T entry)
         {
             _mongoWriter.Write(collectionName, entry);

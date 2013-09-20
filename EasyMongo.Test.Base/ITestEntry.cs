@@ -9,26 +9,14 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Base.Test
+namespace EasyMongo.Test.Base
 {
-    public class TestEntry : IEasyMongoEntry
+    public interface ITestEntry : IEasyMongoEntry
     {
-        public TestEntry()
-        {
-            TimeStamp = DateTime.Now;
-        }
-
-        [BsonId(IdGenerator = typeof(BsonObjectIdGenerator))]
-        public BsonObjectId ID
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// A field representing the time the Log Entry was initialized
         /// </summary>
-        public DateTime TimeStamp
+        DateTime TimeStamp
         {
             get;
             set;
@@ -38,7 +26,7 @@ namespace EasyMongo.Base.Test
         /// A description of activity to be logged
         /// </summary>
         [BsonIgnoreIfNull]
-        public string Message
+        string Message
         {
             get;
             set;

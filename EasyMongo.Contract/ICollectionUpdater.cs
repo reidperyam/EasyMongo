@@ -5,8 +5,8 @@ namespace EasyMongo.Contract
 {
     public interface ICollectionUpdater<T>
     {
-        event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
-        event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
+       // event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
+       // event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
         // Are the WriteConcern overloads required or are they defined in embedded objects?
         void Remove(IMongoQuery query);

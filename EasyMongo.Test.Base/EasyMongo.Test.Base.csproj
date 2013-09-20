@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}</ProjectGuid>
+    <ProjectGuid>{A8010916-62A5-4563-9250-D40C00F466E7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EasyMongo.Test</RootNamespace>
-    <AssemblyName>EasyMongo.Test</AssemblyName>
+    <RootNamespace>EasyMongo.Test.Base</RootNamespace>
+    <AssemblyName>EasyMongo.Test.Base</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -37,6 +37,9 @@
     <Reference Include="MongoDB.Driver">
       <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -50,29 +53,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseConnectionTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ServerConnectionTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UpdaterTest.cs" />
-    <Compile Include="WriterTest.cs" />
-    <Compile Include="ReaderTest.cs" />
+    <Compile Include="ITestEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RANDOM_AD_HOC_TESTS.cs" />
+    <Compile Include="IntegrationTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">
       <Project>{96F8E3FA-F867-4863-840B-C27B99012A6E}</Project>
       <Name>EasyMongo.Async</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EasyMongo.Collection\EasyMongo.Collection.csproj">
+      <Project>{52C5EE32-B556-433F-AC6C-47CA8D377DD4}</Project>
+      <Name>EasyMongo.Collection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Contract\EasyMongo.Contract.csproj">
       <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>
       <Name>EasyMongo.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EasyMongo.Test.Base\EasyMongo.Test.Base.csproj">
-      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
-      <Name>EasyMongo.Test.Base</Name>
+    <ProjectReference Include="..\EasyMongo.Database\EasyMongo.Database.csproj">
+      <Project>{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}</Project>
+      <Name>EasyMongo.Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\EasyMongo.Test.Model\EasyMongo.Test.Model.csproj">
       <Project>{66C33FBA-2CD9-40B2-9CA0-16A0B2C73182}</Project>
@@ -89,9 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

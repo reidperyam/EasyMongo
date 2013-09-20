@@ -7,12 +7,13 @@ using EasyMongo.Contract;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
+using EasyMongo.Test.Model;
 
 namespace EasyMongo.Collection.Test
 {
     [TestFixture]
-    public class ReaderTest : TestBase
+    public class ReaderTest : IntegrationTestBase
     {        
         [Test]
         public void ConstructorTest()

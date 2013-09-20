@@ -4,25 +4,17 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 ** Refactor DistinctAsyncompleted event and ASyncReadCompleted events into one event
 
 General
-
-    // TODO - Refactor EntryBase (class) into an interface - move it to EasyMongo.Contract assembly. Because of this can remove dependency to EasyMongo Assembly 
-	//        in other, downstream test assemblies that require EntryBase. Also may allow decoupling of assemblies from MongoDB dependency b/c EntryBase requires
-	//		  reference to attributes here
+    // TODO - Remove Generic template for domain classes???
+    // TODO - fix ninject integration test so that the ninject types are loaded with implementations of their generic, interface argument types 
+    // TODO - prime EasyMongo assemblies for DI with Ninject by moving contract dependencies to the constructors
+	// TODO - Implement Ninject DI within the TestBase class of EasyMongo.Test.Base to bind dependencies of the objects
+	// TODO - Create new assembly, EasyMongo.Common to hold shared MongoDB assembly references
+	// TODO - implement Ninject NuGet package into the Database Adapter.
 	//
-	//		  EDIT - unfortunately downstream test fixtures rely on EasyMongoDB's assembly to access DataBaseConnection and ServerConnection objects in order
-	//		         to teardown entered test data between tests. However once code is centralized the refactored result will be better, simpler
-	//
-	//        Merge common code into newly-created EasyMongo.Base.Test assmebly. This project will define a common, abstract TestFixture base class defining
-	//		  all interface implementations that other test assmeblies derive from and assign specific implementations to within the [Setup] method. [Teardown],
-	//        [TestFixtureTeardown] will be defined in the base class TestBase -- this will greatly simplify the scaffolding of all Testing assemblies within the 
-	//		  .sln
-	//
-    // TODO - Decouple DatabaseConnection and ServerConnection into async implmentations  
-	//
-    // TODO - Rename EasyMongoAsync to EasyMongo
-    //
-    // TODO - refactor async operations into separate child assemblies:
-	//        EasyMongoAsync.Database -> EasyMongo.Database & EasyMongo.Database.Async
+	// TODO - refactor underlying MongoDB dependencies to reference interfaces injected into ctors via Ninject
+    // TODO - Decouple DatabaseConnection and ServerConnection into async implmentations  and move async into EasyMongo.Async
+	// TODO - rename EasyMongo.Database and EasyMongo.Collection readers/writers/updaters to 'DatabaseReader','CollectionWriter' etc to 
+	//        simplify and reduce confusion
 	//
 	// TODO - revisit purpose of "Create" Method - where is this used and why? Seems like a polymorphic hack to circumvent
 	//        poor design...

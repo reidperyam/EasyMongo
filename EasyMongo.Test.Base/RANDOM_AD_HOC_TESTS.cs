@@ -5,12 +5,16 @@ using System.Text;
 using NUnit.Framework;
 using System.Globalization;
 using System.Diagnostics;
+using EasyMongo.Test.Base;
+using EasyMongo.Contract;
+using Ninject;
 
-namespace EasyMongo.Test
+namespace EasyMongo.Test.Base
 {
     [TestFixture]
-    public class RandomTest 
+    public class RandomTest : IntegrationTestBase
     {
+
         [Explicit,Test]
         public void DateParse()
         {
@@ -33,8 +37,6 @@ namespace EasyMongo.Test
             int i;
             for ( i = 0; !serverConnection.CanConnect(); ++i)
             ;
-
-
         }
     }
 }

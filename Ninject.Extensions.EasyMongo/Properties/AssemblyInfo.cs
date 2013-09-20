@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EasyMongo.Base.Test")]
+[assembly: AssemblyTitle("Ninject.Extensions.EasyMongo")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EasyMongo.Base.Test")]
+[assembly: AssemblyProduct("Ninject.Extensions.EasyMongo")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d101fa6b-75b1-4807-9583-0cd541ae3c2f")]
+[assembly: Guid("266a9b6e-fe1e-476b-9fde-5c7f39d795b0")]
 
 // Version information for an assembly consists of the following four values:
 //

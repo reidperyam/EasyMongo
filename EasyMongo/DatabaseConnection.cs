@@ -27,10 +27,10 @@ namespace EasyMongo
         protected AsyncConnectDelegate ConnectAsyncDelegatePointer;
         private string _dbName;
 
-        public DatabaseConnection(IServerConnection serverConnection, string dbName) 
+        public DatabaseConnection(IServerConnection serverConnection, string databaseName) 
         {
             ConnectionState = ConnectionState.NotConnected;
-            _dbName = dbName;
+            _dbName = databaseName;
             ConnectAsyncDelegatePointer = ConnectMongoDatabaseAsync;
             MongoServerConnection = serverConnection;
         }
@@ -321,7 +321,8 @@ namespace EasyMongo
                     case ConnectionState.Connected: break;
                     case ConnectionState.Connecting: _databaseConnectionResetEvent.WaitOne(); // wait for the DatabaseConnection to connect
                         break;
-                    case ConnectionState.NotConnected: throw new MongoConnectionException("DatabaseConnection is not connected");
+                    case ConnectionState.NotConnected: /*Connect();*/ //break;
+                    throw new MongoConnectionException("DatabaseConnection is not connected");
                 }
             } while (ConnectionState != ConnectionState.Connected);
         }

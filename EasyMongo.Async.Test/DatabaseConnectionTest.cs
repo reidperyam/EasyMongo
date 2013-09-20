@@ -8,12 +8,14 @@ using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Async;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
+using EasyMongo.Test.Model;
+using Ninject.Extensions.EasyMongo;
 
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class DatabaseConnectionTest : TestBase
+    public class DatabaseConnectionTest : IntegrationTestBase
     {
         [Test]
         public void BadConnectionStringAsync()

@@ -8,12 +8,12 @@ using EasyMongo;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
 
 namespace EasyMongo.Test
 {
     [TestFixture]
-    public class ReaderTest : TestBase
+    public class ReaderTest : IntegrationTestBase
     {
         /// <summary>
         /// Writes a MongoTestEntry to a MongoDB and verifies that it was retrieved using

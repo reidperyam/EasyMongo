@@ -9,7 +9,6 @@ using EasyMongo.Contract;
 using System.Threading;
 using System.Runtime.Remoting.Messaging;
 
-
 namespace EasyMongo
 {
     public class ServerConnection : IServerConnection 

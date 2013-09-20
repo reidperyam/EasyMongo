@@ -7,12 +7,12 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
-using EasyMongo.Base.Test;
+using EasyMongo.Test.Base;
 
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class ServerConnectionTest : TestBase
+    public class ServerConnectionTest : IntegrationTestBase
     {
         #region Asynchronous
 
