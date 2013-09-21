@@ -4,9 +4,16 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 ** Refactor DistinctAsyncompleted event and ASyncReadCompleted events into one event
 
 General
+    // TODO - write impl for IReaderAsync.Distinct<T> ;
+	//      - write unit tests for ^^
+	//      - add new EasyMongo.IReader.Distinct overload that returns IEnumerable<T> instead of IEnumberable<BSON> (this overload was added in an underlying MongoDB release - tome to proxy/facade it)
+    //      - implement new integration tests across all readers: IReader, IReaderAsync, IDatabaseReader, ICollectionReader
+	//      
+	// TODO - investigate TestFixtureBase's event handlers for Async operations - anyway we can change the explicit casting to impl to use interfaces??    
+	// TODO - implement NCover or some unit test coverage mechanism
+    // TODO - refactor common code within EasyMongo.Reader.Distinct classes
     // TODO - bubble up all implementation classes to the constructor and add adapters when required...
 	// TODO - write Ninject nunit test proving using singletons to create all of our integration testing classes results in async testing problems
-	// TODO - add new EasyMongo.IReader.Distinct overload that returns IEnumerable<T> instead of IEnumberable<BSON> (this overload was added in an underlying MongoDB release - tome to proxy/facade it)
 	// TODO - Create new assembly, EasyMongo.Common to hold shared MongoDB assembly references
 	// TODO - add IDatabaseConnection.GetCollection() method to call underlying non-generic impl returning IEnumberable<BSONDocument> instead of <T>...
 	// TODO - refactor underlying MongoDB dependencies to reference interfaces injected into ctors via Ninject

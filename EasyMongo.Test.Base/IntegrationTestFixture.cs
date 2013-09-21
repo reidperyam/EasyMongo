@@ -56,7 +56,7 @@ namespace EasyMongo.Test.Base
             #region    EasyMongo.Async.Test
             _readerAsync = _configurator.Kernel.TryGet<IReaderAsync>();
             _readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_reader_AsyncReadCompleted);
-            _readerAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsync_AsyncDistinctCompleted);
+            _readerAsync.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_readerAsync_AsyncDistinctCompleted);
 
             _writerAsync = _configurator.Kernel.TryGet<IWriterAsync>();
             _writerAsync.AsyncWriteCompleted += new WriteCompletedEvent(_writer_AsyncWriteCompleted);
@@ -69,7 +69,7 @@ namespace EasyMongo.Test.Base
             #region    EasyMongo.Database.Test
             _databaseReader = _configurator.Kernel.TryGet<IDatabaseReader>();
             _databaseReader.AsyncReadCompleted += new ReadCompletedEvent(_databaseReader_AsyncReadCompleted);
-            _databaseReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_databaseReader_AsyncDistinctCompleted);
+            _databaseReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_databaseReader_AsyncDistinctCompleted);
 
             _databaseWriter = _configurator.Kernel.TryGet<IDatabaseWriter>();
             _databaseWriter.AsyncWriteCompleted += new WriteCompletedEvent(_databaseWriter_AsyncWriteCompleted);
@@ -82,7 +82,7 @@ namespace EasyMongo.Test.Base
             #region    EasyMongo.Collection.Test
             _collectionReader = _configurator.Kernel.TryGet<ICollectionReader>();
             _collectionReader.AsyncReadCompleted += new ReadCompletedEvent(_collectionReader_AsyncReadCompleted);
-            _collectionReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_collectionReader_AsyncDistinctCompleted);
+            _collectionReader.AsyncDistinctCompleted += new DistinctBSONCompletedEvent(_collectionReader_AsyncDistinctCompleted);
 
             _collectionWriter = _configurator.Kernel.TryGet<ICollectionWriter>();
             _collectionWriter.AsyncWriteCompleted += new WriteCompletedEvent(_collectionWriter_AsyncWriteCompleted);
@@ -314,10 +314,11 @@ namespace EasyMongo.Test.Base
             _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
         }
 
+        // TODO - Refactor the cast to not define impl class...
         protected void _collectionReader_AsyncReadCompleted(object e, Exception ex)
         {
             _asyncException = ex;
-            IEnumerable<TestEntry> results = (IEnumerable<TestEntry>)e;
+            IEnumerable<TestEntry> results = (IEnumerable<TestEntry>)e;// HEY! Can this instead be IEnumerable<TestEntry>
             _asyncReadResults.AddRange(results);
             _readerAutoResetEvent.Set();
         }

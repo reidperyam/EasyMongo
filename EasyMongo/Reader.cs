@@ -181,26 +181,27 @@ namespace EasyMongo
         #endregion Read Against Multiple Collections
 
         #region    Distinct Implementation
-        private void Distinct<T>(string collectionName, string fieldName, out List<BsonValue> results)
+        #region    BSON
+        private void Distinct(string collectionName, string fieldName, out List<BsonValue> results)
         {
             results = new List<BsonValue>();
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            var collection = _mongoDatabaseConnection.GetCollection<BsonValue>(collectionName);
             results.AddRange(collection.Distinct(fieldName));
         }
-        private void Distinct<T>(string collectionName, string fieldName, IMongoQuery query, out List<BsonValue> results)
+        private void Distinct(string collectionName, string fieldName, IMongoQuery query, out List<BsonValue> results)
         {
             results = new List<BsonValue>();
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            var collection = _mongoDatabaseConnection.GetCollection<BsonValue>(collectionName);
             results.AddRange(collection.Distinct(fieldName, query));
         }
-        private void Distinct<T>(IEnumerable<string> collectionNames, string fieldName, out List<BsonValue> results)
+        private void Distinct(IEnumerable<string> collectionNames, string fieldName, out List<BsonValue> results)
         {
             results = new List<BsonValue>();
             List<BsonValue> resultsForCollection;
 
             foreach (string collectionName in collectionNames)
             {
-                Distinct<T>(collectionName, fieldName, out resultsForCollection);
+                Distinct(collectionName, fieldName, out resultsForCollection);
 
                 // since this method returns distinct values and we are searching across collections
                 // we need to cull values returned from other collections
@@ -213,14 +214,14 @@ namespace EasyMongo
                 resultsForCollection.Clear();
             }
         }
-        private void Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query, out List<BsonValue> results)
+        private void Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query, out List<BsonValue> results)
         {
             results = new List<BsonValue>();
             List<BsonValue> resultsForCollection;
 
             foreach (string collectionName in collectionNames)
             {
-                Distinct<T>(collectionName, fieldName, query, out resultsForCollection);
+                Distinct(collectionName, fieldName, query, out resultsForCollection);
 
                 // since this method returns distinct values and we are searching across collections
                 // we need to cull values returned from other collections
@@ -232,35 +233,117 @@ namespace EasyMongo
                 resultsForCollection.Clear();
             }
         }
+        #endregion BSON
+        #region    T
+        private void Distinct<T>(string collectionName, string fieldName, out List<T> results)
+        {
+            results = new List<T>();
+            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Distinct<T>(fieldName));
+        }
+        private void Distinct<T>(string collectionName, string fieldName, IMongoQuery query, out List<T> results)
+        {
+            results = new List<T>();
+            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Distinct<T>(fieldName, query));
+        }
+        private void Distinct<T>(IEnumerable<string> collectionNames, string fieldName, out List<T> results)
+        {
+            results = new List<T>();
+            List<T> resultsForCollection;
+
+            foreach (string collectionName in collectionNames)
+            {
+                Distinct<T>(collectionName, fieldName, out resultsForCollection);
+
+                // since this method returns distinct values and we are searching across collections
+                // we need to cull values returned from other collections
+                foreach (T result in resultsForCollection)
+                {
+                    if (!results.Contains(result))
+                        results.Add(result);
+                }
+
+                resultsForCollection.Clear();
+            }
+        }
+        private void Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query, out List<T> results)
+        {
+            results = new List<T>();
+            List<T> resultsForCollection;
+
+            foreach (string collectionName in collectionNames)
+            {
+                Distinct<T>(collectionName, fieldName, query, out resultsForCollection);
+
+                // since this method returns distinct values and we are searching across collections
+                // we need to cull values returned from other collections
+                foreach (T result in resultsForCollection)
+                {
+                    if (!results.Contains(result))
+                        results.Add(result);
+                }
+                resultsForCollection.Clear();
+            }
+        }
+        #endregion T
         #endregion Distinct Implementation
-        #region Distinct Across Collection
-        public IEnumerable<BsonValue> Distinct<T>(string collectionName, string fieldName)
+        #region Distinct Across Collection BSON
+        public IEnumerable<BsonValue> Distinct(string collectionName, string fieldName)
         {
             List<BsonValue> results;
+            Distinct(collectionName, fieldName, out results);
+            return results;
+        }
+        public IEnumerable<BsonValue> Distinct(string collectionName, string fieldName, IMongoQuery query)
+        {
+            List<BsonValue> results;
+            Distinct(collectionName, fieldName, query, out results);
+            return results;
+        }
+        #endregion Distinct Across Collection BSON
+        #region Distinct Across Multiple Collections BSON
+        public IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName)
+        {
+            List<BsonValue> results;
+            Distinct(collectionNames, fieldName, out results);
+            return results;
+        }
+        public IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        {
+            List<BsonValue> results;
+            Distinct(collectionNames, fieldName, query, out results);
+            return results;
+        }
+        #endregion Distinct Across Multiple Collections BSON
+        #region Distinct Across Collection T
+        public IEnumerable<T> Distinct<T>(string collectionName, string fieldName)
+        {
+            List<T> results;
             Distinct<T>(collectionName, fieldName, out results);
             return results;
         }
-        public IEnumerable<BsonValue> Distinct<T>(string collectionName, string fieldName, IMongoQuery query)
+        public IEnumerable<T> Distinct<T>(string collectionName, string fieldName, IMongoQuery query)
         {
-            List<BsonValue> results;
+            List<T> results;
             Distinct<T>(collectionName, fieldName, query, out results);
             return results;
         }
-        #endregion Distinct Across Collection
-        #region Distinct Across Multiple Collections
-        public IEnumerable<BsonValue> Distinct<T>(IEnumerable<string> collectionNames, string fieldName)
+        #endregion Distinct Across Collection T
+        #region Distinct Across Multiple Collections T
+        public IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName)
         {
-            List<BsonValue> results;
+            List<T> results;
             Distinct<T>(collectionNames, fieldName, out results);
             return results;
         }
-        public IEnumerable<BsonValue> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        public IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
-            List<BsonValue> results;
+            List<T> results;
             Distinct<T>(collectionNames, fieldName, query, out results);
             return results;
         }
-        #endregion Distinct Across Multiple Collections
+        #endregion Distinct Across Multiple Collections T
         #endregion Methods
 
         private System.Threading.AutoResetEvent _resetEvent = new System.Threading.AutoResetEvent(false);

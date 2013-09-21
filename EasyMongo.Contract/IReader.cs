@@ -75,9 +75,15 @@ namespace EasyMongo.Contract
         IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
 
         // TODO - add overloads to these methods returning IEnumberable<T>...
-        IEnumerable<BsonValue> Distinct<T>(string collectionName, string fieldName);
-        IEnumerable<BsonValue> Distinct<T>(string collectionName, string fieldName, IMongoQuery query);
-        IEnumerable<BsonValue> Distinct<T>(IEnumerable<string> collectionNames, string fieldName);
-        IEnumerable<BsonValue> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+        IEnumerable<BsonValue> Distinct(string collectionName, string fieldName);
+        IEnumerable<BsonValue> Distinct(string collectionName, string fieldName, IMongoQuery query);
+        IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName);
+        IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+
+        // TODO - how to reconcile these overloads since their signature is the same?
+        IEnumerable<T> Distinct<T>(string collectionName, string fieldName);
+        IEnumerable<T> Distinct<T>(string collectionName, string fieldName, IMongoQuery query);
+        IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName);
+        IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
     }
 }

@@ -113,13 +113,13 @@ namespace EasyMongo.Test
         }
 
         [Test]
-        public void DistinctTest1()
+        public void DistinctBSONTest1()
         {
             AddMongoEntry("One");
             AddMongoEntry("One");
             AddMongoEntry("Two");
             AddMongoEntry("Three");
-            List<BsonValue> list = new List<BsonValue>(_reader.Distinct<TestEntry>(MONGO_COLLECTION_1_NAME,"Message"));
+            List<BsonValue> list = new List<BsonValue>(_reader.Distinct(MONGO_COLLECTION_1_NAME,"Message"));
             Assert.AreEqual(3, list.Count());
             Assert.AreEqual("One",   list[0].AsString);
             Assert.AreEqual("Two",   list[1].AsString);
@@ -127,7 +127,7 @@ namespace EasyMongo.Test
         }
 
         [Test]
-        public void DistinctTest2()
+        public void DistinctBSONTest2()
         {
             // get distinct message values that are not "Two" or "Three"
             var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
@@ -136,13 +136,13 @@ namespace EasyMongo.Test
             AddMongoEntry("One");
             AddMongoEntry("Two");
             AddMongoEntry("Three");
-            List<BsonValue> list = new List<BsonValue>(_reader.Distinct<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", searchQuery));
+            List<BsonValue> list = new List<BsonValue>(_reader.Distinct(MONGO_COLLECTION_1_NAME, "Message", searchQuery));
             Assert.AreEqual(1, list.Count());
             Assert.AreEqual("One", list[0].AsString);
         }
 
         [Test]
-        public void DistinctTest3()
+        public void DistinctBSONTest3()
         {
             AddMongoEntry("One", MONGO_COLLECTION_1_NAME);
             AddMongoEntry("One", MONGO_COLLECTION_2_NAME);
@@ -150,7 +150,7 @@ namespace EasyMongo.Test
             AddMongoEntry("Three", MONGO_COLLECTION_2_NAME);
 
             List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
-            List<BsonValue> list = new List<BsonValue>(_reader.Distinct<TestEntry>(collections, "Message"));
+            List<BsonValue> list = new List<BsonValue>(_reader.Distinct(collections, "Message"));
             Assert.AreEqual(3, list.Count());
             Assert.AreEqual("One", list[0].AsString);
             Assert.AreEqual("Two", list[1].AsString);
@@ -158,7 +158,7 @@ namespace EasyMongo.Test
         }
 
         [Test]
-        public void DistinctTest4()
+        public void DistinctBSONTest4()
         {
             // get distinct message values that are not "Two" or "Three"
             var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
@@ -169,7 +169,7 @@ namespace EasyMongo.Test
             AddMongoEntry("Three", MONGO_COLLECTION_2_NAME);
 
             List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
-            List<BsonValue> list = new List<BsonValue>(_reader.Distinct<TestEntry>(collections, "Message", searchQuery));
+            List<BsonValue> list = new List<BsonValue>(_reader.Distinct(collections, "Message", searchQuery));
             Assert.AreEqual(1, list.Count());
             Assert.AreEqual("One", list[0].AsString);
         }       
