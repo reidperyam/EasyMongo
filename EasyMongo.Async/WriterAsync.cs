@@ -7,25 +7,20 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Async
 {
-    public class WriterAsync<T> : IWriterAsync<T> where T : IEasyMongoEntry
+    public class WriterAsync : IWriterAsync
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 
-        IWriter<T> _mongoWriter;
+        IWriter _mongoWriter;
 
-        public WriterAsync(IWriter<T> mongoWriter)
+        public WriterAsync(IWriter mongoWriter)
         {
             _mongoWriter = mongoWriter;
         }
 
-        public void WriteAsync(string collectionName, T entry)
+        public void WriteAsync<T>(string collectionName, T entry)
         {
             new Action<string, T>(_mongoWriter.Write).BeginInvoke(collectionName, entry, Callback, null);
-        }
-
-        public IWriterAsync<T> Create(IWriter<T> writer)
-        {
-            return new WriterAsync<T>(writer);
         }
 
         private void Callback(IAsyncResult asyncRes)

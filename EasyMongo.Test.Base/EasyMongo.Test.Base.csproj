@@ -53,10 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ninject\Configurator.cs" />
+    <Compile Include="Ninject\IntegrationTestNinjectModule.cs" />
     <Compile Include="ITestEntry.cs" />
+    <Compile Include="Ninject\NinjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RANDOM_AD_HOC_TESTS.cs" />
-    <Compile Include="IntegrationTestBase.cs" />
+    <Compile Include="IntegrationTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">

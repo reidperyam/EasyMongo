@@ -11,28 +11,29 @@ using EasyMongo.Contract;
 namespace EasyMongo.Database
 {
     // TODO - move the implementations of the embedded interfaces to the constructor instead of hard-coding them?
-    public abstract class Adapter<T> where T : IEasyMongoEntry
+    public abstract class Adapter
     {
-        protected IReader<T>  _mongoReader;
-        protected IWriter<T>  _mongoWriter;
-        protected IUpdater<T> _mongoUpdater;
+        protected IReader  _mongoReader;
+        protected IWriter  _mongoWriter;
+        protected IUpdater _mongoUpdater;
 
-        protected IReaderAsync<T>  _mongoReaderAsync;
-        protected IWriterAsync<T>  _mongoWriterAsync;    
-        protected IUpdaterAsync<T> _mongoUpdaterAsync;
+        protected IReaderAsync  _mongoReaderAsync;
+        protected IWriterAsync  _mongoWriterAsync;    
+        protected IUpdaterAsync _mongoUpdaterAsync;
 
         protected MongoCollection _mongoCollection;
 
         #region    In Development - TODO - These constructors will replace existing constructors
+        // NOTICE - the dbConnection driving these injected readers/writers must be Connected!!!
         // TODO: This is why we need to implement Ninject to replace these hard-coded interface implementations with injectable dependencies 
-        protected Adapter(IServerConnection serverConnection, 
-                          string            dbName,
-                          IReader<T>        reader, 
-                          IWriter<T>        writer, 
-                          IUpdater<T>       updater,
-                          IReaderAsync<T>   readerAsync, 
-                          IWriterAsync<T>   writerAsync,
-                          IUpdaterAsync<T>  updaterAsync)
+        protected Adapter(//IServerConnection serverConnection, 
+                          //string            dbName,
+                          IReader           reader, 
+                          IWriter           writer, 
+                          IUpdater          updater,
+                          IReaderAsync      readerAsync, 
+                          IWriterAsync      writerAsync,
+                          IUpdaterAsync     updaterAsync)
         {
            // IDatabaseConnection<T> mongoDatabaseConnection = ConnectToDatabase(serverConnection, dbName);
            // InitializeAdapter(mongoDatabaseConnection);
@@ -44,6 +45,7 @@ namespace EasyMongo.Database
             _mongoUpdaterAsync = updaterAsync;
         }
 
+        /*
         // TODO: This is why we need to implement Ninject to replace these hard-coded interface implementations with injectable dependencies 
         protected Adapter(IServerConnection      mongoServerConnection,
                           IDatabaseConnection<T> mongoDatabaseConnection,
@@ -61,63 +63,54 @@ namespace EasyMongo.Database
             _mongoReaderAsync  = readerAsync;
             _mongoWriterAsync  = writerAsync;
             _mongoUpdaterAsync = updaterAsync;
-        }
+        }*/
         #endregion In Development
 
+        /*
         protected Adapter(IServerConnection serverConnection, string dbName) 
-            : this(serverConnection, new DatabaseConnection<T>(serverConnection, dbName))
+            : this(serverConnection, new DatabaseConnection(serverConnection, dbName))
         {
-            IDatabaseConnection<T> mongoDatabaseConnection = ConnectToDatabase(serverConnection, dbName);
+            IDatabaseConnection mongoDatabaseConnection = ConnectToDatabase(serverConnection, dbName);
             InitializeAdapter(mongoDatabaseConnection);
         }
 
+
         // TODO: This is why we need to implement Ninject to replace these hard-coded interface implementations with injectable dependencies 
         private Adapter(IServerConnection mongoServerConnection,
-                        IDatabaseConnection<T> mongoDatabaseConnection)
-            : this(new EasyMongo.Reader<T>(mongoDatabaseConnection),
-                   new EasyMongo.Writer<T>(mongoDatabaseConnection),
-                   new EasyMongo.Updater<T>(mongoDatabaseConnection))
+                        IDatabaseConnection mongoDatabaseConnection)
+            : this(new EasyMongo.Reader(mongoDatabaseConnection),
+                   new EasyMongo.Writer(mongoDatabaseConnection),
+                   new EasyMongo.Updater(mongoDatabaseConnection))
         {
         }
 
-        private Adapter(IReader<T> reader, IWriter<T> writer, IUpdater<T> updater)
-            : this(new ReaderAsync<T>(reader),
-                   new WriterAsync<T>(writer),
-                   new UpdaterAsync<T>(updater))
+        private Adapter(IReader reader, IWriter writer, IUpdater updater)
+            : this(new ReaderAsync(reader),
+                   new WriterAsync(writer),
+                   new UpdaterAsync(updater))
         {
             _mongoReader  = reader;
             _mongoWriter  = writer;
             _mongoUpdater = updater;
         }
 
-        private Adapter(IReaderAsync<T> readerAsync, IWriterAsync<T> writerAsync, IUpdaterAsync<T> updaterAsync)
+        private Adapter(IReaderAsync readerAsync, IWriterAsync writerAsync, IUpdaterAsync updaterAsync)
         {
             _mongoReaderAsync  = readerAsync;           
             _mongoWriterAsync  = writerAsync;          
             _mongoUpdaterAsync = updaterAsync;
         }
+         * */
 
-        protected IDatabaseConnection<T> ConnectToDatabase(IServerConnection mongoServerConnection, string databaseName)
+        protected IDatabaseConnection ConnectToDatabase(IServerConnection mongoServerConnection, string databaseName)
         {
             mongoServerConnection.Connect();
             ServerIsInitialized(mongoServerConnection);
-            DatabaseConnection<T> mongoDatabaseConnection = new DatabaseConnection<T>(mongoServerConnection, databaseName);
+            DatabaseConnection mongoDatabaseConnection = new DatabaseConnection(mongoServerConnection, databaseName);
             mongoDatabaseConnection.Connect();
             DatabaseIsInitialized(mongoDatabaseConnection);
             
             return mongoDatabaseConnection;
-        }
-
-        protected void InitializeAdapter(IDatabaseConnection<T> mongoDatabaseConnection)
-        {
-            //** Use interface-defined factory method to fetch new implementation for the _mongoDatabaseConnection
-            _mongoReader = _mongoReader.Create(mongoDatabaseConnection);
-            _mongoWriter = _mongoWriter.Create(mongoDatabaseConnection);
-            _mongoUpdater = _mongoUpdater.Create(mongoDatabaseConnection);
-
-            _mongoReaderAsync = _mongoReaderAsync.Create(_mongoReader);
-            _mongoWriterAsync = _mongoWriterAsync.Create(_mongoWriter);
-            _mongoUpdaterAsync = _mongoUpdaterAsync.Create(_mongoUpdater);
         }
 
         private void ServerIsInitialized(IServerConnection serverConnection)
@@ -126,7 +119,7 @@ namespace EasyMongo.Database
                 throw new MongoServerConnectionException("MongoServerConnection is not initialized");
         }
 
-        private void DatabaseIsInitialized(IDatabaseConnection<T> mongoDatabaseConnection)
+        private void DatabaseIsInitialized(IDatabaseConnection mongoDatabaseConnection)
         {
             if (mongoDatabaseConnection == null)
                 throw new MongoDatabaseConnectionException("MongoDatabaseConnection is not initialized");

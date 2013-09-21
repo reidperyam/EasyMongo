@@ -5,6 +5,7 @@
     <assembly path="EasyMongo.Database.Test\bin\Debug\EasyMongo.Database.Test.dll" />
     <assembly path="EasyMongo.Collection.Test\bin\Debug\EasyMongo.Collection.Test.dll" />
     <assembly path="EasyMongo.Async.Test\bin\Debug\EasyMongo.Async.Test.dll" />
+    <assembly path="EasyMongo.Test.Base\bin\Debug\EasyMongo.Test.Base.dll" />
   </Config>
   <Config name="Release" binpathtype="Auto" />
 </NUnitProject>

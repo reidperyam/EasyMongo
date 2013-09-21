@@ -7,12 +7,8 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IWriter<T>
+    public interface IWriter
     {
-        void Write(string collectionName, T entry);
-
-        IWriter<T> Create(IDatabaseConnection<T> databaseConnection);
-
-        //void FindAndReplace();
+        void Write<T>(string collectionName, T entry);
     }
 }

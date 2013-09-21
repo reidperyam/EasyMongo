@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ninject;
+using Ninject.Injection;
+using Ninject.Activation;
+using Ninject.Components;
+using Ninject.Infrastructure;
 using Ninject.Modules;
+using Ninject.Parameters;
+using Ninject.Planning;
+using Ninject.Selection;
+using Ninject.Syntax;
 
-namespace Ninject.Extensions.EasyMongo
+namespace EasyMongo.Test.Base.Ninject
 {
     public class Configurator
     {
@@ -15,7 +23,7 @@ namespace Ninject.Extensions.EasyMongo
         {
             var modules = new INinjectModule[] 
             {
-                new EasyMongoExampleNinjectModule()
+                new IntegrationTestNinjectModule()
             };
 
             _kernel = new StandardKernel(modules);

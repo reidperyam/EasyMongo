@@ -12,7 +12,7 @@ using EasyMongo.Test.Model;
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class WriterAsyncTest : IntegrationTestBase
+    public class WriterAsyncTest : IntegrationTestFixture
     {
         /// <summary>
         /// Asynchronously writes a MongoTestEntry to a MongoDB and verifies that it was retrieved 
@@ -23,7 +23,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "This is a test";
             AddMongoEntryAsync(entryMessage, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
+            _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
         }
@@ -37,7 +37,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "This is a test";
             AddMongoEntryAsync(entryMessage, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
 
@@ -45,7 +45,7 @@ namespace EasyMongo.Async.Test
 
             string entryMessage2 = "This is a test as well";
             AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);
         }

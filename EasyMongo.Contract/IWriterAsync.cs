@@ -9,12 +9,10 @@ namespace EasyMongo.Contract
 {
     public delegate void WriteCompletedEvent(object sender);
 
-    public interface IWriterAsync<T>
+    public interface IWriterAsync
     {
         event WriteCompletedEvent AsyncWriteCompleted;
 
-        void WriteAsync(string collectionName, T entry);
-
-        IWriterAsync<T> Create(IWriter<T> writer);
+        void WriteAsync<T>(string collectionName, T entry);
     }
 }

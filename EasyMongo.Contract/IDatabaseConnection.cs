@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace  EasyMongo.Contract
 {
-    public interface IDatabaseConnection<T>
+    public interface IDatabaseConnection
     {
         //event ConnectAsyncCompletedEvent ConnectAsyncCompleted;//now private
 
@@ -35,19 +35,19 @@ namespace  EasyMongo.Contract
 
         MongoDatabaseSettings CreateDatabaseSettings();
 
-        MongoCollection<T> GetCollection(string collectionName);
+        MongoCollection<T> GetCollection<T>(string collectionName);
 
-        List<MongoCollection<T>> GetCollections();
+        List<MongoCollection<T>> GetCollections<T>();
 
         List<string> GetCollectionNames();
 
-        void ClearCollection(string collectionName);
+        void ClearCollection<T>(string collectionName);
 
-        void ClearAllCollections();
+        void ClearAllCollections<T>();
 
-        void DropCollection(string collectionName);
+        void DropCollection<T>(string collectionName);
 
-        void DropAllCollections();
+        void DropAllCollections<T>();
 
         bool CanConnect();
 

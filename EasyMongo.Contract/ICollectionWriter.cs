@@ -3,11 +3,12 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface ICollectionWriter<T>
+    public interface ICollectionWriter
     {
-       // event WriteCompletedEvent AsyncWriteCompleted;
-        void Write(T entry);
-        void WriteAsync(T entry);
+        event WriteCompletedEvent AsyncWriteCompleted;
+
+        void Write<T>(T entry);
+        void WriteAsync<T>(T entry);
 
         // Are the WriteConcern overloads required or are they defined in embedded objects?
         //void Remove(IMongoQuery query);

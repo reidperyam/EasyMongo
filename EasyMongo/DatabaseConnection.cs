@@ -15,8 +15,7 @@ namespace EasyMongo
     /// <summary>
     /// TODO: BsonClassMap.RegisterClassMap<T>(); investigation -- is this thing needed?
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class DatabaseConnection<T> : IDatabaseConnection<T> where T : IEasyMongoEntry
+    public class DatabaseConnection : IDatabaseConnection
     {
         static readonly object _object = new object();
         //private event ConnectAsyncCompletedEvent ConnectAsyncCompleted;
@@ -202,20 +201,20 @@ namespace EasyMongo
             set;
         }
 
-        public MongoCollection<T> GetCollection(string collectionName)
+        public MongoCollection<T> GetCollection<T>(string collectionName)
         {
             VerifyConnected();
             return Db.GetCollection<T>(collectionName);
         }
 
-        public List<MongoCollection<T>> GetCollections()
+        public List<MongoCollection<T>> GetCollections<T>()
         {
             VerifyConnected();
             List<MongoCollection<T>> toReturn = new List<MongoCollection<T>>();
 
             foreach (string collectionName in GetCollectionNames())
             {
-                toReturn.Add(GetCollection(collectionName));
+                toReturn.Add(GetCollection<T>(collectionName));
             }
 
             return toReturn;
@@ -229,39 +228,39 @@ namespace EasyMongo
             return toReturn;
         }
 
-        public void ClearCollection(string collectionName)
+        public void ClearCollection<T>(string collectionName)
         {
             VerifyConnected();
-            var collection = GetCollection(collectionName);
+            var collection = GetCollection<T>(collectionName);
             WriteConcernResult result = collection.RemoveAll(WriteConcern.Acknowledged);
         }
 
-        public void ClearAllCollections()
+        public void ClearAllCollections<T>()
         {
             VerifyConnected();
             List<string> connectionNames = GetCollectionNames();
             connectionNames.ForEach(delegate(string collectionName)
             {
                 if (collectionName != "system.indexes")
-                    ClearCollection(collectionName);
+                    ClearCollection<T>(collectionName);
             });
         }
 
-        public void DropCollection(string collectionName)
+        public void DropCollection<T>(string collectionName)
         {
             VerifyConnected();
-            var collection = GetCollection(collectionName);
+            var collection = GetCollection<T>(collectionName);
             collection.Drop();
         }
 
-        public void DropAllCollections()
+        public void DropAllCollections<T>()
         {
             VerifyConnected();
             List<string> connectionNames = GetCollectionNames();
             connectionNames.ForEach(delegate(string collectionName)
             {
                 if(collectionName != "system.indexes")
-                    DropCollection(collectionName);
+                    DropCollection<T>(collectionName);
             });
         }
 

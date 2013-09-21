@@ -8,29 +8,39 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Collection
 {
-    public class Writer<T> : ICollectionWriter<T> where T : IEasyMongoEntry
+    public class Writer : ICollectionWriter
     {
-        IDatabaseWriter<T> _mongoDBWriter;
+        public event WriteCompletedEvent AsyncWriteCompleted;
+
+        IDatabaseWriter _mongoDBWriter;
         string _collectionName; 
 
-        public Writer(IDatabaseWriter<T> mongoDatabaseWriter, string collectionName)
+        public Writer(IDatabaseWriter mongoDatabaseWriter, string collectionName)
         {
             _mongoDBWriter = mongoDatabaseWriter;
             _collectionName = collectionName;
+
+            _mongoDBWriter.AsyncWriteCompleted += new WriteCompletedEvent(_mongoDBWriter_AsyncWriteCompleted);
         }
 
         #region    Synchronous
-        public void Write(T entry)
+        public void Write<T>(T entry)
         {
             _mongoDBWriter.Write(_collectionName, entry);
         }
         #endregion Synchronous
 
         #region    Asynchronous
-        public void WriteAsync(T entry)
+        public void WriteAsync<T>(T entry)
         {
-            _mongoDBWriter.Write(_collectionName, entry);
+            _mongoDBWriter.Write<T>(_collectionName, entry);
         }
         #endregion Asynchronous
+
+        void _mongoDBWriter_AsyncWriteCompleted(object sender)
+        {
+            if (AsyncWriteCompleted != null)
+                AsyncWriteCompleted(sender);
+        }
     }
 }

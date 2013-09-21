@@ -12,13 +12,12 @@ using EasyMongo.Test.Model;
 namespace EasyMongo.Collection.Test
 {
     [TestFixture]
-    public class WriterTest : IntegrationTestBase
+    public class WriterTest : IntegrationTestFixture
     {
         [Test]
         public void ConstructorTest()
         {
-            IDatabaseWriter<TestEntry> databaseWriter = new Database.Writer<TestEntry>(MONGO_CONNECTION_STRING, MONGO_DATABASE_1_NAME);
-            _collectionWriter = new Collection.Writer<TestEntry>(databaseWriter, MONGO_COLLECTION_1_NAME);
+            _collectionWriter = new Collection.Writer(_databaseWriter, MONGO_COLLECTION_1_NAME);
         }
 
         [Test]
@@ -26,7 +25,7 @@ namespace EasyMongo.Collection.Test
         {
             string entryMessage = "This is a test";
             AddMongoEntryAsync(entryMessage, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_collectionReader.Read("TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_collectionReader.Read<TestEntry>("TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
 
@@ -34,7 +33,7 @@ namespace EasyMongo.Collection.Test
 
             string entryMessage2 = "This is a test as well";
             AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_collectionReader.Read("TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_collectionReader.Read<TestEntry>("TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);
         }
@@ -44,7 +43,7 @@ namespace EasyMongo.Collection.Test
         {
             string entryMessage = "This is a test";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_collectionReader.Read("TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_collectionReader.Read<TestEntry>("TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
 
@@ -52,7 +51,7 @@ namespace EasyMongo.Collection.Test
 
             string entryMessage2 = "This is a test as well";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_collectionReader.Read("TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_collectionReader.Read<TestEntry>("TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);
         }

@@ -9,61 +9,61 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace EasyMongo.Async
 {
-    public class UpdaterAsync<T> : IUpdaterAsync<T> where T : IEasyMongoEntry
+    public class UpdaterAsync : IUpdaterAsync
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
-        IUpdater<T> _mongoUpdater;
+        IUpdater _mongoUpdater;
 
-        public UpdaterAsync(IUpdater<T> mongoUpdater)
+        public UpdaterAsync(IUpdater mongoUpdater)
         {
             _mongoUpdater = mongoUpdater;
         }
 
-        public void RemoveAsync(string collectionName, IMongoQuery query)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query)
         {
-            new Func<string, IMongoQuery, WriteConcernResult>(_mongoUpdater.Remove).BeginInvoke(collectionName, query, CallbackwriteConcernResult, null);
+            new Func<string, IMongoQuery, WriteConcernResult>(_mongoUpdater.Remove<T>).BeginInvoke(collectionName, query, CallbackwriteConcernResult, null);
         }
 
-        public void RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            new Func<string, IMongoQuery, RemoveFlags, WriteConcernResult>(_mongoUpdater.Remove).BeginInvoke(collectionName, query, removeFlags, CallbackwriteConcernResult, null);
+            new Func<string, IMongoQuery, RemoveFlags, WriteConcernResult>(_mongoUpdater.Remove<T>).BeginInvoke(collectionName, query, removeFlags, CallbackwriteConcernResult, null);
         }
 
-        public void RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            new Func<string, IMongoQuery, RemoveFlags, WriteConcern, WriteConcernResult>(_mongoUpdater.Remove).BeginInvoke(collectionName, query, removeFlags, writeConcern, CallbackwriteConcernResult, null);
+            new Func<string, IMongoQuery, RemoveFlags, WriteConcern, WriteConcernResult>(_mongoUpdater.Remove<T>).BeginInvoke(collectionName, query, removeFlags, writeConcern, CallbackwriteConcernResult, null);
         }
 
-        public void RemoveAsync(string collectionName, IMongoQuery query, WriteConcern writeConcern)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            new Func<string, IMongoQuery, WriteConcern, WriteConcernResult>(_mongoUpdater.Remove).BeginInvoke(collectionName, query, writeConcern, CallbackwriteConcernResult, null);
+            new Func<string, IMongoQuery, WriteConcern, WriteConcernResult>(_mongoUpdater.Remove<T>).BeginInvoke(collectionName, query, writeConcern, CallbackwriteConcernResult, null);
         }
 
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
         {
-            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, FindAndModifyResult>(_mongoUpdater.FindAndModify).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, CallbackFindAndModify, null);
+            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, FindAndModifyResult>(_mongoUpdater.FindAndModify<T>).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, CallbackFindAndModify, null);
         }
 
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
         {
-            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, bool, FindAndModifyResult>(_mongoUpdater.FindAndModify).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, CallbackFindAndModify, null);
+            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, bool, FindAndModifyResult>(_mongoUpdater.FindAndModify<T>).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, CallbackFindAndModify, null);
         }
 
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
         {
-            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, bool, bool, FindAndModifyResult>(_mongoUpdater.FindAndModify).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert, CallbackFindAndModify, null);
+            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, bool, bool, FindAndModifyResult>(_mongoUpdater.FindAndModify<T>).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert, CallbackFindAndModify, null);
         }
 
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
         {
-            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, IMongoFields, bool, bool, FindAndModifyResult>(_mongoUpdater.FindAndModify).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert, CallbackFindAndModify, null);
+            new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, IMongoFields, bool, bool, FindAndModifyResult>(_mongoUpdater.FindAndModify<T>).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert, CallbackFindAndModify, null);
         }
 
-        public void FindAndRemoveAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public void FindAndRemoveAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
         {
-            new Func<string, IMongoQuery, IMongoSortBy, FindAndModifyResult>(_mongoUpdater.FindAndRemove).BeginInvoke(collectionName, mongoQuery, mongoSortBy, CallbackFindAndModify, null);
+            new Func<string, IMongoQuery, IMongoSortBy, FindAndModifyResult>(_mongoUpdater.FindAndRemove<T>).BeginInvoke(collectionName, mongoQuery, mongoSortBy, CallbackFindAndModify, null);
         }
 
         protected void CallbackwriteConcernResult(IAsyncResult asyncRes)
@@ -130,11 +130,6 @@ namespace EasyMongo.Async
                 if (AsyncFindAndModifyCompleted != null)
                     AsyncFindAndModifyCompleted(result);
             }
-        }
-
-        public IUpdaterAsync<T> Create(IUpdater<T> updater)
-        {
-            return new UpdaterAsync<T>(updater);
         }
     }
 }

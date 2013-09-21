@@ -12,9 +12,9 @@ using Ninject.Modules;
 using Ninject.Syntax;
 using EasyMongo.Test.Model;
 
-namespace Ninject.Extensions.EasyMongo
+namespace EasyMongo.Test.Base.Ninject
 {
-    class EasyMongoExampleNinjectModule : NinjectModule
+    public class IntegrationTestNinjectModule : NinjectModule
     {
         /// <summary>
         /// Contains bindings and constructor arguments used by the IntegrationTest TestFixture

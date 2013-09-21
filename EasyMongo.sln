@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Database", "EasyM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Collection", "EasyMongo.Collection\EasyMongo.Collection.csproj", "{52C5EE32-B556-433F-AC6C-47CA8D377DD4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Async", "EasyMongo.Async\EasyMongo.Async.csproj", "{96F8E3FA-F867-4863-840B-C27B99012A6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

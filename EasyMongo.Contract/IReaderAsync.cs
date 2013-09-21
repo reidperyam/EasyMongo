@@ -7,27 +7,25 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public delegate void ReadCompletedEvent<T>(IEnumerable<T> e, Exception ex);
+    public delegate void ReadCompletedEvent(object e, Exception ex); // this will necessitate cast to IEnumerable<T> in the handler code in order to retrieve list of read items
     public delegate void DistinctCompletedEvent(IEnumerable<BsonValue> e, Exception ex);
 
-    public interface IReaderAsync<T> 
+    public interface IReaderAsync
     {
-        event ReadCompletedEvent<T> AsyncReadCompleted;
+        event ReadCompletedEvent AsyncReadCompleted;
         event DistinctCompletedEvent AsyncDistinctCompleted;
 
-        void ReadAsync(string collectionName, string fieldName, string regexPattern);
-        void ReadAsync(string collectionName, string fieldName, DateTime start, DateTime end);
-        void ReadAsync(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
+        void ReadAsync<T>(string collectionName, string fieldName, string regexPattern);
+        void ReadAsync<T>(string collectionName, string fieldName, DateTime start, DateTime end);
+        void ReadAsync<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
 
-        void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
-        void ReadAsync(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end);
-        void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
-        
-        void DistinctAsync(string collectionName, string fieldName);
-        void DistinctAsync(string collectionName, string fieldName, IMongoQuery query);
-        void DistinctAsync(IEnumerable<string> collectionNames, string fieldName);
-        void DistinctAsync(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+        void ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
+        void ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end);
+        void ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
 
-        IReaderAsync<T> Create(IReader<T> reader);
+        void DistinctAsync<T>(string collectionName, string fieldName);
+        void DistinctAsync<T>(string collectionName, string fieldName, IMongoQuery query);
+        void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName);
+        void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
     }
 }

@@ -9,35 +9,20 @@ using EasyMongo.Async;
 
 namespace EasyMongo.Database
 {
-    public class Updater<T> : Adapter<T>, IDatabaseUpdater<T> where T : IEasyMongoEntry
+    public class Updater : Adapter, IDatabaseUpdater
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
-        public Updater(string connectionString, string databaseName)
-            : base(new ServerConnection(connectionString), databaseName)
-        {
-            // hook class events to base class' members'
-            _mongoUpdaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_mongoUpdaterAsync_AsyncFindAndModifyCompleted);
-            _mongoUpdaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
-        }
-
-        public Updater(IDatabaseConnection<T> databaseConnection)
-            : this(databaseConnection.MongoServerConnection.ConnectionString, databaseConnection.Db.Name)
-        {
-        }
-
-        public Updater(string           connectionString, 
-                       string           databaseName,
-                       IReader<T>       reader, 
-                       IWriter<T>       writer, 
-                       IUpdater<T>      updater,
-                       IReaderAsync<T>  readerAsync, 
-                       IWriterAsync<T>  writerAsync,
-                       IUpdaterAsync<T> updaterAsync)
-            : base(new ServerConnection(connectionString), 
-                   databaseName,
-                   reader,
+        public Updater(string        connectionString, 
+                       string        databaseName,
+                       IReader       reader, 
+                       IWriter       writer, 
+                       IUpdater      updater,
+                       IReaderAsync  readerAsync, 
+                       IWriterAsync  writerAsync,
+                       IUpdaterAsync updaterAsync)
+            : base(reader,
                    writer,
                    updater,
                    readerAsync,
@@ -48,89 +33,89 @@ namespace EasyMongo.Database
             _mongoUpdaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
         }
 
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query)
         {
-            return _mongoUpdater.Remove(collectionName, query);
+            return _mongoUpdater.Remove<T>(collectionName, query);
         }
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            return _mongoUpdater.Remove(collectionName, query, removeFlags);
+            return _mongoUpdater.Remove<T>(collectionName, query, removeFlags);
         }
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query, WriteConcern writeConcern)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            return _mongoUpdater.Remove(collectionName, query, writeConcern);
+            return _mongoUpdater.Remove<T>(collectionName, query, writeConcern);
         }
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            return _mongoUpdater.Remove(collectionName, query, removeFlags, writeConcern);
+            return _mongoUpdater.Remove<T>(collectionName, query, removeFlags, writeConcern);
         }
-        public void RemoveAsync(string collectionName, IMongoQuery query)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query)
         {
-            _mongoUpdaterAsync.RemoveAsync(collectionName, query);
+            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query);
         }
-        public void RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            _mongoUpdaterAsync.RemoveAsync(collectionName, query, removeFlags);
+            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query, removeFlags);
         }
-        public void RemoveAsync(string collectionName, IMongoQuery query, WriteConcern writeConcern)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            _mongoUpdaterAsync.RemoveAsync(collectionName, query, writeConcern);
+            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query, writeConcern);
         }
-        public void RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
+        public void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            _mongoUpdaterAsync.RemoveAsync(collectionName, query, removeFlags, writeConcern);
-        }
-
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
-        {
-            return _mongoUpdater.FindAndModify(collectionName, mongoQuery, mongoSortBy, mongoUpdate);
-        }
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
-        {
-            return _mongoUpdater.FindAndModify(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
-        }
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
-        {
-            return _mongoUpdater.FindAndModify(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
-        }
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
-        {
-            return _mongoUpdater.FindAndModify(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
-        }
-        public FindAndModifyResult FindAndRemove(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
-        {
-            return _mongoUpdater.FindAndRemove(collectionName, mongoQuery, mongoSortBy);
+            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query, removeFlags, writeConcern);
         }
 
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
         {
-            _mongoUpdaterAsync.FindAndModifyAsync(collectionName, mongoQuery, mongoSortBy, mongoUpdate);
+            return _mongoUpdater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate);
         }
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
         {
-            _mongoUpdaterAsync.FindAndModifyAsync(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
+            return _mongoUpdater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
         }
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
         {
-            _mongoUpdaterAsync.FindAndModifyAsync(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
+            return _mongoUpdater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
         }
-        public void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
         {
-            _mongoUpdaterAsync.FindAndModifyAsync(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
+            return _mongoUpdater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
-        public void FindAndRemoveAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public FindAndModifyResult FindAndRemove<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
         {
-            _mongoUpdaterAsync.FindAndRemoveAsync(collectionName, mongoQuery, mongoSortBy);
-        }
-
-        public IUpdater<T> Create(IDatabaseConnection<T> databaseConnection)
-        {
-            return new EasyMongo.Updater<T>(databaseConnection);
+            return _mongoUpdater.FindAndRemove<T>(collectionName, mongoQuery, mongoSortBy);
         }
 
-        public IUpdaterAsync<T> Create(IUpdater<T> updater)
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
         {
-            return new UpdaterAsync<T>(updater);
+            _mongoUpdaterAsync.FindAndModifyAsync<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate);
+        }
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
+        {
+            _mongoUpdaterAsync.FindAndModifyAsync<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
+        }
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
+        {
+            _mongoUpdaterAsync.FindAndModifyAsync<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
+        }
+        public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
+        {
+            _mongoUpdaterAsync.FindAndModifyAsync<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
+        }
+        public void FindAndRemoveAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        {
+            _mongoUpdaterAsync.FindAndRemoveAsync<T>(collectionName, mongoQuery, mongoSortBy);
+        }
+
+        public IUpdater Create(IDatabaseConnection databaseConnection)
+        {
+            return new EasyMongo.Updater(databaseConnection);
+        }
+
+        public IUpdaterAsync Create(IUpdater updater)
+        {
+            return new UpdaterAsync(updater);
         }
 
         void _mongoUpdaterAsync_AsyncFindAndRemoveCompleted(WriteConcernResult result)

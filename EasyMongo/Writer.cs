@@ -8,29 +8,29 @@ using EasyMongo.Contract;
 
 namespace EasyMongo
 {
-    public class Writer<T> : IWriter<T> where T : IEasyMongoEntry
+    public class Writer : IWriter
     {
-        private IDatabaseConnection<T> _databaseConnection;
+        private IDatabaseConnection _databaseConnection;
 
-        public Writer(IDatabaseConnection<T> databaseConnection)
+        public Writer(IDatabaseConnection databaseConnection)
         {
             _databaseConnection = databaseConnection;
         }
 
-        public void Write(string collectionName, T entry)
+        public void Write<T>(string collectionName, T entry)
         {
-            var collection = _databaseConnection.GetCollection(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             collection.Save(entry);
         }
 
-        public IWriter<T> Create(IDatabaseConnection<T> databaseConnection)
+        public IWriter Create(IDatabaseConnection databaseConnection)
         {
-            return new Writer<T>(databaseConnection);
+            return new Writer(databaseConnection);
         }
 
-        private MongoCollection<T> GetCollection(string collectionName)
+        private MongoCollection<T> GetCollection<T>(string collectionName)
         {
-            return _databaseConnection.GetCollection(collectionName);
+            return _databaseConnection.GetCollection<T>(collectionName);
         }
     }
 }

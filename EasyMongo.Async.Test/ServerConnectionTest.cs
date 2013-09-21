@@ -12,7 +12,7 @@ using EasyMongo.Test.Base;
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class ServerConnectionTest : IntegrationTestBase
+    public class ServerConnectionTest : IntegrationTestFixture
     {
         #region Asynchronous
 

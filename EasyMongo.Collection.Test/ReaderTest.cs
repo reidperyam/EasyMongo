@@ -13,13 +13,14 @@ using EasyMongo.Test.Model;
 namespace EasyMongo.Collection.Test
 {
     [TestFixture]
-    public class ReaderTest : IntegrationTestBase
+    public class ReaderTest : IntegrationTestFixture
     {        
         [Test]
         public void ConstructorTest()
         {
-            IDatabaseReader<TestEntry> databaseReader = new Database.Reader<TestEntry>(MONGO_CONNECTION_STRING, MONGO_DATABASE_1_NAME);
-            _collectionReader = new Collection.Reader<TestEntry>(databaseReader, MONGO_COLLECTION_1_NAME);
+            // construct a collection reader from a database reader and a collection name
+            _collectionReader = new Collection.Reader(_databaseReader, MONGO_COLLECTION_1_NAME);
+            Assert.IsNotNull(_collectionReader);
         }
 
         [Test]
@@ -27,7 +28,7 @@ namespace EasyMongo.Collection.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntryAsync(message: entryMessage);
-            _collectionReader.ReadAsync("TimeStamp", _beforeTest, DateTime.Now);
+            _collectionReader.ReadAsync<TestEntry>("TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -38,7 +39,7 @@ namespace EasyMongo.Collection.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntryAsync(message: entryMessage);
-            _collectionReader.ReadAsync("Message", entryMessage);
+            _collectionReader.ReadAsync<TestEntry>("Message", entryMessage);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -49,7 +50,7 @@ namespace EasyMongo.Collection.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntryAsync(message: entryMessage);
-            _collectionReader.ReadAsync("Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now);
+            _collectionReader.ReadAsync<TestEntry>("Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -60,7 +61,7 @@ namespace EasyMongo.Collection.Test
         {
             AddMongoEntry();
 
-            _results.AddRange(_collectionReader.Read("TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_collectionReader.Read<TestEntry>("TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
         }
 
@@ -69,7 +70,7 @@ namespace EasyMongo.Collection.Test
         {
             AddMongoEntry();
 
-            _results.AddRange(_collectionReader.Read("Message", "Hello"));
+            _results.AddRange(_collectionReader.Read<TestEntry>("Message", "Hello"));
             Assert.AreEqual(1, _results.Count());
         }
 
@@ -78,7 +79,7 @@ namespace EasyMongo.Collection.Test
         {
             AddMongoEntry();
 
-            _results.AddRange(_collectionReader.Read("Message","Hello","TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_collectionReader.Read<TestEntry>("Message","Hello","TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
         }
 
@@ -89,7 +90,7 @@ namespace EasyMongo.Collection.Test
             AddMongoEntry("One");
             AddMongoEntry("Two");
             AddMongoEntry("Three");
-            List<BsonValue> list = new List<BsonValue>(_collectionReader.Distinct("Message"));
+            List<BsonValue> list = new List<BsonValue>(_collectionReader.Distinct<TestEntry>("Message"));
             Assert.AreEqual(3, list.Count());
             Assert.AreEqual("One", list[0].AsString);
             Assert.AreEqual("Two", list[1].AsString);
@@ -106,7 +107,7 @@ namespace EasyMongo.Collection.Test
             AddMongoEntry("One");
             AddMongoEntry("Two");
             AddMongoEntry("Three");
-            List<BsonValue> list = new List<BsonValue>(_collectionReader.Distinct("Message", searchQuery));
+            List<BsonValue> list = new List<BsonValue>(_collectionReader.Distinct<TestEntry>("Message", searchQuery));
             Assert.AreEqual(1, list.Count());
             Assert.AreEqual("One", list[0].AsString);
         }
@@ -119,7 +120,7 @@ namespace EasyMongo.Collection.Test
             AddMongoEntry("Two");
             AddMongoEntry("Three");
 
-            _collectionReader.DistinctAsync("Message");
+            _collectionReader.DistinctAsync<TestEntry>("Message");
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(3, _asyncDistinctResults.Count());
             Assert.AreEqual("One", _asyncDistinctResults[0].AsString);
@@ -138,7 +139,7 @@ namespace EasyMongo.Collection.Test
             AddMongoEntry("Two");
             AddMongoEntry("Three");
 
-            _collectionReader.DistinctAsync("Message", searchQuery);
+            _collectionReader.DistinctAsync<TestEntry>("Message", searchQuery);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncDistinctResults.Count());
             Assert.AreEqual("One", _asyncDistinctResults[0].AsString);

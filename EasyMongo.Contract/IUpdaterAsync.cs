@@ -11,23 +11,21 @@ namespace EasyMongo.Contract
     public delegate void FindAndRemoveCompletedEvent(WriteConcernResult result);
     public delegate void FindAndModifyCompletedEvent(FindAndModifyResult result);
 
-    public interface IUpdaterAsync<T>
+    public interface IUpdaterAsync
     {
         event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
-        void RemoveAsync(string collectionName, IMongoQuery query);
-        void RemoveAsync(string collectionName, IMongoQuery query, WriteConcern writeConcern);
-        void RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags);
-        void RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
+        void RemoveAsync<T>(string collectionName, IMongoQuery query);
+        void RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern);
+        void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags);
+        void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
 
-        void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
-        void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
-        void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
-        void FindAndModifyAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
-       
-        void FindAndRemoveAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy);
+        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
+        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
+        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
+        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
 
-        IUpdaterAsync<T> Create(IUpdater<T> updater);
+        void FindAndRemoveAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy);
     }
 }

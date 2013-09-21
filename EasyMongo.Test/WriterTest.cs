@@ -8,11 +8,12 @@ using EasyMongo;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver;
 using EasyMongo.Test.Base;
+using EasyMongo.Test.Model;
 
 namespace EasyMongo.Test
 {
     [TestFixture]
-    public class WriterTest : IntegrationTestBase
+    public class WriterTest : IntegrationTestFixture
     {
         /// <summary>
         /// Synchronously writes a MongoTestEntry to a MongoDB and verifies that it was retrieved 
@@ -24,7 +25,7 @@ namespace EasyMongo.Test
             string entryMessage = "This is a test";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
 
-            _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
+            _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
         }
@@ -38,7 +39,7 @@ namespace EasyMongo.Test
         {
             string entryMessage = "This is a test";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
 
@@ -46,163 +47,9 @@ namespace EasyMongo.Test
 
             string entryMessage2 = "This is a test as well";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);
         }
-
-        //[Test]
-        //public void RemoveTest1()
-        //{
-        //    string entryMessage1 = "entry 1";
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    string entryMessage2 = "entry 2";
-        //    AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-
-        //    List<TestEntry> results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(2, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage2, results[1].Message);
-    
-        //    var searchQuery = Query.NE("Message", entryMessage1);
-
-        //    // remove entries with Message != entryMessage1
-        //    _mongoWriter.Remove(MONGO_COLLECTION_1_NAME, searchQuery);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(1, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //}
-
-        //[Test]
-        //public void RemoveTest2()
-        //{
-        //    #region RemoveFlags.Single
-        //    string entryMessage1 = "entry 1";
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    string entryMessage2 = "entry 2";
-        //    AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-
-        //    List<TestEntry> results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(3, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage1, results[1].Message);
-        //    Assert.AreEqual(entryMessage2, results[2].Message);
-
-        //    var searchQuery = Query.NE("Message", entryMessage2);
-
-        //    // remove entries with Message != entryMessage1
-        //    // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-        //    _mongoWriter.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(2, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage2, results[1].Message);
-        //    #endregion RemoveFlags.Single
-
-        //    // clear the collection before trying different RemoveFlags value...
-        //    _mongoDatabaseConnection.ClearCollection(MONGO_COLLECTION_1_NAME);
-
-        //    #region RemoveFlags.None
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(3, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage1, results[1].Message);
-        //    Assert.AreEqual(entryMessage2, results[2].Message);
-
-        //    searchQuery = Query.NE("Message", entryMessage2);
-
-        //    // remove entries with Message != entryMessage1
-        //    // RemoveFlags.None means every occurance matching searchQuery will be removed
-        //    _mongoWriter.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(1, results.Count());
-        //    Assert.AreEqual(entryMessage2, results[0].Message);
-        //    #endregion RemoveFlags.None
-        //}
-
-        //[Test]
-        //public void RemoveTest3()
-        //{
-        //    string entryMessage1 = "entry 1";
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    string entryMessage2 = "entry 2";
-        //    AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-
-        //    List<TestEntry> results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(2, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage2, results[1].Message);
-
-        //    var searchQuery = Query.NE("Message", entryMessage1);
-
-        //    // remove entries with Message != entryMessage1
-        //    _mongoWriter.Remove(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(1, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //}
-
-        //[Test]
-        //public void RemoveTest4()
-        //{
-        //    #region RemoveFlags.Single
-        //    string entryMessage1 = "entry 1";
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    string entryMessage2 = "entry 2";
-        //    AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-
-        //    List<TestEntry> results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(3, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage1, results[1].Message);
-        //    Assert.AreEqual(entryMessage2, results[2].Message);
-
-        //    var searchQuery = Query.NE("Message", entryMessage2);
-
-        //    // remove entries with Message != entryMessage1
-        //    // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-        //    _mongoWriter.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(2, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage2, results[1].Message);
-        //    #endregion RemoveFlags.Single
-
-        //    // clear the collection before trying different RemoveFlags value...
-        //    _mongoDatabaseConnection.ClearCollection(MONGO_COLLECTION_1_NAME);
-
-        //    #region RemoveFlags.None
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
-        //    AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(3, results.Count());
-        //    Assert.AreEqual(entryMessage1, results[0].Message);
-        //    Assert.AreEqual(entryMessage1, results[1].Message);
-        //    Assert.AreEqual(entryMessage2, results[2].Message);
-
-        //    searchQuery = Query.NE("Message", entryMessage2);
-
-        //    // remove entries with Message != entryMessage1
-        //    // RemoveFlags.None means every occurance matching searchQuery will be removed
-        //    _mongoWriter.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
-
-        //    results = new List<TestEntry>(_reader.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
-        //    Assert.AreEqual(1, results.Count());
-        //    Assert.AreEqual(entryMessage2, results[0].Message);
-        //    #endregion RemoveFlags.None
-        //}
     }
 }

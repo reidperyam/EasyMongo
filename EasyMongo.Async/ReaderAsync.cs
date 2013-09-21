@@ -14,62 +14,62 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Async
 {
-    public class ReaderAsync<T> : IReaderAsync<T> where T : IEasyMongoEntry
+    public class ReaderAsync : IReaderAsync
     {
-        private IReader<T> _mongoReader;
+        private IReader _mongoReader;
 
-        public ReaderAsync(IReader<T> mongoReader)
+        public ReaderAsync(IReader mongoReader)
         {
             _mongoReader = mongoReader;
         }
 
-        public event ReadCompletedEvent<T> AsyncReadCompleted;
+        public event ReadCompletedEvent AsyncReadCompleted;
         public event DistinctCompletedEvent AsyncDistinctCompleted;
 
         #region    Async methods
-        public void ReadAsync(string collectionName, string fieldName, string regexPattern)
+        public void ReadAsync<T>(string collectionName, string fieldName, string regexPattern)
         {
-            new Func<string, string, string, IEnumerable<T>>(_mongoReader.Read).BeginInvoke(collectionName, fieldName, regexPattern, Callback, null);
+            new Func<string, string, string, IEnumerable<T>>(_mongoReader.Read<T>).BeginInvoke(collectionName, fieldName, regexPattern, Callback<T>, null);
         }
-        public void ReadAsync(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
+        public void ReadAsync<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            new Func<string, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read).BeginInvoke(collectionName, dateTimeFieldName, start, end, Callback, null);
+            new Func<string, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read<T>).BeginInvoke(collectionName, dateTimeFieldName, start, end, Callback<T>, null);
         }
-        public void ReadAsync(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public void ReadAsync<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            new Func<string, string, string, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read).BeginInvoke(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end, Callback, null);
+            new Func<string, string, string, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read<T>).BeginInvoke(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end, Callback<T>, null);
         }
 
-        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        public void ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
-            new Func<IEnumerable<string>, string, string, IEnumerable<T>>(_mongoReader.Read).BeginInvoke(collectionNames, fieldName, regexPattern, Callback, null);
+            new Func<IEnumerable<string>, string, string, IEnumerable<T>>(_mongoReader.Read<T>).BeginInvoke(collectionNames, fieldName, regexPattern, Callback<T>, null);
         }
-        public void ReadAsync(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
+        public void ReadAsync<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            new Func<IEnumerable<string>, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read).BeginInvoke(collectionNames, dateTimeFieldName, start, end, Callback, null);
+            new Func<IEnumerable<string>, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read<T>).BeginInvoke(collectionNames, dateTimeFieldName, start, end, Callback<T>, null);
         }
-        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public void ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            new Func<IEnumerable<string>, string, string, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read).BeginInvoke(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end, Callback, null);
+            new Func<IEnumerable<string>, string, string, string, DateTime, DateTime, IEnumerable<T>>(_mongoReader.Read<T>).BeginInvoke(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end, Callback<T>, null);
         }
         #region Distinct Across Collection
-        public void DistinctAsync(string collectionName, string fieldName)
+        public void DistinctAsync<T>(string collectionName, string fieldName)
         {
-            new Func<string, string, IEnumerable<BsonValue>>(_mongoReader.Distinct).BeginInvoke(collectionName, fieldName, CallbackBson, null);
+            new Func<string, string, IEnumerable<BsonValue>>(_mongoReader.Distinct<T>).BeginInvoke(collectionName, fieldName, CallbackBson, null);
         }
-        public void DistinctAsync(string collectionName, string fieldName, IMongoQuery query)
+        public void DistinctAsync<T>(string collectionName, string fieldName, IMongoQuery query)
         {
-            new Func<string, string, IMongoQuery, IEnumerable<BsonValue>>(_mongoReader.Distinct).BeginInvoke(collectionName, fieldName, query, CallbackBson, null);
+            new Func<string, string, IMongoQuery, IEnumerable<BsonValue>>(_mongoReader.Distinct<T>).BeginInvoke(collectionName, fieldName, query, CallbackBson, null);
         }
         #endregion Distinct Across Collection
         #region Distinct Across Multiple Collections
-        public void DistinctAsync(IEnumerable<string> collectionNames, string fieldName)
+        public void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName)
         {
-            new Func<IEnumerable<string>, string, IEnumerable<BsonValue>>(_mongoReader.Distinct).BeginInvoke(collectionNames, fieldName, CallbackBson, null);
+            new Func<IEnumerable<string>, string, IEnumerable<BsonValue>>(_mongoReader.Distinct<T>).BeginInvoke(collectionNames, fieldName, CallbackBson, null);
         }
-        public void DistinctAsync(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        public void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
-            new Func<IEnumerable<string>, string, IMongoQuery, IEnumerable<BsonValue>>(_mongoReader.Distinct).BeginInvoke(collectionNames, fieldName, query, CallbackBson, null);
+            new Func<IEnumerable<string>, string, IMongoQuery, IEnumerable<BsonValue>>(_mongoReader.Distinct<T>).BeginInvoke(collectionNames, fieldName, query, CallbackBson, null);
         }
         #endregion Distinct Across Multiple Collections
 
@@ -77,7 +77,7 @@ namespace EasyMongo.Async
 
         #region    Callback methods
 
-        protected void Callback(IAsyncResult asyncRes)
+        protected void Callback<T>(IAsyncResult asyncRes)
         {
             IEnumerable<T> result = null;
             Exception exception = null;
@@ -143,10 +143,5 @@ namespace EasyMongo.Async
             }
         }
         #endregion Callback methods
-
-        public IReaderAsync<T> Create(IReader<T> reader)
-        {
-            return new ReaderAsync<T>(reader);
-        }
     }
 }

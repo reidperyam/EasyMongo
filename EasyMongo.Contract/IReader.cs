@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace EasyMongo.Contract
 {
-    public interface IReader<T>
+    public interface IReader
     {
         /// <summary>
         /// Synchronously searches against a MongoDB collection
@@ -19,7 +19,7 @@ namespace EasyMongo.Contract
         /// <param name="start">The time at which search should begin</param>
         /// <param name="end">The time at which search should end</param>
         /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
-        IEnumerable<T> Read(string collectionName, string dateTimeFieldName, DateTime start, DateTime end);
+        IEnumerable<T> Read<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end);
         /// <summary>
         /// Synchronously searches against a MongoDB collection
         /// </summary>
@@ -31,7 +31,7 @@ namespace EasyMongo.Contract
         /// <param name="start">The time at which search should begin</param>
         /// <param name="end">The time at which search should end</param>
         /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
-        IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
+        IEnumerable<T> Read<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
         /// <summary>
         /// Synchronously searches against a MongoDB collection
         /// </summary>
@@ -40,7 +40,7 @@ namespace EasyMongo.Contract
         /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
         /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
         /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
-        IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern);
+        IEnumerable<T> Read<T>(string collectionName, string fieldName, string regexPattern);
 
         /// <summary>
         /// Synchronously searches against multiple MongoDB collections
@@ -51,7 +51,7 @@ namespace EasyMongo.Contract
         /// <param name="start">The time at which search should begin</param>
         /// <param name="end">The time at which search should end</param>
         /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
-        IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end);
+        IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end);
         /// <summary>
         /// Synchronously searches against multiple MongoDB collections
         /// </summary>
@@ -63,7 +63,7 @@ namespace EasyMongo.Contract
         /// <param name="start">The time at which search should begin</param>
         /// <param name="end">The time at which search should end</param>
         /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
-        IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
+        IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
         /// <summary>
         /// Synchronously searches against multiple MongoDB collections
         /// </summary>
@@ -72,13 +72,12 @@ namespace EasyMongo.Contract
         /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
         /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
         /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
-        IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
+        IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
 
-        IEnumerable<BsonValue> Distinct(string collectionName, string fieldName);
-        IEnumerable<BsonValue> Distinct(string collectionName, string fieldName, IMongoQuery query);
-        IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName);
-        IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
-
-        IReader<T> Create(IDatabaseConnection<T> databaseConnection);
+        // TODO - add overloads to these methods returning IEnumberable<T>...
+        IEnumerable<BsonValue> Distinct<T>(string collectionName, string fieldName);
+        IEnumerable<BsonValue> Distinct<T>(string collectionName, string fieldName, IMongoQuery query);
+        IEnumerable<BsonValue> Distinct<T>(IEnumerable<string> collectionNames, string fieldName);
+        IEnumerable<BsonValue> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
     }
 }

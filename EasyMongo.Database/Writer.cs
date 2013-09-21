@@ -9,32 +9,19 @@ using EasyMongo.Async;
 
 namespace EasyMongo.Database
 {
-    public class Writer<T> : Adapter<T>, IDatabaseWriter<T> where T : IEasyMongoEntry
+    public class Writer : Adapter, IDatabaseWriter
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 
-        public Writer(string connectionString, string databaseName)
-            : base(new ServerConnection(connectionString), databaseName)
-        {
-            _mongoWriterAsync.AsyncWriteCompleted += new WriteCompletedEvent(_mongoWriterAsync_WriteCompleted);
-        }
-
-        public Writer(IDatabaseConnection<T> databaseConnection)
-            : this(databaseConnection.MongoServerConnection.ConnectionString, databaseConnection.Db.Name)
-        {
-        }
-
-        public Writer(string           connectionString, 
-                      string           databaseName,
-                      IReader<T>       reader, 
-                      IWriter<T>       writer, 
-                      IUpdater<T>      updater,
-                      IReaderAsync<T>  readerAsync, 
-                      IWriterAsync<T>  writerAsync,
-                      IUpdaterAsync<T> updaterAsync)
-            : base(new ServerConnection(connectionString), 
-                   databaseName,
-                   reader,
+        public Writer(string        connectionString, 
+                      string        databaseName,
+                      IReader       reader, 
+                      IWriter       writer, 
+                      IUpdater      updater,
+                      IReaderAsync  readerAsync, 
+                      IWriterAsync  writerAsync,
+                      IUpdaterAsync updaterAsync)
+            : base(reader,
                    writer,
                    updater,
                    readerAsync,
@@ -44,24 +31,14 @@ namespace EasyMongo.Database
             _mongoWriterAsync.AsyncWriteCompleted += new WriteCompletedEvent(_mongoWriterAsync_WriteCompleted);
         }
 
-        public void Write(string collectionName, T entry)
+        public void Write<T>(string collectionName, T entry)
         {
-            _mongoWriter.Write(collectionName, entry);
+            _mongoWriter.Write<T>(collectionName, entry);
         }
 
-        public void WriteAsync(string collectionName, T entry)
+        public void WriteAsync<T>(string collectionName, T entry)
         {
-            _mongoWriterAsync.WriteAsync(collectionName, entry);
-        }
-
-        public IWriter<T> Create(IDatabaseConnection<T> databaseConnection)
-        {
-            return new Writer<T>(databaseConnection);
-        }
-
-        public IWriterAsync<T> Create(IWriter<T> writer)
-        {
-            return new WriterAsync<T>(writer);
+            _mongoWriterAsync.WriteAsync<T>(collectionName, entry);
         }
 
         void _mongoWriterAsync_WriteCompleted(object sender)

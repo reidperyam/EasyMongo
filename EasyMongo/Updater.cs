@@ -8,77 +8,72 @@ using EasyMongo.Contract;
 
 namespace EasyMongo
 {
-    public class Updater<T> : IUpdater<T> where T : IEasyMongoEntry
+    public class Updater : IUpdater
     {
-        private IDatabaseConnection<T> _databaseConnection;
+        private IDatabaseConnection _databaseConnection;
 
-        public Updater(IDatabaseConnection<T> databaseConnection)
+        public Updater(IDatabaseConnection databaseConnection)
         {
             _databaseConnection = databaseConnection;
         }
 
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query)
         {
-            var collection = _databaseConnection.GetCollection(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             return collection.Remove(query);
         }
 
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            var collection = _databaseConnection.GetCollection(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             return collection.Remove(query, removeFlags);
         }
 
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            var collection = _databaseConnection.GetCollection(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             return collection.Remove(query, removeFlags, writeConcern);
         }
 
-        public WriteConcernResult Remove(string collectionName, IMongoQuery query, WriteConcern writeConcern)
+        public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            var collection = _databaseConnection.GetCollection(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             return collection.Remove(query, writeConcern);
         }
 
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
         {
-            var collection = GetCollection(collectionName);
+            var collection = GetCollection<T>(collectionName);
             return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate);
         }
 
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
         {
-            var collection = GetCollection(collectionName);
+            var collection = GetCollection<T>(collectionName);
             return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, returnNew);
         }
 
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
         {
-            var collection = GetCollection(collectionName);
+            var collection = GetCollection<T>(collectionName);
             return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
         }
 
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
         {
-            var collection = GetCollection(collectionName);
+            var collection = GetCollection<T>(collectionName);
             return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
 
-        public FindAndModifyResult FindAndRemove(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public FindAndModifyResult FindAndRemove<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
         {
-            var collection = GetCollection(collectionName);
+            var collection = GetCollection<T>(collectionName);
             return collection.FindAndRemove(mongoQuery, mongoSortBy);
         }
 
-        public IUpdater<T> Create(IDatabaseConnection<T> databaseConnection)
+        private MongoCollection<T> GetCollection<T>(string collectionName)
         {
-            return new Updater<T>(databaseConnection);
-        }
-
-        private MongoCollection<T> GetCollection(string collectionName)
-        {
-            return _databaseConnection.GetCollection(collectionName);
+            return _databaseConnection.GetCollection<T>(collectionName);
         }
     }
 }

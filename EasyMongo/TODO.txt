@@ -4,25 +4,24 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 ** Refactor DistinctAsyncompleted event and ASyncReadCompleted events into one event
 
 General
-    // TODO - Remove Generic template for domain classes???
-    // TODO - fix ninject integration test so that the ninject types are loaded with implementations of their generic, interface argument types 
-    // TODO - prime EasyMongo assemblies for DI with Ninject by moving contract dependencies to the constructors
-	// TODO - Implement Ninject DI within the TestBase class of EasyMongo.Test.Base to bind dependencies of the objects
+    // TODO - bubble up all implementation classes to the constructor and add adapters when required...
+	// TODO - write Ninject nunit test proving using singletons to create all of our integration testing classes results in async testing problems
+	// TODO - add new EasyMongo.IReader.Distinct overload that returns IEnumerable<T> instead of IEnumberable<BSON> (this overload was added in an underlying MongoDB release - tome to proxy/facade it)
 	// TODO - Create new assembly, EasyMongo.Common to hold shared MongoDB assembly references
-	// TODO - implement Ninject NuGet package into the Database Adapter.
-	//
+	// TODO - add IDatabaseConnection.GetCollection() method to call underlying non-generic impl returning IEnumberable<BSONDocument> instead of <T>...
 	// TODO - refactor underlying MongoDB dependencies to reference interfaces injected into ctors via Ninject
     // TODO - Decouple DatabaseConnection and ServerConnection into async implmentations  and move async into EasyMongo.Async
 	// TODO - rename EasyMongo.Database and EasyMongo.Collection readers/writers/updaters to 'DatabaseReader','CollectionWriter' etc to 
 	//        simplify and reduce confusion
-	//
+	// TODO - have AsyncWriter classes return a result in the return event - specifying success/error/etc
 	// TODO - revisit purpose of "Create" Method - where is this used and why? Seems like a polymorphic hack to circumvent
 	//        poor design...
-	//
+	// TODO - Add interface for EasyMongo.Database.Adapter class...
 	// TODO - refactor callback methods of asyncReader and AsyncUPdater to be templated to remove code duplications
 	// TODO - refactor ReaderAsync,WriterAsync,UpdaterAsync to take callback Action<,> as argument to Async methods instead of 
 	//        subscribing to Connection event (See example of ServerConnection and DatabaseConnection)
-	//
+	// TODO - consider adding abstract class between EasyMongo.Collection classes and EasyMongo.Database to implement the EasyMongo.Contract.IReader/IWriter/IUpdater interfaces using
+	//        default arguments??? may not be possible or worth it...
 	// TODO - refactor WriterAsync, UpdaterAsync, ReaderAsync to handle errors during async operations and return information in case of failure
 	//        via Completion event
 	//

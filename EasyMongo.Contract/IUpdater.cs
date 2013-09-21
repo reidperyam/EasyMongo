@@ -7,20 +7,18 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IUpdater<T>
+    public interface IUpdater
     {
-        WriteConcernResult Remove(string collectionName, IMongoQuery query);
-        WriteConcernResult Remove(string collectionName, IMongoQuery query, WriteConcern writeConcern);
-        WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags);
-        WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
+        WriteConcernResult Remove<T>(string collectionName, IMongoQuery query);
+        WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern);
+        WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags);
+        WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
 
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
-        
-        FindAndModifyResult FindAndRemove(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy);
+        FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
+        FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
+        FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
+        FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
 
-        IUpdater<T> Create(IDatabaseConnection<T> databaseConnection);
+        FindAndModifyResult FindAndRemove<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy);
     }
 }

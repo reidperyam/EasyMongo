@@ -10,66 +10,85 @@ using EasyMongo.Database;
 
 namespace EasyMongo.Collection
 {
-    public class Reader<T> : ICollectionReader<T> where T : IEasyMongoEntry
+    public class Reader: ICollectionReader
     {
-        private string _collectionName;
-        private IDatabaseReader<T> _mongoDBReader;
+        public event ReadCompletedEvent     AsyncReadCompleted;
+        public event DistinctCompletedEvent AsyncDistinctCompleted;
 
-        public Reader(IDatabaseReader<T> mongoDatabaseReader, string collectionName)
+        private string _collectionName;
+        private IDatabaseReader _mongoDBReader;
+
+        public Reader(IDatabaseReader mongoDatabaseReader, string collectionName)
         {
             _mongoDBReader  = mongoDatabaseReader;
             _collectionName = collectionName;
+
+            _mongoDBReader.AsyncReadCompleted     += new ReadCompletedEvent(_mongoDBReader_AsyncReadCompleted);
+            _mongoDBReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoDBReader_AsyncDistinctCompleted);
         }
 
         #region   Synchronous
-        public IEnumerable<T> Read(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public IEnumerable<T> Read<T>(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            return _mongoDBReader.Read(_collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _mongoDBReader.Read<T>(_collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public IEnumerable<T> Read(string dateTimeFieldName, DateTime start, DateTime end)
+        public IEnumerable<T> Read<T>(string dateTimeFieldName, DateTime start, DateTime end)
         {
-            return _mongoDBReader.Read(_collectionName, dateTimeFieldName, start, end);
+            return _mongoDBReader.Read<T>(_collectionName, dateTimeFieldName, start, end);
         }
 
-        public IEnumerable<T> Read(string fieldName, string regexPattern)
+        public IEnumerable<T> Read<T>(string fieldName, string regexPattern)
         {
-            return _mongoDBReader.Read(_collectionName, fieldName, regexPattern);
+            return _mongoDBReader.Read<T>(_collectionName, fieldName, regexPattern);
         }
-        public IEnumerable<BsonValue> Distinct(string fieldName)
+        public IEnumerable<BsonValue> Distinct<T>(string fieldName)
         {
-            return _mongoDBReader.Distinct(_collectionName, fieldName);
+            return _mongoDBReader.Distinct<T>(_collectionName, fieldName);
         }
-        public IEnumerable<BsonValue> Distinct(string fieldName, IMongoQuery query)
+        public IEnumerable<BsonValue> Distinct<T>(string fieldName, IMongoQuery query)
         {
-            return _mongoDBReader.Distinct(_collectionName, fieldName, query);
+            return _mongoDBReader.Distinct<T>(_collectionName, fieldName, query);
         }
 
         #endregion Synchronous
 
         #region    Asynchronous
-        public void ReadAsync(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public void ReadAsync<T>(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _mongoDBReader.ReadAsync(_collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+            _mongoDBReader.ReadAsync<T>(_collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync(string dateTimeFieldName, DateTime start, DateTime end)
+        public void ReadAsync<T>(string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _mongoDBReader.ReadAsync(_collectionName, dateTimeFieldName, start, end);
+            _mongoDBReader.ReadAsync<T>(_collectionName, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync(string fieldName, string regexPattern)
+        public void ReadAsync<T>(string fieldName, string regexPattern)
         {
-            _mongoDBReader.ReadAsync(_collectionName, fieldName, regexPattern);
+            _mongoDBReader.ReadAsync<T>(_collectionName, fieldName, regexPattern);
         }
-        public void DistinctAsync(string fieldName)
+        public void DistinctAsync<T>(string fieldName)
         {
-            _mongoDBReader.DistinctAsync(_collectionName, fieldName);
+            _mongoDBReader.DistinctAsync<T>(_collectionName, fieldName);
         }
-        public void DistinctAsync(string fieldName, IMongoQuery query)
+        public void DistinctAsync<T>(string fieldName, IMongoQuery query)
         {
-            _mongoDBReader.DistinctAsync(_collectionName, fieldName, query);
+            _mongoDBReader.DistinctAsync<T>(_collectionName, fieldName, query);
         }
         #endregion Asynchronous
+
+
+        void _mongoDBReader_AsyncReadCompleted(object e, Exception ex)
+        {
+            if (AsyncReadCompleted != null)
+                AsyncReadCompleted(e, ex);
+        }
+
+        void _mongoDBReader_AsyncDistinctCompleted(IEnumerable<BsonValue> e, Exception ex)
+        {
+            if (AsyncDistinctCompleted != null)
+                AsyncDistinctCompleted(e, ex);
+        }
     }
 }
