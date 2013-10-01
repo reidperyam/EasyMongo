@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Collection
 {
-    public class Updater : ICollectionUpdater
+    public class CollectionUpdater : ICollectionUpdater
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
@@ -16,7 +16,7 @@ namespace EasyMongo.Collection
         IDatabaseUpdater _mongoDBUpdater;
         string _collectionName; 
 
-        public Updater(IDatabaseUpdater mongoDatabaseUpdater, string collectionName)
+        public CollectionUpdater(IDatabaseUpdater mongoDatabaseUpdater, string collectionName)
         {
             _mongoDBUpdater = mongoDatabaseUpdater;
             _collectionName = collectionName;

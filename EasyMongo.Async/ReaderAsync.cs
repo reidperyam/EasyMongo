@@ -66,11 +66,11 @@ namespace EasyMongo.Async
         #region Distinct Across Collection T
         public void DistinctAsync<T>(string collectionName, string fieldName)
         {
-            new Func<string, string, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionName, fieldName, CallbackDistinctBson, null);
+            new Func<string, string, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionName, fieldName, CallbackDistinct<T>, null);
         }
         public void DistinctAsync<T>(string collectionName, string fieldName, IMongoQuery query)
         {
-            new Func<string, string, IMongoQuery, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionName, fieldName, query, CallbackDistinctBson, null);
+            new Func<string, string, IMongoQuery, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionName, fieldName, query, CallbackDistinct<T>, null);
         }
         #endregion Distinct Across Collection T
         #region Distinct Across Multiple Collections BSON
@@ -86,11 +86,11 @@ namespace EasyMongo.Async
         #region Distinct Across Multiple Collections T
         public void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName)
         {
-            new Func<IEnumerable<string>, string, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionNames, fieldName, CallbackDistinctBson, null);
+            new Func<IEnumerable<string>, string, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionNames, fieldName, CallbackDistinct<T>, null);
         }
         public void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
-            new Func<IEnumerable<string>, string, IMongoQuery, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionNames, fieldName, query, CallbackDistinctBson, null);
+            new Func<IEnumerable<string>, string, IMongoQuery, IEnumerable<T>>(_mongoReader.Distinct<T>).BeginInvoke(collectionNames, fieldName, query, CallbackDistinct<T>, null);
         }
         #endregion Distinct Across Multiple Collections T
 
@@ -128,6 +128,39 @@ namespace EasyMongo.Async
             {
                 if (AsyncReadCompleted != null)
                     AsyncReadCompleted(result, ex);
+            }
+        }
+
+        protected void CallbackDistinct<T>(IAsyncResult asyncRes)
+        {
+            IEnumerable<T> result = null;
+            Exception exception = null;
+
+            try
+            {
+                try
+                {
+                    AsyncResult ares = (AsyncResult)asyncRes;
+                    var delg = (dynamic)ares.AsyncDelegate;
+                    result = delg.EndInvoke(asyncRes);
+                }
+                catch (Exception ex)
+                {
+                    // if an exception is caught here the dynamic binding of the "result" variable is unresolved thus causing a 
+                    // RuntimeTypeBindingException to be raised. The problem is that in this scenario - complicated to determine which
+                    // sort of action originally invoked the async call -- making notification of the error problematic...
+                    exception = ex;
+                }
+                finally
+                {
+                    if (AsyncDistinctCompleted != null)
+                        AsyncDistinctCompleted(result, exception);
+                }
+            }
+            catch (RuntimeBinderException ex)
+            {
+                if (AsyncDistinctCompleted != null)
+                    AsyncDistinctCompleted(result, ex);
             }
         }
 

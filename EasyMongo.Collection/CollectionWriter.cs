@@ -8,14 +8,14 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Collection
 {
-    public class Writer : ICollectionWriter
+    public class CollectionWriter : ICollectionWriter
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 
         IDatabaseWriter _mongoDBWriter;
         string _collectionName; 
 
-        public Writer(IDatabaseWriter mongoDatabaseWriter, string collectionName)
+        public CollectionWriter(IDatabaseWriter mongoDatabaseWriter, string collectionName)
         {
             _mongoDBWriter = mongoDatabaseWriter;
             _collectionName = collectionName;

@@ -9,18 +9,18 @@ using EasyMongo.Async;
 
 namespace EasyMongo.Database
 {
-    public class Writer : Adapter, IDatabaseWriter
+    public class DatabaseWriter : Adapter, IDatabaseWriter
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 
-        public Writer(string        connectionString, 
-                      string        databaseName,
-                      IReader       reader, 
-                      IWriter       writer, 
-                      IUpdater      updater,
-                      IReaderAsync  readerAsync, 
-                      IWriterAsync  writerAsync,
-                      IUpdaterAsync updaterAsync)
+        public DatabaseWriter(string        connectionString, 
+                              string        databaseName,
+                              IReader       reader, 
+                              IWriter       writer, 
+                              IUpdater      updater,
+                              IReaderAsync  readerAsync, 
+                              IWriterAsync  writerAsync,
+                              IUpdaterAsync updaterAsync)
             : base(reader,
                    writer,
                    updater,

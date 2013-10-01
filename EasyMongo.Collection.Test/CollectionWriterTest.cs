@@ -12,12 +12,12 @@ using EasyMongo.Test.Model;
 namespace EasyMongo.Collection.Test
 {
     [TestFixture]
-    public class WriterTest : IntegrationTestFixture
+    public class CollectionWriterTest : IntegrationTestFixture
     {
         [Test]
         public void ConstructorTest()
         {
-            _collectionWriter = new Collection.Writer(_databaseWriter, MONGO_COLLECTION_1_NAME);
+            _collectionWriter = new Collection.CollectionWriter(_databaseWriter, MONGO_COLLECTION_1_NAME);
         }
 
         [Test]

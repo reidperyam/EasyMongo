@@ -158,6 +158,7 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException), _asyncException.GetType());
         }
 
+        #region    Disctinct BSON
         [Test]
         public void DistinctBSONTest1()
         {
@@ -168,10 +169,10 @@ namespace EasyMongo.Async.Test
 
             _readerAsync.DistinctAsync(MONGO_COLLECTION_1_NAME, "Message");
             _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(3, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0].AsString);
-            Assert.AreEqual("Two", _asyncDistinctResults[1].AsString);
-            Assert.AreEqual("Three", _asyncDistinctResults[2].AsString);
+            Assert.AreEqual(3, _asyncDistinctBSONResults.Count());
+            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
+            Assert.AreEqual("Two", _asyncDistinctBSONResults[1].AsString);
+            Assert.AreEqual("Three", _asyncDistinctBSONResults[2].AsString);
             Assert.IsNull(_asyncException);
         }
 
@@ -188,8 +189,8 @@ namespace EasyMongo.Async.Test
 
             _readerAsync.DistinctAsync(MONGO_COLLECTION_1_NAME, "Message", searchQuery);
             _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(1, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0].AsString);
+            Assert.AreEqual(1, _asyncDistinctBSONResults.Count());
+            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
             Assert.IsNull(_asyncException);
         }
 
@@ -204,10 +205,10 @@ namespace EasyMongo.Async.Test
             List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
             _readerAsync.DistinctAsync(collections, "Message");
             _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(3, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0].AsString);
-            Assert.AreEqual("Two", _asyncDistinctResults[1].AsString);
-            Assert.AreEqual("Three", _asyncDistinctResults[2].AsString);
+            Assert.AreEqual(3, _asyncDistinctBSONResults.Count());
+            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
+            Assert.AreEqual("Two", _asyncDistinctBSONResults[1].AsString);
+            Assert.AreEqual("Three", _asyncDistinctBSONResults[2].AsString);
             Assert.IsNull(_asyncException);
         }
 
@@ -225,9 +226,88 @@ namespace EasyMongo.Async.Test
             List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
             _readerAsync.DistinctAsync(collections, "Message", searchQuery);
             _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(1, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0].AsString);
+            Assert.AreEqual(1, _asyncDistinctBSONResults.Count());
+            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
             Assert.IsNull(_asyncException);
-        }  
+        }
+        #endregion Distinct BSON
+
+        #region    Disctinct T
+        [Test]
+        public void DistinctGenericTest1()
+        {
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            _readerAsync.DistinctAsync<string>(MONGO_COLLECTION_1_NAME, "Message");
+            _readerAutoResetEvent.WaitOne();
+
+            Assert.AreEqual(3, _asyncDistinctResults.Count());
+            Assert.AreEqual("One", _asyncDistinctResults[0]);
+            Assert.AreEqual("Two", _asyncDistinctResults[1]);
+            Assert.AreEqual("Three", _asyncDistinctResults[2]);
+            Assert.IsNull(_asyncException);
+        }
+
+        [Test]
+        public void DistinctGenericTest2()
+        {
+            // get distinct message values that are not "Two" or "Three"
+            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
+
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            _readerAsync.DistinctAsync<string>(MONGO_COLLECTION_1_NAME, "Message", searchQuery);
+            _readerAutoResetEvent.WaitOne();
+
+            Assert.AreEqual(1, _asyncDistinctResults.Count());
+            Assert.AreEqual("One", _asyncDistinctResults[0]);
+            Assert.IsNull(_asyncException);
+        }
+
+        [Test]
+        public void DistinctGenericTest3()
+        {
+            AddMongoEntry("One", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("One", MONGO_COLLECTION_2_NAME);
+            AddMongoEntry("Two", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Three", MONGO_COLLECTION_2_NAME);
+
+            List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
+            _readerAsync.DistinctAsync<string>(collections, "Message");
+            _readerAutoResetEvent.WaitOne();
+
+            Assert.AreEqual(3, _asyncDistinctResults.Count());
+            Assert.AreEqual("One", _asyncDistinctResults[0]);
+            Assert.AreEqual("Two", _asyncDistinctResults[1]);
+            Assert.AreEqual("Three", _asyncDistinctResults[2]);
+            Assert.IsNull(_asyncException);
+        }
+
+        [Test]
+        public void DistinctGenericTest4()
+        {
+            // get distinct message values that are not "Two" or "Three"
+            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
+
+            AddMongoEntry("One", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("One", MONGO_COLLECTION_2_NAME);
+            AddMongoEntry("Two", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Three", MONGO_COLLECTION_2_NAME);
+
+            List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
+            _readerAsync.DistinctAsync<string>(collections, "Message", searchQuery);
+            _readerAutoResetEvent.WaitOne();
+
+            Assert.AreEqual(1, _asyncDistinctResults.Count());
+            Assert.AreEqual("One", _asyncDistinctResults[0]);
+            Assert.IsNull(_asyncException);
+        }
+        #endregion Distinct T
     }
 }

@@ -13,13 +13,13 @@ using EasyMongo.Test.Model;
 namespace EasyMongo.Collection.Test
 {
     [TestFixture]
-    public class ReaderTest : IntegrationTestFixture
+    public class CollectionReaderTest : IntegrationTestFixture
     {        
         [Test]
         public void ConstructorTest()
         {
             // construct a collection reader from a database reader and a collection name
-            _collectionReader = new Collection.Reader(_databaseReader, MONGO_COLLECTION_1_NAME);
+            _collectionReader = new Collection.CollectionReader(_databaseReader, MONGO_COLLECTION_1_NAME);
             Assert.IsNotNull(_collectionReader);
         }
 
@@ -83,6 +83,7 @@ namespace EasyMongo.Collection.Test
             Assert.AreEqual(1, _results.Count());
         }
 
+        #region    Distinct BSON
         [Test]
         public void DistinctBSONTest1()
         {
@@ -122,10 +123,10 @@ namespace EasyMongo.Collection.Test
 
             _collectionReader.DistinctAsync("Message");
             _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(3, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0].AsString);
-            Assert.AreEqual("Two", _asyncDistinctResults[1].AsString);
-            Assert.AreEqual("Three", _asyncDistinctResults[2].AsString);
+            Assert.AreEqual(3, _asyncDistinctBSONResults.Count());
+            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
+            Assert.AreEqual("Two", _asyncDistinctBSONResults[1].AsString);
+            Assert.AreEqual("Three", _asyncDistinctBSONResults[2].AsString);
         }
 
         [Test]
@@ -141,8 +142,79 @@ namespace EasyMongo.Collection.Test
 
             _collectionReader.DistinctAsync("Message", searchQuery);
             _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(1, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0].AsString);
+            Assert.AreEqual(1, _asyncDistinctBSONResults.Count());
+            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
         }
+        #endregion Distinct BSON
+
+        #region    Distinct T
+        [Test]
+        public void DistinctGenericTest1()
+        {
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            List<string> list = new List<string>(_collectionReader.Distinct<string>("Message"));
+
+            Assert.AreEqual(3, list.Count());
+            Assert.AreEqual("One", list[0]);
+            Assert.AreEqual("Two", list[1]);
+            Assert.AreEqual("Three", list[2]);
+        }
+
+        [Test]
+        public void DistinctGenericTest2()
+        {
+            // get distinct message values that are not "Two" or "Three"
+            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
+
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            List<string> list = new List<string>(_collectionReader.Distinct<string>("Message", searchQuery));
+
+            Assert.AreEqual(1, list.Count());
+            Assert.AreEqual("One", list[0]);
+        }
+
+        [Test]
+        public void DistinctGenericAsyncTest1()
+        {
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            _collectionReader.DistinctAsync<string>("Message");
+            _readerAutoResetEvent.WaitOne();
+
+            Assert.AreEqual(3, _asyncDistinctResults.Count());
+            Assert.AreEqual("One", _asyncDistinctResults[0]);
+            Assert.AreEqual("Two", _asyncDistinctResults[1]);
+            Assert.AreEqual("Three", _asyncDistinctResults[2]);
+        }
+
+        [Test]
+        public void DistinctGenericAsyncTest2()
+        {
+            // get distinct message values that are not "Two" or "Three"
+            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
+
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            _collectionReader.DistinctAsync<string>("Message", searchQuery);
+            _readerAutoResetEvent.WaitOne();
+
+            Assert.AreEqual(1, _asyncDistinctResults.Count());
+            Assert.AreEqual("One", _asyncDistinctResults[0]);
+        }
+        #endregion Distinct T
     }
 }

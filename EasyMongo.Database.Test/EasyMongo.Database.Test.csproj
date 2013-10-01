@@ -50,10 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdaterTest.cs" />
-    <Compile Include="ReaderTest.cs" />
+    <Compile Include="DatabaseUpdaterTest.cs" />
+    <Compile Include="DatabaseReaderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WriterTest.cs" />
+    <Compile Include="DatabaseWriterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">

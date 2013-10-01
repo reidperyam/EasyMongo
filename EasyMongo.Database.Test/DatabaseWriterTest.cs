@@ -11,7 +11,7 @@ using EasyMongo.Test.Model;
 namespace EasyMongo.Database.Test
 {
     [TestFixture]
-    public class WriterTest : IntegrationTestFixture
+    public class DatabaseWriterTest : IntegrationTestFixture
     {
         [Test]
         public void WriteAsyncTest()

@@ -80,7 +80,6 @@ namespace EasyMongo.Contract
         IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName);
         IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
 
-        // TODO - how to reconcile these overloads since their signature is the same?
         IEnumerable<T> Distinct<T>(string collectionName, string fieldName);
         IEnumerable<T> Distinct<T>(string collectionName, string fieldName, IMongoQuery query);
         IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName);

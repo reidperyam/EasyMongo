@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using EasyMongo;
@@ -20,7 +21,6 @@ namespace EasyMongo
         public Reader(IDatabaseConnection mongoDatabaseConnection)
         {
             _mongoDatabaseConnection = mongoDatabaseConnection;
-            //_mongoDatabaseConnection.ConnectAsyncCompleted += new ConnectAsyncCompletedEvent(_mongoDatabaseConnection_Connected);
         }
 
         #region    Methods
@@ -345,35 +345,5 @@ namespace EasyMongo
         }
         #endregion Distinct Across Multiple Collections T
         #endregion Methods
-
-        private System.Threading.AutoResetEvent _resetEvent = new System.Threading.AutoResetEvent(false);
-
-        private void VerifyUnderlyingConnection()
-        {
-            switch (_mongoDatabaseConnection.ConnectionState)
-            {
-                case ConnectionState.Connected: break;
-                case ConnectionState.Connecting: _resetEvent.WaitOne(); break;
-                case ConnectionState.NotConnected: throw new MongoDatabaseConnectionException("Database not connected");
-            }
-
-            if (!_mongoDatabaseConnection.CanConnect())
-                throw new MongoDatabaseConnectionException("Cannot connect to database");
-        }
-
-        private void _mongoDatabaseConnection_Connected(ConnectionResult result)
-        {
-            // this event gets called when the DatabaseConnection successfully, asynchronously connects to the MongoDB server
-
-            if (result == ConnectionResult.Success)
-            {
-                // do work
-            }
-            else
-            {
-                return;
-            }
-            _resetEvent.Set();
-        }
     }
 }

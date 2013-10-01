@@ -23,11 +23,6 @@ namespace EasyMongo
             collection.Save(entry);
         }
 
-        public IWriter Create(IDatabaseConnection databaseConnection)
-        {
-            return new Writer(databaseConnection);
-        }
-
         private MongoCollection<T> GetCollection<T>(string collectionName)
         {
             return _databaseConnection.GetCollection<T>(collectionName);

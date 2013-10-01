@@ -47,9 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter.cs" />
-    <Compile Include="Updater.cs" />
-    <Compile Include="Writer.cs" />
-    <Compile Include="Reader.cs" />
+    <Compile Include="CollectionUpdater.cs" />
+    <Compile Include="CollectionWriter.cs" />
+    <Compile Include="CollectionReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -56,7 +56,8 @@ namespace EasyMongo.Test.Base
             #region    EasyMongo.Async.Test
             _readerAsync = _configurator.Kernel.TryGet<IReaderAsync>();
             _readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_reader_AsyncReadCompleted);
-            _readerAsync.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_readerAsync_AsyncDistinctCompleted);
+            _readerAsync.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_readerAsync_AsyncDistinctBSONCompleted);
+            _readerAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsync_AsyncDistinctCompleted);
 
             _writerAsync = _configurator.Kernel.TryGet<IWriterAsync>();
             _writerAsync.AsyncWriteCompleted += new WriteCompletedEvent(_writer_AsyncWriteCompleted);
@@ -69,7 +70,8 @@ namespace EasyMongo.Test.Base
             #region    EasyMongo.Database.Test
             _databaseReader = _configurator.Kernel.TryGet<IDatabaseReader>();
             _databaseReader.AsyncReadCompleted += new ReadCompletedEvent(_databaseReader_AsyncReadCompleted);
-            _databaseReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_databaseReader_AsyncDistinctCompleted);
+            _databaseReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_databaseReader_AsyncDistinctBSONCompleted);
+            _databaseReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_databaseReader_AsyncDistinctCompleted);
 
             _databaseWriter = _configurator.Kernel.TryGet<IDatabaseWriter>();
             _databaseWriter.AsyncWriteCompleted += new WriteCompletedEvent(_databaseWriter_AsyncWriteCompleted);
@@ -82,7 +84,8 @@ namespace EasyMongo.Test.Base
             #region    EasyMongo.Collection.Test
             _collectionReader = _configurator.Kernel.TryGet<ICollectionReader>();
             _collectionReader.AsyncReadCompleted += new ReadCompletedEvent(_collectionReader_AsyncReadCompleted);
-            _collectionReader.AsyncDistinctCompleted += new DistinctBSONCompletedEvent(_collectionReader_AsyncDistinctCompleted);
+            _collectionReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_collectionReader_AsyncDistinctBSONCompleted);
+            _collectionReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_collectionReader_AsyncDistinctCompleted);
 
             _collectionWriter = _configurator.Kernel.TryGet<ICollectionWriter>();
             _collectionWriter.AsyncWriteCompleted += new WriteCompletedEvent(_collectionWriter_AsyncWriteCompleted);
@@ -109,6 +112,7 @@ namespace EasyMongo.Test.Base
 
             _results.Clear();
             _asyncReadResults.Clear();
+            _asyncDistinctBSONResults.Clear();
             _asyncDistinctResults.Clear();
             _readerAutoResetEvent.Reset();
             _findAndModifyResult = null;
@@ -118,8 +122,7 @@ namespace EasyMongo.Test.Base
             _serverConnectionResult = ConnectionResult.Empty;
             _databaseConnectionResult = ConnectionResult.Empty;
             _databaseConnectionReturnMessage = string.Empty;
-            _serverConnectionReturnMessage = string.Empty;
-            _asyncDistinctResults.Clear();
+            _serverConnectionReturnMessage = string.Empty;         
 
             _serverConnectionAutoResetEvent.Reset();
             _databaseConnectionAutoResetEvent.Reset();
@@ -158,7 +161,8 @@ namespace EasyMongo.Test.Base
         protected WriteConcern          _writeConcern                     = WriteConcern.Acknowledged;
         protected List<IEasyMongoEntry> _results                          = new List<IEasyMongoEntry>();
         protected List<IEasyMongoEntry> _asyncReadResults                 = new List<IEasyMongoEntry>();
-        protected List<BsonValue>       _asyncDistinctResults             = new List<BsonValue>();
+        protected List<BsonValue>       _asyncDistinctBSONResults         = new List<BsonValue>();
+        protected List<string>          _asyncDistinctResults             = new List<string>();
         protected Exception             _asyncException                   = null;
         protected FindAndModifyResult   _findAndModifyResult              = null;
         protected WriteConcernResult    _writeConcernResult               = null;
@@ -212,7 +216,7 @@ namespace EasyMongo.Test.Base
             TestEntry mongoEntry = new TestEntry();
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
-            _writer.Write(collectionName, mongoEntry);
+            _writer.Write<TestEntry>(collectionName, mongoEntry);
         }
 
         /// <summary>
@@ -256,19 +260,22 @@ namespace EasyMongo.Test.Base
             _readerAutoResetEvent.Set();
         }
 
-        protected void _reader_AsyncDistinctCompleted(IEnumerable<BsonValue> e, Exception ex)
-        {
-            _asyncException = ex;
-            _asyncDistinctResults.AddRange(e);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _readerAsync_AsyncDistinctCompleted(IEnumerable<BsonValue> e, Exception ex)
+        protected void _readerAsync_AsyncDistinctCompleted(object e, Exception ex)
         {
             _asyncException = ex;
 
             if (e != null)
-                _asyncDistinctResults.AddRange(e);
+                _asyncDistinctResults.AddRange((IEnumerable<string>)e);
+
+            _readerAutoResetEvent.Set();
+        }
+
+        protected void _readerAsync_AsyncDistinctBSONCompleted(IEnumerable<BsonValue> e, Exception ex)
+        {
+            _asyncException = ex;
+
+            if (e != null)
+                _asyncDistinctBSONResults.AddRange(e);
 
             _readerAutoResetEvent.Set();
         }
@@ -283,10 +290,17 @@ namespace EasyMongo.Test.Base
             _readerAutoResetEvent.Set();
         }
 
-        protected void _databaseReader_AsyncDistinctCompleted(IEnumerable<BsonValue> e, Exception ex)
+        protected void _databaseReader_AsyncDistinctBSONCompleted(IEnumerable<BsonValue> e, Exception ex)
         {
             _asyncException = ex;
-            _asyncDistinctResults.AddRange(e);
+            _asyncDistinctBSONResults.AddRange(e);
+            _readerAutoResetEvent.Set();
+        }
+
+        protected void _databaseReader_AsyncDistinctCompleted(object e, Exception ex)
+        {
+            _asyncException = ex;
+            _asyncDistinctResults.AddRange((IEnumerable<string>)e);
             _readerAutoResetEvent.Set();
         }
 
@@ -323,10 +337,17 @@ namespace EasyMongo.Test.Base
             _readerAutoResetEvent.Set();
         }
 
-        protected void _collectionReader_AsyncDistinctCompleted(IEnumerable<BsonValue> e, Exception ex)
+        protected void _collectionReader_AsyncDistinctBSONCompleted(IEnumerable<BsonValue> e, Exception ex)
         {
             _asyncException = ex;
-            _asyncDistinctResults.AddRange(e);
+            _asyncDistinctBSONResults.AddRange(e);
+            _readerAutoResetEvent.Set();
+        }
+
+        protected void _collectionReader_AsyncDistinctCompleted(object e, Exception ex)
+        {
+            _asyncException = ex;
+            _asyncDistinctResults.AddRange((IEnumerable<string>)e);
             _readerAutoResetEvent.Set();
         }
 

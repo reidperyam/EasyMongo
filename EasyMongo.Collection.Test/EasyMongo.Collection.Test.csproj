@@ -50,10 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdaterTest.cs" />
-    <Compile Include="WriterTest.cs" />
+    <Compile Include="CollectionUpdaterTest.cs" />
+    <Compile Include="CollectionWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReaderTest.cs" />
+    <Compile Include="CollectionReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyMongo.Collection\EasyMongo.Collection.csproj">

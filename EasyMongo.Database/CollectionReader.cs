@@ -10,20 +10,20 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Database
 {
-    public class Reader : Adapter, IDatabaseReader
+    public class DatabaseReader : Adapter, IDatabaseReader
     {
         public event ReadCompletedEvent AsyncReadCompleted;
         public event DistinctBSONCompletedEvent AsyncDistinctBSONCompleted;
         public event DistinctCompletedEvent AsyncDistinctCompleted;
 
-        public Reader(string        connectionString, 
-                      string        databaseName,
-                      IReader       reader, 
-                      IWriter       writer, 
-                      IUpdater      updater,
-                      IReaderAsync  readerAsync, 
-                      IWriterAsync  writerAsync,
-                      IUpdaterAsync updaterAsync)
+        public DatabaseReader(string        connectionString, 
+                              string        databaseName,
+                              IReader       reader, 
+                              IWriter       writer, 
+                              IUpdater      updater,
+                              IReaderAsync  readerAsync, 
+                              IWriterAsync  writerAsync,
+                              IUpdaterAsync updaterAsync)
             : base(reader,
                    writer,
                    updater,
@@ -31,8 +31,9 @@ namespace EasyMongo.Database
                    writerAsync,
                    updaterAsync)
         {
-            _mongoReaderAsync.AsyncReadCompleted     += new ReadCompletedEvent(_mongoReaderAsync_ReadCompleted);
+            _mongoReaderAsync.AsyncReadCompleted         += new ReadCompletedEvent(_mongoReaderAsync_ReadCompleted);
             _mongoReaderAsync.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
+            _mongoReaderAsync.AsyncDistinctCompleted     += new DistinctCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
         }
 
         #region    Synchronous
@@ -175,16 +176,6 @@ namespace EasyMongo.Database
         #endregion Distinct T
         #endregion Asynchronous
 
-        public IReader Create(IDatabaseConnection databaseConnection)
-        {
-            return new EasyMongo.Reader(databaseConnection);
-        }
-
-        public IReaderAsync Create(IReader reader)
-        {
-            return new ReaderAsync(reader);
-        }
-
         /// <summary>
         /// NOTICE - the object returned must be cast to IEnumerable<T> in order to retrieve read results
         /// </summary>
@@ -200,6 +191,12 @@ namespace EasyMongo.Database
         {
             if (AsyncDistinctBSONCompleted != null)
                 AsyncDistinctBSONCompleted(e, ex);
+        }
+
+        void _mongoReaderAsync_AsyncDistinctCompleted(object e, Exception ex)
+        {
+            if (AsyncDistinctCompleted != null)
+                AsyncDistinctCompleted(e, ex);
         }
     }
 }

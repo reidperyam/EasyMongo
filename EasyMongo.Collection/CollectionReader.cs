@@ -10,21 +10,23 @@ using EasyMongo.Database;
 
 namespace EasyMongo.Collection
 {
-    public class Reader: ICollectionReader
+    public class CollectionReader: ICollectionReader
     {
         public event ReadCompletedEvent     AsyncReadCompleted;
-        public event DistinctBSONCompletedEvent AsyncDistinctCompleted;
+        public event DistinctBSONCompletedEvent AsyncDistinctBSONCompleted;
+        public event DistinctCompletedEvent AsyncDistinctCompleted;
 
         private string _collectionName;
         private IDatabaseReader _mongoDBReader;
 
-        public Reader(IDatabaseReader mongoDatabaseReader, string collectionName)
+        public CollectionReader(IDatabaseReader mongoDatabaseReader, string collectionName)
         {
             _mongoDBReader  = mongoDatabaseReader;
             _collectionName = collectionName;
 
-            _mongoDBReader.AsyncReadCompleted     += new ReadCompletedEvent(_mongoDBReader_AsyncReadCompleted);
-            _mongoDBReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_mongoDBReader_AsyncDistinctCompleted);
+            _mongoDBReader.AsyncReadCompleted         += new ReadCompletedEvent(_mongoDBReader_AsyncReadCompleted);
+            _mongoDBReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_mongoDBReader_AsyncDistinctBSONCompleted);
+            _mongoDBReader.AsyncDistinctCompleted     += new DistinctCompletedEvent(_mongoDBReader_AsyncDistinctCompleted);
         }
 
         #region   Synchronous
@@ -108,7 +110,13 @@ namespace EasyMongo.Collection
                 AsyncReadCompleted(e, ex);
         }
 
-        void _mongoDBReader_AsyncDistinctCompleted(IEnumerable<BsonValue> e, Exception ex)
+        void _mongoDBReader_AsyncDistinctBSONCompleted(IEnumerable<BsonValue> e, Exception ex)
+        {
+            if (AsyncDistinctBSONCompleted != null)
+                AsyncDistinctBSONCompleted(e, ex);
+        }
+
+        void _mongoDBReader_AsyncDistinctCompleted(object e, Exception ex)
         {
             if (AsyncDistinctCompleted != null)
                 AsyncDistinctCompleted(e, ex);

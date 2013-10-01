@@ -9,19 +9,19 @@ using EasyMongo.Async;
 
 namespace EasyMongo.Database
 {
-    public class Updater : Adapter, IDatabaseUpdater
+    public class DatabaseUpdater : Adapter, IDatabaseUpdater
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
-        public Updater(string        connectionString, 
-                       string        databaseName,
-                       IReader       reader, 
-                       IWriter       writer, 
-                       IUpdater      updater,
-                       IReaderAsync  readerAsync, 
-                       IWriterAsync  writerAsync,
-                       IUpdaterAsync updaterAsync)
+        public DatabaseUpdater(string        connectionString, 
+                               string        databaseName,
+                               IReader       reader, 
+                               IWriter       writer, 
+                               IUpdater      updater,
+                               IReaderAsync  readerAsync, 
+                               IWriterAsync  writerAsync,
+                               IUpdaterAsync updaterAsync)
             : base(reader,
                    writer,
                    updater,
@@ -106,16 +106,6 @@ namespace EasyMongo.Database
         public void FindAndRemoveAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
         {
             _mongoUpdaterAsync.FindAndRemoveAsync<T>(collectionName, mongoQuery, mongoSortBy);
-        }
-
-        public IUpdater Create(IDatabaseConnection databaseConnection)
-        {
-            return new EasyMongo.Updater(databaseConnection);
-        }
-
-        public IUpdaterAsync Create(IUpdater updater)
-        {
-            return new UpdaterAsync(updater);
         }
 
         void _mongoUpdaterAsync_AsyncFindAndRemoveCompleted(WriteConcernResult result)

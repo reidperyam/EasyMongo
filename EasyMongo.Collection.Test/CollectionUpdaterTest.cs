@@ -12,12 +12,12 @@ using EasyMongo.Test.Model;
 namespace EasyMongo.Collection.Test
 {
     [TestFixture]
-    public class UpdaterTest : IntegrationTestFixture
+    public class CollectionUpdaterTest : IntegrationTestFixture
     {
         [Test]
         public void ConstructorTest()
         {
-            _collectionUpdater = new Collection.Updater(_databaseUpdater, MONGO_COLLECTION_1_NAME);
+            _collectionUpdater = new Collection.CollectionUpdater(_databaseUpdater, MONGO_COLLECTION_1_NAME);
             Assert.IsNotNull(_collectionUpdater);
         }
 

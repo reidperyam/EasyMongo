@@ -112,6 +112,7 @@ namespace EasyMongo.Test
             Assert.AreEqual(2, _results.Count());
         }
 
+        #region    Distinct BSON
         [Test]
         public void DistinctBSONTest1()
         {
@@ -172,6 +173,73 @@ namespace EasyMongo.Test
             List<BsonValue> list = new List<BsonValue>(_reader.Distinct(collections, "Message", searchQuery));
             Assert.AreEqual(1, list.Count());
             Assert.AreEqual("One", list[0].AsString);
-        }       
+        }
+        #endregion Distinct BSON
+
+        #region    Distinct T
+        [Test]
+        public void DistinctGenericTest1()
+        {
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            List<String> list = new List<String>(_reader.Distinct<String>(MONGO_COLLECTION_1_NAME, "Message"));
+            Assert.AreEqual(3, list.Count());
+            Assert.AreEqual("One", list[0]);
+            Assert.AreEqual("Two", list[1]);
+            Assert.AreEqual("Three", list[2]);
+        }
+
+        [Test]
+        public void DistinctGenericTest2()
+        {
+            // get distinct message values that are not "Two" or "Three"
+            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
+            
+            AddMongoEntry("One");
+            AddMongoEntry("One");
+            AddMongoEntry("Two");
+            AddMongoEntry("Three");
+
+            List<String> list = new List<String>(_reader.Distinct<String>(MONGO_COLLECTION_1_NAME, "Message", searchQuery));
+            Assert.AreEqual(1, list.Count());
+            Assert.AreEqual("One", list[0]);
+        }
+
+        [Test]
+        public void DistinctGenericTest3()
+        {
+            AddMongoEntry("One", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("One", MONGO_COLLECTION_2_NAME);
+            AddMongoEntry("Two", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Three", MONGO_COLLECTION_2_NAME);
+
+            List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
+            List<String> list = new List<String>(_reader.Distinct<String>(collections, "Message"));
+            Assert.AreEqual(3, list.Count());
+            Assert.AreEqual("One", list[0]);
+            Assert.AreEqual("Two", list[1]);
+            Assert.AreEqual("Three", list[2]);
+        }
+
+        [Test]
+        public void DistinctGenericTest4()
+        {
+            // get distinct message values that are not "Two" or "Three"
+            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
+
+            AddMongoEntry("One", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("One", MONGO_COLLECTION_2_NAME);
+            AddMongoEntry("Two", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Three", MONGO_COLLECTION_2_NAME);
+
+            List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
+            List<String> list = new List<String>(_reader.Distinct<String>(collections, "Message", searchQuery));
+            Assert.AreEqual(1, list.Count());
+            Assert.AreEqual("One", list[0]);
+        }
+        #endregion Distinct T
     }
 }

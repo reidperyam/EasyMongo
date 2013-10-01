@@ -12,7 +12,7 @@ using EasyMongo.Contract;
 namespace EasyMongo.Database.Test
 {
     [TestFixture]
-    public class UpdaterTest : IntegrationTestFixture
+    public class DatabaseUpdaterTest : IntegrationTestFixture
     {
 
         [Test]

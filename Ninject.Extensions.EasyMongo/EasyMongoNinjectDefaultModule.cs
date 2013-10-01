@@ -39,14 +39,14 @@ namespace Ninject.Extensions.EasyMongo
             Bind(typeof(IUpdaterAsync)).To(typeof(global::EasyMongo.Async.UpdaterAsync));
 
             // bind our database r/w/u to an implementation pointing to our test server and database
-            Bind(typeof(IDatabaseReader)).To(typeof(global::EasyMongo.Database.Reader)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseWriter)).To(typeof(global::EasyMongo.Database.Writer)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseUpdater)).To(typeof(global::EasyMongo.Database.Updater)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseReader)).To(typeof(global::EasyMongo.Database.DatabaseReader)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseWriter)).To(typeof(global::EasyMongo.Database.DatabaseWriter)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseUpdater)).To(typeof(global::EasyMongo.Database.DatabaseUpdater)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
 
             // bind our collection r/w/u our test collection
-            Bind(typeof(ICollectionReader)).To(typeof(global::EasyMongo.Collection.Reader)).WithConstructorArgument("collectionName", COLLECTION_NAME);
-            Bind(typeof(ICollectionWriter)).To(typeof(global::EasyMongo.Collection.Writer)).WithConstructorArgument("collectionName", COLLECTION_NAME);
-            Bind(typeof(ICollectionUpdater)).To(typeof(global::EasyMongo.Collection.Updater)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+            Bind(typeof(ICollectionReader)).To(typeof(global::EasyMongo.Collection.CollectionReader)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+            Bind(typeof(ICollectionWriter)).To(typeof(global::EasyMongo.Collection.CollectionWriter)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+            Bind(typeof(ICollectionUpdater)).To(typeof(global::EasyMongo.Collection.CollectionUpdater)).WithConstructorArgument("collectionName", COLLECTION_NAME);
         }
     }
 }
