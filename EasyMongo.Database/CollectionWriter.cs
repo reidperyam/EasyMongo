@@ -5,7 +5,6 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
-using EasyMongo.Async;
 
 namespace EasyMongo.Database
 {

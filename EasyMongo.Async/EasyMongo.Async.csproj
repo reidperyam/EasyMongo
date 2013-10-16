@@ -59,10 +59,6 @@
       <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>
       <Name>EasyMongo.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EasyMongo\EasyMongo.csproj">
-      <Project>{3719B940-D317-4AAD-BDC0-5996B4A9289F}</Project>
-      <Name>EasyMongo</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

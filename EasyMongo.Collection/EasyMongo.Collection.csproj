@@ -56,14 +56,6 @@
       <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>
       <Name>EasyMongo.Contract</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EasyMongo.Database\EasyMongo.Database.csproj">
-      <Project>{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}</Project>
-      <Name>EasyMongo.Database</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EasyMongo\EasyMongo.csproj">
-      <Project>{3719B940-D317-4AAD-BDC0-5996B4A9289F}</Project>
-      <Name>EasyMongo</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

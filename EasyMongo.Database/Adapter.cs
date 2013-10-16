@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EasyMongo;
-using EasyMongo.Async;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
@@ -100,7 +98,7 @@ namespace EasyMongo.Database
             _mongoWriterAsync  = writerAsync;          
             _mongoUpdaterAsync = updaterAsync;
         }
-         * */
+        
 
         protected IDatabaseConnection ConnectToDatabase(IServerConnection mongoServerConnection, string databaseName)
         {
@@ -124,5 +122,6 @@ namespace EasyMongo.Database
             if (mongoDatabaseConnection == null)
                 throw new MongoDatabaseConnectionException("MongoDatabaseConnection is not initialized");
         }
+         *  * */
     }
 }
