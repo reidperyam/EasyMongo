@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>EasyMongo.Async.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
@@ -52,6 +58,7 @@
     <Compile Include="WriterAsync.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="EasyMongo.Async.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

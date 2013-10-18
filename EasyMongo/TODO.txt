@@ -5,6 +5,9 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 
 General
   
+    // TODO - Digitall sign assemblies with certificate
+	//        - http://blog.codingoutloud.com/2010/03/13/three-ways-to-tell-whether-an-assembly-dl-is-strong-named/
+	//        - https://knowledge.verisign.com/support/code-signing-support/index?page=content&id=AR190
     // TODO - Decouple DatabaseConnection and ServerConnection into async implmentations  and move async into EasyMongo.Async
 	// TODO - have AsyncWriter classes return a result in the return event - specifying success/error/etc
 	// TODO - Add interface for EasyMongo.Database.Adapter class...
@@ -49,6 +52,8 @@ General
 	//
 	// TODO - implement NCover or some unit test coverage mechanism
 	// TODO - write Ninject nunit test proving using singletons to create all of our integration testing classes results in async testing problems
+	// TODO - Investigate removal of EasyMongo.Test.Model & TestEntry ?? why is this currently needed after refactoring
+    //        of EasyMongo classes to not take a model object at construction time? I think it can be removed...
 
 Reader classes
 
