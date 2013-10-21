@@ -75,6 +75,10 @@ DocProject/Help/html
 # Click-Once directory
 publish
 
+# ILMerge Project Input Assemblies
+ILMerge/All/*.dll
+ILMerge/EasyMongo/*.dll
+
 # Publish Web Output
 *.Publish.xml
 

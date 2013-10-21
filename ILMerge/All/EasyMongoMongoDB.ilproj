@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <!--Switches-->
+  <CopyAttributes Enabled="true" />
+  <UnionDuplicates Enabled="false" />
+  <Debug Enabled="1" />
+  <Internalize Enabled="true" />
+  <MergeXml Enabled="false" />
+  <!--Signing-->
+  <Sign Enabled="true" Delay="false">D:\Documents\GitHub\EasyMongoAsync\ILMerge\All\EasyMongoMongoDB.snk</Sign>
+  <!--Logging-->
+  <Log Enabled="false"></Log>
+  <!--Assemblies-->
+  <Assemblies>
+    <Assembly>C:\TEMP\MongoDB.Driver.dll</Assembly>
+    <Assembly>C:\TEMP\MongoDB.Bson.dll</Assembly>
+    <Assembly>D:\Documents\GitHub\EasyMongoAsync\ILMerge\EasyMongo\EasyMongo.dll</Assembly>
+    <Primary>D:\Documents\GitHub\EasyMongoAsync\ILMerge\EasyMongo\EasyMongo.dll</Primary>
+  </Assemblies>
+  <!--Output-->
+  <OutputAssembly>D:\Documents\GitHub\EasyMongoAsync\ILMerge\All\EasyMongo.dll</OutputAssembly>
+  <Framework>.NET Framework v4.0 Client</Framework>
+</Settings>
