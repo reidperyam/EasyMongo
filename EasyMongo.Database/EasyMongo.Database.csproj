@@ -52,10 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adapter.cs" />
-    <Compile Include="CollectionUpdater.cs" />
-    <Compile Include="CollectionWriter.cs" />
-    <Compile Include="CollectionReader.cs" />
+    <Compile Include="DatabaseUpdater.cs" />
+    <Compile Include="DatabaseWriter.cs" />
+    <Compile Include="DatabaseReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

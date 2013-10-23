@@ -43,6 +43,5 @@ namespace EasyMongo
             get;
             set;
         }
-
     }
 }

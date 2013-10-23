@@ -5,6 +5,29 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 
 General
   
+     // 1
+    // TODO - implement IWriter<T>, Writer<T>
+	// TODO - implement IWriterAsync<T>, WriterAsync<T>
+    // TODO - implement IUpdater<T>, Updater<T>
+	// TODO - implement IUpdaterAsync<T>, UpdaterAsync<T>
+    // TODO - Add unit tests for new Reader<T>/Updater<T>/Writer<T> && ReaderAsync<T>/UpdaterAsync<T>/WriterAsync<T>
+
+	// 2
+	// TODO - implement IDatabaseReader<T>, DatabaseReader<T>
+	// TODO - implement IDatabaseWriter<T>, DatabaseWriter<T>
+	// TODO - implement IDatabaseUpdater<T>, DatabaseUpdater<T>
+    // TODO - Add unit tests for new DatabaseReader<T>/DatabaseUpdater<T>/DatabaseWriter<T>
+
+	// 3
+	// TODO - implement ICollectionReader<T>, CollectionReader<T>
+	// TODO - implement ICollectionWriter<T>, CollectionWriter<T>
+	// TODO - implement ICollectionUpdater<T>, CollectionUpdater<T>
+    // TODO - Add unit tests for new CollectionReader<T>/CollectionUpdater<T>/CollectionWriter<T>
+
+    // TODO - Remove Database.Adapter class - it's no longer needed with constructor injection
+    // TODO - remove IReader.Distinct<BsonValue>(), IReaderAsync().Distinct<BsonValue>(),IDatabaseReader.Distinct<BsonValue>(), ICollectionReader.Distinct<BsonValue>() overrides...
+	// TODO - investigate need for underlying MongoDB Aggregate methods... are these similiar to Distinct fuctionality?
+    // TODO - integrate or remove EasyMongo.EasyMongoEntry ?
     // TODO - Digitall sign assemblies with certificate
 	//        - http://blog.codingoutloud.com/2010/03/13/three-ways-to-tell-whether-an-assembly-dl-is-strong-named/
 	//        - https://knowledge.verisign.com/support/code-signing-support/index?page=content&id=AR190

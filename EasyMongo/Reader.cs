@@ -346,4 +346,84 @@ namespace EasyMongo
         #endregion Distinct Across Multiple Collections T
         #endregion Methods
     }
+
+    public class Reader<T> : IReader<T>
+    {
+        private IReader _reader;
+
+        public Reader(IReader reader)
+        {
+            _reader = reader;
+        }
+
+        public IEnumerable<T> Read(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _reader.Read<T>(collectionName, dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _reader.Read<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern)
+        {
+            return _reader.Read<T>(collectionName, fieldName, regexPattern);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
+        {
+            return _reader.Read<T>(collectionNames, fieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _reader.Read<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        {
+            return _reader.Read<T>(collectionNames, fieldName, regexPattern);
+        }
+
+        //public IEnumerable<BsonValue> Distinct(string collectionName, string fieldName)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<BsonValue> Distinct(string collectionName, string fieldName, IMongoQuery query)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        IEnumerable<T> IReader<T>.Distinct(string collectionName, string fieldName)
+        {
+            return _reader.Distinct<T>(collectionName, fieldName);
+        }
+
+        IEnumerable<T> IReader<T>.Distinct(string collectionName, string fieldName, IMongoQuery query)
+        {
+            return _reader.Distinct<T>(collectionName, fieldName, query);
+        }
+
+        IEnumerable<T> IReader<T>.Distinct(IEnumerable<string> collectionNames, string fieldName)
+        {
+            return _reader.Distinct<T>(collectionNames, fieldName);
+        }
+
+        IEnumerable<T> IReader<T>.Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        {
+            return _reader.Distinct<T>(collectionNames, fieldName, query);
+        }
+    }
 }

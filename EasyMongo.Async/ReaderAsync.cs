@@ -197,4 +197,68 @@ namespace EasyMongo.Async
         }
         #endregion Callback methods
     }
+
+    public class ReaderAsync<T> : IReaderAsync<T>
+    {
+        public event ReadCompletedEvent AsyncReadCompleted;
+        public event DistinctBSONCompletedEvent AsyncDistinctBSONCompleted;
+        public event DistinctCompletedEvent AsyncDistinctCompleted;
+
+        private IReaderAsync _reader;
+
+        public ReaderAsync(IReaderAsync reader)
+        {
+            _reader = reader;
+        }
+
+        void IReaderAsync<T>.ReadAsync(string collectionName, string fieldName, string regexPattern)
+        {
+            _reader.ReadAsync<T>(collectionName, fieldName, regexPattern);
+        }
+
+        void IReaderAsync<T>.ReadAsync(string collectionName, string fieldName, DateTime start, DateTime end)
+        {
+            _reader.ReadAsync<T>(collectionName, fieldName, start, end);
+        }
+
+        void IReaderAsync<T>.ReadAsync(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            _reader.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        void IReaderAsync<T>.ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        {
+            _reader.ReadAsync<T>(collectionNames, fieldName, regexPattern);
+        }
+
+        void IReaderAsync<T>.ReadAsync(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
+        {
+            _reader.ReadAsync<T>(collectionNames, fieldName, start, end);
+        }
+
+        void IReaderAsync<T>.ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            _reader.ReadAsync<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        void IReaderAsync<T>.DistinctAsync(string collectionName, string fieldName)
+        {
+            _reader.DistinctAsync<T>(collectionName, fieldName);
+        }
+
+        void IReaderAsync<T>.DistinctAsync(string collectionName, string fieldName, IMongoQuery query)
+        {
+            _reader.DistinctAsync<T>(collectionName, fieldName, query);
+        }
+
+        void IReaderAsync<T>.DistinctAsync(IEnumerable<string> collectionNames, string fieldName)
+        {
+            _reader.DistinctAsync<T>(collectionNames, fieldName);
+        }
+
+        void IReaderAsync<T>.DistinctAsync(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        {
+            _reader.DistinctAsync<T>(collectionNames, fieldName, query);
+        }
+    }
 }

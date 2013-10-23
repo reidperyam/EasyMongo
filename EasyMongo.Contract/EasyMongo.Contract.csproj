@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IReaderAsyncT.cs" />
+    <Compile Include="IDatabaseReaderT.cs" />
+    <Compile Include="IReaderT.cs" />
     <Compile Include="IDatabaseUpdater.cs" />
     <Compile Include="ICollectionUpdater.cs" />
     <Compile Include="IEasyMongoEntry.cs" />
