@@ -35,4 +35,33 @@ namespace EasyMongo.Async
                 AsyncWriteCompleted(asyncRes);
         }
     }
+
+    public class WriterAsync<T> : IWriterAsync<T>
+    {
+        public event WriteCompletedEvent AsyncWriteCompleted;
+
+        IWriter _mongoWriter;
+
+        public WriterAsync(IWriter mongoWriter)
+        {
+            _mongoWriter = mongoWriter;
+        }
+
+        public void WriteAsync(string collectionName, T entry)
+        {
+            new Action<string, T>(_mongoWriter.Write).BeginInvoke(collectionName, entry, Callback, null);
+        }
+
+        private void Callback(IAsyncResult asyncRes)
+        {
+            // TODO - have invoked async method return a result
+            //
+            //AsyncResult ares = (AsyncResult)asyncRes;
+            //var delg = (dynamic)ares.AsyncDelegate;
+            //dynamic result = delg.EndInvoke(asyncRes);
+
+            if (AsyncWriteCompleted != null)
+                AsyncWriteCompleted(asyncRes);
+        }
+    }
 }

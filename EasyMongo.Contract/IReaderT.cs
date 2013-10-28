@@ -74,15 +74,9 @@ namespace EasyMongo.Contract
         /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
         IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
 
-        // TODO - add overloads to these methods returning IEnumberable<T>...
-        //IEnumerable<BsonValue> Distinct(string collectionName, string fieldName);
-        //IEnumerable<BsonValue> Distinct(string collectionName, string fieldName, IMongoQuery query);
-        //IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName);
-        //IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
-
-        IEnumerable<T> Distinct(string collectionName, string fieldName);
-        IEnumerable<T> Distinct(string collectionName, string fieldName, IMongoQuery query);
-        IEnumerable<T> Distinct(IEnumerable<string> collectionNames, string fieldName);
-        IEnumerable<T> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+        IEnumerable<Y> Distinct<Y>(string collectionName, string fieldName);
+        IEnumerable<Y> Distinct<Y>(string collectionName, string fieldName, IMongoQuery query);
+        IEnumerable<Y> Distinct<Y>(IEnumerable<string> collectionNames, string fieldName);
+        IEnumerable<Y> Distinct<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
     }
 }

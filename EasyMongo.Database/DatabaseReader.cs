@@ -11,7 +11,6 @@ namespace EasyMongo.Database
     public class DatabaseReader : IDatabaseReader
     {
         public event ReadCompletedEvent AsyncReadCompleted;
-        public event DistinctBSONCompletedEvent AsyncDistinctBSONCompleted;
         public event DistinctCompletedEvent AsyncDistinctCompleted;
 
         protected IReader _mongoReader;
@@ -26,9 +25,8 @@ namespace EasyMongo.Database
             _mongoReader = reader;
             _mongoReaderAsync = readerAsync;
 
-            _mongoReaderAsync.AsyncReadCompleted         += new ReadCompletedEvent(_mongoReaderAsync_ReadCompleted);
-            _mongoReaderAsync.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
-            _mongoReaderAsync.AsyncDistinctCompleted     += new DistinctCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
+            _mongoReaderAsync.AsyncReadCompleted     += new ReadCompletedEvent(_mongoReaderAsync_ReadCompleted);
+            _mongoReaderAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
         }
 
         #region    Synchronous
@@ -63,24 +61,6 @@ namespace EasyMongo.Database
             return _mongoReader.Read<T>(collectionNames, dateTimeFieldName, start, end);
         }
         #endregion Read
-        #region Distinct BSON
-        public IEnumerable<BsonValue> Distinct(string collectionName, string fieldName)
-        {
-            return _mongoReader.Distinct(collectionName, fieldName);
-        }
-        public IEnumerable<BsonValue> Distinct(string collectionName, string fieldName, IMongoQuery query)
-        {
-            return _mongoReader.Distinct(collectionName, fieldName, query);
-        }
-        public IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName)
-        {
-            return _mongoReader.Distinct(collectionNames, fieldName);
-        }
-        public IEnumerable<BsonValue> Distinct(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
-        {
-            return _mongoReader.Distinct(collectionNames, fieldName, query);
-        }
-        #endregion Distinct BSON
         #region Distinct T
         public IEnumerable<T> Distinct<T>(string collectionName, string fieldName)
         {
@@ -133,24 +113,6 @@ namespace EasyMongo.Database
             _mongoReaderAsync.ReadAsync<T>(collectionNames, dateTimeFieldName, start, end);
         }
         #endregion Read
-        #region Distinct BSON
-        public void DistinctAsync(string collectionName, string fieldName)
-        {
-            _mongoReaderAsync.DistinctAsync(collectionName, fieldName);
-        }
-        public void DistinctAsync(string collectionName, string fieldName, IMongoQuery query)
-        {
-            _mongoReaderAsync.DistinctAsync(collectionName, fieldName, query);
-        }
-        public void DistinctAsync(IEnumerable<string> collectionNames, string fieldName)
-        {
-            _mongoReaderAsync.DistinctAsync(collectionNames, fieldName);
-        }
-        public void DistinctAsync(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
-        {
-            _mongoReaderAsync.DistinctAsync(collectionNames, fieldName, query);
-        }
-        #endregion Distinct BSON
         #region Distinct T
         public void DistinctAsync<T>(string collectionName, string fieldName)
         {
@@ -180,12 +142,6 @@ namespace EasyMongo.Database
         {
             if (AsyncReadCompleted != null)
                 AsyncReadCompleted(e, ex);
-        }
-
-        void _mongoReaderAsync_AsyncDistinctCompleted(IEnumerable<BsonValue> e, Exception ex)
-        {
-            if (AsyncDistinctBSONCompleted != null)
-                AsyncDistinctBSONCompleted(e, ex);
         }
 
         void _mongoReaderAsync_AsyncDistinctCompleted(object e, Exception ex)

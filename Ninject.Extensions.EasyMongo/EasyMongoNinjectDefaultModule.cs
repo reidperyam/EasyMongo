@@ -30,23 +30,31 @@ namespace Ninject.Extensions.EasyMongo
             Bind<IServerConnection>().To<ServerConnection>().InSingletonScope().WithConstructorArgument("connectionString", CONNECTION_STRING);
             Bind(typeof(IDatabaseConnection)).To<DatabaseConnection>().InSingletonScope().WithConstructorArgument("databaseName", DATABASE_NAME);
 
-            Bind(typeof(IReader)).To(typeof(global::EasyMongo.Reader));
-            Bind(typeof(IWriter)).To(typeof(global::EasyMongo.Writer));
-            Bind(typeof(IUpdater)).To(typeof(global::EasyMongo.Updater));
+            Bind(typeof(IReader)).To(typeof(Reader));
+            Bind(typeof(IWriter)).To(typeof(Writer));
+            Bind(typeof(IUpdater)).To(typeof(Updater));
 
-            Bind(typeof(IReaderAsync)).To(typeof(global::EasyMongo.Async.ReaderAsync));
-            Bind(typeof(IWriterAsync)).To(typeof(global::EasyMongo.Async.WriterAsync));
-            Bind(typeof(IUpdaterAsync)).To(typeof(global::EasyMongo.Async.UpdaterAsync));
+            Bind(typeof(IReader<>)).To(typeof(Reader<>));
+            Bind(typeof(IWriter<>)).To(typeof(Writer<>));
+            Bind(typeof(IUpdater<>)).To(typeof(Updater<>));
+
+            Bind(typeof(IReaderAsync)).To(typeof(ReaderAsync));
+            Bind(typeof(IWriterAsync)).To(typeof(WriterAsync));
+            Bind(typeof(IUpdaterAsync)).To(typeof(UpdaterAsync));
+
+            Bind(typeof(IReaderAsync<>)).To(typeof(ReaderAsync<>));
+            Bind(typeof(IWriterAsync<>)).To(typeof(WriterAsync<>));
+            Bind(typeof(IUpdaterAsync<>)).To(typeof(UpdaterAsync<>));
 
             // bind our database r/w/u to an implementation pointing to our test server and database
-            Bind(typeof(IDatabaseReader)).To(typeof(global::EasyMongo.Database.DatabaseReader)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseWriter)).To(typeof(global::EasyMongo.Database.DatabaseWriter)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseUpdater)).To(typeof(global::EasyMongo.Database.DatabaseUpdater)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseReader)).To(typeof(DatabaseReader)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseWriter)).To(typeof(DatabaseWriter)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseUpdater)).To(typeof(DatabaseUpdater)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
 
             // bind our collection r/w/u our test collection
-            Bind(typeof(ICollectionReader)).To(typeof(global::EasyMongo.Collection.CollectionReader)).WithConstructorArgument("collectionName", COLLECTION_NAME);
-            Bind(typeof(ICollectionWriter)).To(typeof(global::EasyMongo.Collection.CollectionWriter)).WithConstructorArgument("collectionName", COLLECTION_NAME);
-            Bind(typeof(ICollectionUpdater)).To(typeof(global::EasyMongo.Collection.CollectionUpdater)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+            Bind(typeof(ICollectionReader)).To(typeof(CollectionReader)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+            Bind(typeof(ICollectionWriter)).To(typeof(CollectionWriter)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+            Bind(typeof(ICollectionUpdater)).To(typeof(CollectionUpdater)).WithConstructorArgument("collectionName", COLLECTION_NAME);
         }
     }
 }

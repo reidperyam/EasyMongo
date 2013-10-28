@@ -6,10 +6,6 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 General
   
      // 1
-    // TODO - implement IWriter<T>, Writer<T>
-	// TODO - implement IWriterAsync<T>, WriterAsync<T>
-    // TODO - implement IUpdater<T>, Updater<T>
-	// TODO - implement IUpdaterAsync<T>, UpdaterAsync<T>
     // TODO - Add unit tests for new Reader<T>/Updater<T>/Writer<T> && ReaderAsync<T>/UpdaterAsync<T>/WriterAsync<T>
 
 	// 2
@@ -24,8 +20,8 @@ General
 	// TODO - implement ICollectionUpdater<T>, CollectionUpdater<T>
     // TODO - Add unit tests for new CollectionReader<T>/CollectionUpdater<T>/CollectionWriter<T>
 
+	// TODO - More elegantly implement component's events -- see ReaderAsync<T>'s impl of IReaderAsync's events
     // TODO - Remove Database.Adapter class - it's no longer needed with constructor injection
-    // TODO - remove IReader.Distinct<BsonValue>(), IReaderAsync().Distinct<BsonValue>(),IDatabaseReader.Distinct<BsonValue>(), ICollectionReader.Distinct<BsonValue>() overrides...
 	// TODO - investigate need for underlying MongoDB Aggregate methods... are these similiar to Distinct fuctionality?
     // TODO - integrate or remove EasyMongo.EasyMongoEntry ?
     // TODO - Digitall sign assemblies with certificate

@@ -10,7 +10,6 @@ namespace EasyMongo.Contract
     public interface IReaderAsync<T>
     {
         event ReadCompletedEvent AsyncReadCompleted;
-        event DistinctBSONCompletedEvent AsyncDistinctBSONCompleted;
         event DistinctCompletedEvent AsyncDistinctCompleted;
 
         void ReadAsync(string collectionName, string fieldName, string regexPattern);
@@ -21,14 +20,9 @@ namespace EasyMongo.Contract
         void ReadAsync(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end);
         void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
 
-        //void DistinctAsync(string collectionName, string fieldName);
-        //void DistinctAsync(string collectionName, string fieldName, IMongoQuery query);
-        //void DistinctAsync(IEnumerable<string> collectionNames, string fieldName);
-        //void DistinctAsync(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
-
-        void DistinctAsync(string collectionName, string fieldName);
-        void DistinctAsync(string collectionName, string fieldName, IMongoQuery query);
-        void DistinctAsync(IEnumerable<string> collectionNames, string fieldName);
-        void DistinctAsync(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+        void DistinctAsync<Y>(string collectionName, string fieldName);
+        void DistinctAsync<Y>(string collectionName, string fieldName, IMongoQuery query);
+        void DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName);
+        void DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
     }
 }

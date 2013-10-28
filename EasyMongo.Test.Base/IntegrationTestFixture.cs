@@ -51,12 +51,16 @@ namespace EasyMongo.Test.Base
             _reader  = _configurator.Kernel.TryGet<IReader>();
             _writer  = _configurator.Kernel.TryGet<IWriter>();
             _updater = _configurator.Kernel.TryGet<IUpdater>();
+
+            // Generic classes
+            _readerT  = _configurator.Kernel.TryGet<IReader<TestEntry>>();
+            _writerT  = _configurator.Kernel.TryGet<IWriter<TestEntry>>();
+            _updaterT = _configurator.Kernel.TryGet<IUpdater<TestEntry>>();
             #endregion EasyMongo.Test
 
             #region    EasyMongo.Async.Test
             _readerAsync = _configurator.Kernel.TryGet<IReaderAsync>();
             _readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_reader_AsyncReadCompleted);
-            _readerAsync.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_readerAsync_AsyncDistinctBSONCompleted);
             _readerAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsync_AsyncDistinctCompleted);
 
             _writerAsync = _configurator.Kernel.TryGet<IWriterAsync>();
@@ -65,12 +69,17 @@ namespace EasyMongo.Test.Base
             _updaterAsync = _configurator.Kernel.TryGet<IUpdaterAsync>();
             _updaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsync_AsyncFindAndModifyCompleted);
             _updaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsync_AsyncFindAndRemoveCompleted);
+
+            // Generic classes
+            _readerAsyncT = _configurator.Kernel.TryGet<IReaderAsync<TestEntry>>();
+            _readerAsyncT.AsyncReadCompleted     += new ReadCompletedEvent(_readerAsyncT_AsyncReadCompleted);
+            _readerAsyncT.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsyncT_AsyncDistinctCompleted);
+
             #endregion EasyMongo.Async.Test
 
             #region    EasyMongo.Database.Test
             _databaseReader = _configurator.Kernel.TryGet<IDatabaseReader>();
             _databaseReader.AsyncReadCompleted += new ReadCompletedEvent(_databaseReader_AsyncReadCompleted);
-            _databaseReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_databaseReader_AsyncDistinctBSONCompleted);
             _databaseReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_databaseReader_AsyncDistinctCompleted);
 
             _databaseWriter = _configurator.Kernel.TryGet<IDatabaseWriter>();
@@ -84,7 +93,6 @@ namespace EasyMongo.Test.Base
             #region    EasyMongo.Collection.Test
             _collectionReader = _configurator.Kernel.TryGet<ICollectionReader>();
             _collectionReader.AsyncReadCompleted += new ReadCompletedEvent(_collectionReader_AsyncReadCompleted);
-            _collectionReader.AsyncDistinctBSONCompleted += new DistinctBSONCompletedEvent(_collectionReader_AsyncDistinctBSONCompleted);
             _collectionReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_collectionReader_AsyncDistinctCompleted);
 
             _collectionWriter = _configurator.Kernel.TryGet<ICollectionWriter>();
@@ -145,9 +153,17 @@ namespace EasyMongo.Test.Base
         protected IUpdater _updater;
         protected IReader _reader;
 
+        protected IWriter<TestEntry> _writerT;
+        protected IUpdater<TestEntry> _updaterT;
+        protected IReader<TestEntry> _readerT;
+
         protected IReaderAsync _readerAsync;
         protected IWriterAsync _writerAsync;
         protected IUpdaterAsync _updaterAsync;
+
+        protected IReaderAsync<TestEntry> _readerAsyncT;
+        protected IWriterAsync<TestEntry> _writerAsyncT;
+        protected IUpdaterAsync<TestEntry> _updaterAsyncT;
 
         protected IDatabaseReader _databaseReader;
         protected IDatabaseWriter _databaseWriter;
@@ -270,15 +286,25 @@ namespace EasyMongo.Test.Base
             _readerAutoResetEvent.Set();
         }
 
-        protected void _readerAsync_AsyncDistinctBSONCompleted(IEnumerable<BsonValue> e, Exception ex)
+        #region    Generics
+        void _readerAsyncT_AsyncReadCompleted(object e, Exception ex)
+        {
+            _asyncException = ex;
+            IEnumerable<TestEntry> results = (IEnumerable<TestEntry>)e;
+            _asyncReadResults.AddRange(results);
+            _readerAutoResetEvent.Set();
+        }
+        void _readerAsyncT_AsyncDistinctCompleted(object e, Exception ex)
         {
             _asyncException = ex;
 
             if (e != null)
-                _asyncDistinctBSONResults.AddRange(e);
+                _asyncDistinctResults.AddRange((IEnumerable<string>)e);
 
             _readerAutoResetEvent.Set();
         }
+        #endregion Generics
+
         #endregion EasyMongo.Async
 
         #region    EasyMongo.Database
@@ -287,13 +313,6 @@ namespace EasyMongo.Test.Base
             _asyncException = ex;
             IEnumerable<TestEntry> results = (IEnumerable<TestEntry>)e;
             _asyncReadResults.AddRange(results);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _databaseReader_AsyncDistinctBSONCompleted(IEnumerable<BsonValue> e, Exception ex)
-        {
-            _asyncException = ex;
-            _asyncDistinctBSONResults.AddRange(e);
             _readerAutoResetEvent.Set();
         }
 
@@ -334,13 +353,6 @@ namespace EasyMongo.Test.Base
             _asyncException = ex;
             IEnumerable<TestEntry> results = (IEnumerable<TestEntry>)e;// HEY! Can this instead be IEnumerable<TestEntry>
             _asyncReadResults.AddRange(results);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _collectionReader_AsyncDistinctBSONCompleted(IEnumerable<BsonValue> e, Exception ex)
-        {
-            _asyncException = ex;
-            _asyncDistinctBSONResults.AddRange(e);
             _readerAutoResetEvent.Set();
         }
 

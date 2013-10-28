@@ -28,4 +28,25 @@ namespace EasyMongo
             return _databaseConnection.GetCollection<T>(collectionName);
         }
     }
+
+    public class Writer<T> : IWriter<T>
+    {
+        private IDatabaseConnection _databaseConnection;
+
+        public Writer(IDatabaseConnection databaseConnection)
+        {
+            _databaseConnection = databaseConnection;
+        }
+
+        public void Write(string collectionName, T entry)
+        {
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
+            collection.Save(entry);
+        }
+
+        private MongoCollection<T> GetCollection(string collectionName)
+        {
+            return _databaseConnection.GetCollection<T>(collectionName);
+        }
+    }
 }

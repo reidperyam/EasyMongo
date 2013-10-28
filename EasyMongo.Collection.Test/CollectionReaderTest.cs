@@ -83,73 +83,9 @@ namespace EasyMongo.Collection.Test
             Assert.AreEqual(1, _results.Count());
         }
 
-        #region    Distinct BSON
-        [Test]
-        public void DistinctBSONTest1()
-        {
-            AddMongoEntry("One");
-            AddMongoEntry("One");
-            AddMongoEntry("Two");
-            AddMongoEntry("Three");
-            List<BsonValue> list = new List<BsonValue>(_collectionReader.Distinct("Message"));
-            Assert.AreEqual(3, list.Count());
-            Assert.AreEqual("One", list[0].AsString);
-            Assert.AreEqual("Two", list[1].AsString);
-            Assert.AreEqual("Three", list[2].AsString);
-        }
-
-        [Test]
-        public void DistinctBSONTest2()
-        {
-            // get distinct message values that are not "Two" or "Three"
-            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
-
-            AddMongoEntry("One");
-            AddMongoEntry("One");
-            AddMongoEntry("Two");
-            AddMongoEntry("Three");
-            List<BsonValue> list = new List<BsonValue>(_collectionReader.Distinct("Message", searchQuery));
-            Assert.AreEqual(1, list.Count());
-            Assert.AreEqual("One", list[0].AsString);
-        }
-
-        [Test]
-        public void DistinctBSONAsyncTest1()
-        {
-            AddMongoEntry("One");
-            AddMongoEntry("One");
-            AddMongoEntry("Two");
-            AddMongoEntry("Three");
-
-            _collectionReader.DistinctAsync("Message");
-            _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(3, _asyncDistinctBSONResults.Count());
-            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
-            Assert.AreEqual("Two", _asyncDistinctBSONResults[1].AsString);
-            Assert.AreEqual("Three", _asyncDistinctBSONResults[2].AsString);
-        }
-
-        [Test]
-        public void DistinctBSONAsyncTest2()
-        {
-            // get distinct message values that are not "Two" or "Three"
-            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
-
-            AddMongoEntry("One");
-            AddMongoEntry("One");
-            AddMongoEntry("Two");
-            AddMongoEntry("Three");
-
-            _collectionReader.DistinctAsync("Message", searchQuery);
-            _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(1, _asyncDistinctBSONResults.Count());
-            Assert.AreEqual("One", _asyncDistinctBSONResults[0].AsString);
-        }
-        #endregion Distinct BSON
-
         #region    Distinct T
         [Test]
-        public void DistinctGenericTest1()
+        public void DistinctTest1()
         {
             AddMongoEntry("One");
             AddMongoEntry("One");
@@ -165,7 +101,7 @@ namespace EasyMongo.Collection.Test
         }
 
         [Test]
-        public void DistinctGenericTest2()
+        public void DistinctTest2()
         {
             // get distinct message values that are not "Two" or "Three"
             var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
@@ -182,7 +118,7 @@ namespace EasyMongo.Collection.Test
         }
 
         [Test]
-        public void DistinctGenericAsyncTest1()
+        public void DistinctAsyncTest1()
         {
             AddMongoEntry("One");
             AddMongoEntry("One");
@@ -199,7 +135,7 @@ namespace EasyMongo.Collection.Test
         }
 
         [Test]
-        public void DistinctGenericAsyncTest2()
+        public void DistinctAsyncTest2()
         {
             // get distinct message values that are not "Two" or "Three"
             var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
