@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WriterAsyncTTest.cs" />
+    <Compile Include="UpdaterAsyncTTest.cs" />
     <Compile Include="ReaderAsyncTTest.cs" />
     <Compile Include="DatabaseConnectionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

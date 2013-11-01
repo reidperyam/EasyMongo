@@ -31,22 +31,16 @@ namespace EasyMongo
 
     public class Writer<T> : IWriter<T>
     {
-        private IDatabaseConnection _databaseConnection;
+        private IWriter _writer;
 
-        public Writer(IDatabaseConnection databaseConnection)
+        public Writer(IWriter writer)
         {
-            _databaseConnection = databaseConnection;
+            _writer = writer;
         }
 
         public void Write(string collectionName, T entry)
         {
-            var collection = _databaseConnection.GetCollection<T>(collectionName);
-            collection.Save(entry);
-        }
-
-        private MongoCollection<T> GetCollection(string collectionName)
-        {
-            return _databaseConnection.GetCollection<T>(collectionName);
+            _writer.Write<T>(collectionName, entry);
         }
     }
 }

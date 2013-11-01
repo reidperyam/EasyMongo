@@ -52,6 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICollectionReaderT.cs" />
+    <Compile Include="ICollectionUpdaterT.cs" />
+    <Compile Include="ICollectionWriterT.cs" />
+    <Compile Include="IDatabaseWriterT.cs" />
+    <Compile Include="IDatabaseUpdaterT.cs" />
     <Compile Include="IWriterAsyncT.cs" />
     <Compile Include="IUpdaterAsyncT.cs" />
     <Compile Include="IUpdaterT.cs" />

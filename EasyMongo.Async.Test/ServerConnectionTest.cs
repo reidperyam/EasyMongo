@@ -23,7 +23,8 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(ConnectionState.NotConnected, _mongoServerConnection.ConnectionState);
             Assert.AreEqual(ConnectionResult.Empty,_serverConnectionResult);
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
-            Assert.AreEqual(ConnectionState.Connecting,_mongoServerConnection.ConnectionState);
+            Assert.IsTrue(_mongoServerConnection.ConnectionState == ConnectionState.Connecting || 
+                          _mongoServerConnection.ConnectionState == ConnectionState.Connected);
             Assert.AreEqual(ConnectionResult.Empty,_serverConnectionResult);
             _serverConnectionAutoResetEvent.WaitOne();
             Assert.AreEqual(ConnectionState.Connected,_mongoServerConnection.ConnectionState);/**/

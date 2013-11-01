@@ -9,6 +9,7 @@ using EasyMongo.Test.Base;
 using EasyMongo.Contract;
 using Ninject;
 using Ninject.Modules;
+using EasyMongo.Test.Model;
 
 namespace EasyMongo.Test.Base
 {
@@ -62,6 +63,86 @@ namespace EasyMongo.Test.Base
             int i;
             for ( i = 0; !serverConnection.CanConnect(); ++i)
             ;
+        }
+
+        // this test was used to demonstrate generic type inferrence on classes with arguments
+        // showing how it isn't required to specify the templated, generic class argument with
+        // some method calls
+        [Test, Ignore]
+        public void TimeStampPersistance()
+        {
+            TestEntry testEntry = new TestEntry();
+            testEntry.Message = "Hello World";
+            testEntry.TimeStamp = _beforeTest;
+
+            // This shouldn't be possible... since the method signature
+            // requires a generic type to be provided with the call...
+            _databaseWriter.Write(MONGO_COLLECTION_1_NAME, testEntry);
+            IEnumerable<TestEntry> returned = ReadMongoEntry<TestEntry>(MONGO_COLLECTION_1_NAME,testEntry.Message);
+
+            Assert.IsNotEmpty(returned);
+            Assert.AreEqual(1, returned.Count());
+
+            Assert.AreEqual(_beforeTest, testEntry.TimeStamp);
+            Assert.AreEqual(testEntry.TimeStamp, returned.First().TimeStamp);
+            Assert.AreEqual(testEntry.Message, returned.First().Message);
+            Assert.AreEqual(testEntry.ID, returned.First().ID);
+
+            returned = null;
+            DateTime now = System.DateTime.Now;
+            testEntry.TimeStamp = now; 
+
+            // This shouldn't be possible... since the method signature
+            // requires a generic type to be provided with the call...
+            _databaseWriter.Write(MONGO_COLLECTION_1_NAME, testEntry);
+            returned = ReadMongoEntry<TestEntry>(MONGO_COLLECTION_1_NAME, testEntry.Message);
+
+            Assert.IsNotEmpty(returned);
+            Assert.AreEqual(1, returned.Count());
+
+            Assert.AreEqual(now, testEntry.TimeStamp);
+            Assert.AreEqual(testEntry.TimeStamp, returned.First().TimeStamp);
+            Assert.AreEqual(testEntry.Message, returned.First().Message);
+            Assert.AreEqual(testEntry.ID, returned.First().ID);
+        }
+
+
+        [Test, Ignore]
+        public void GenericVersusNonGenericTest()
+        {
+            TestEntry testEntry = new TestEntry();
+            testEntry.Message = "Hello World";
+            testEntry.TimeStamp = _beforeTest;
+
+            // This shouldn't be possible... since the method signature
+            // requires a generic type to be provided with the call...
+            _databaseWriter.Write(MONGO_COLLECTION_1_NAME, testEntry);
+            IEnumerable<TestEntry> returned = ReadMongoEntry<TestEntry>(MONGO_COLLECTION_1_NAME, testEntry.Message);
+
+            Assert.IsNotEmpty(returned);
+            Assert.AreEqual(1, returned.Count());
+
+            Assert.AreEqual(_beforeTest, testEntry.TimeStamp);
+            Assert.AreEqual(testEntry.TimeStamp, returned.First().TimeStamp);
+            Assert.AreEqual(testEntry.Message, returned.First().Message);
+            Assert.AreEqual(testEntry.ID, returned.First().ID);
+
+            returned = null;
+            DateTime now = System.DateTime.Now;
+            testEntry.TimeStamp = now;
+
+            // This shouldn't be possible... since the method signature
+            // requires a generic type to be provided with the call...
+            _databaseWriter.Write(MONGO_COLLECTION_1_NAME, testEntry);
+            returned = ReadMongoEntry<TestEntry>(MONGO_COLLECTION_1_NAME, testEntry.Message);
+
+            Assert.IsNotEmpty(returned);
+            Assert.AreEqual(1, returned.Count());
+
+            Assert.AreEqual(now, testEntry.TimeStamp);
+            Assert.AreEqual(testEntry.TimeStamp, returned.First().TimeStamp);
+            Assert.AreEqual(testEntry.Message, returned.First().Message);
+            Assert.AreEqual(testEntry.ID, returned.First().ID);
         }
     }
 }

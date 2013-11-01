@@ -75,6 +75,13 @@ namespace EasyMongo.Test.Base
             _readerAsyncT.AsyncReadCompleted     += new ReadCompletedEvent(_readerAsyncT_AsyncReadCompleted);
             _readerAsyncT.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsyncT_AsyncDistinctCompleted);
 
+            _writerAsyncT = _configurator.Kernel.TryGet<IWriterAsync<TestEntry>>();
+            _writerAsyncT.AsyncWriteCompleted += new WriteCompletedEvent(_writerAsyncT_AsyncWriteCompleted);
+
+            _updaterAsyncT = _configurator.Kernel.TryGet<IUpdaterAsync<TestEntry>>();
+            _updaterAsyncT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsyncT_AsyncFindAndModifyCompleted);
+            _updaterAsyncT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsyncT_AsyncFindAndRemoveCompleted);
+
             #endregion EasyMongo.Async.Test
 
             #region    EasyMongo.Database.Test
@@ -246,9 +253,30 @@ namespace EasyMongo.Test.Base
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _writerAsync.WriteAsync(collectionName, mongoEntry);
+            _writerAsync.WriteAsync<TestEntry>(collectionName, mongoEntry);
             _writerAutoResetEvent.WaitOne();
         }
+
+        /// <summary>
+        ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsyncT class
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="collectionName"></param>
+        protected void AddMongoEntryAsyncT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        {
+            TestEntry mongoEntry = new TestEntry();
+            mongoEntry.Message = message;
+            mongoEntry.TimeStamp = DateTime.Now;
+
+            _writerAsyncT.WriteAsync(collectionName, mongoEntry);
+            _writerAutoResetEvent.WaitOne();
+        }
+
+        protected IEnumerable<T> ReadMongoEntry<T>(string collectionName, string field, string fieldName = "Message")
+        {
+            return _reader.Read<T>(collectionName, fieldName, field);
+        }
+
 
         #region    EasyMongo.Async
         protected void _updaterAsync_AsyncFindAndRemoveCompleted(WriteConcernResult result)
@@ -265,7 +293,7 @@ namespace EasyMongo.Test.Base
 
         protected void _writer_AsyncWriteCompleted(object sender)
         {
-            _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
+            _writerAutoResetEvent.Set();
         }
 
         protected void _reader_AsyncReadCompleted(object e, Exception ex)
@@ -302,6 +330,20 @@ namespace EasyMongo.Test.Base
                 _asyncDistinctResults.AddRange((IEnumerable<string>)e);
 
             _readerAutoResetEvent.Set();
+        }
+        void _updaterAsyncT_AsyncFindAndRemoveCompleted(WriteConcernResult result)
+        {
+            _writeConcernResult = result;
+            _updaterAutoResetEvent.Set();
+        }
+        void _updaterAsyncT_AsyncFindAndModifyCompleted(FindAndModifyResult result)
+        {
+            _findAndModifyResult = result;
+            _updaterAutoResetEvent.Set();
+        }
+        void _writerAsyncT_AsyncWriteCompleted(object sender)
+        {
+            _writerAutoResetEvent.Set();
         }
         #endregion Generics
 
