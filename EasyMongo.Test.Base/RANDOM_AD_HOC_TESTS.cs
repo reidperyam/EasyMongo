@@ -68,7 +68,7 @@ namespace EasyMongo.Test.Base
         // this test was used to demonstrate generic type inferrence on classes with arguments
         // showing how it isn't required to specify the templated, generic class argument with
         // some method calls
-        [Test, Ignore]
+        [Ignore,Test]
         public void TimeStampPersistance()
         {
             TestEntry testEntry = new TestEntry();
@@ -107,7 +107,7 @@ namespace EasyMongo.Test.Base
         }
 
 
-        [Test, Ignore]
+        [Ignore,Test]
         public void GenericVersusNonGenericTest()
         {
             TestEntry testEntry = new TestEntry();
