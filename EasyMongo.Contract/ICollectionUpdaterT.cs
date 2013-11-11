@@ -9,10 +9,10 @@ namespace EasyMongo.Contract
         event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
         // Are the WriteConcern overloads required or are they defined in embedded objects?
-        void Remove(IMongoQuery query);
-        void Remove(IMongoQuery query, WriteConcern writeConcern);
-        void Remove(IMongoQuery query, RemoveFlags removeFlags);
-        void Remove(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
+        WriteConcernResult Remove(IMongoQuery query);
+        WriteConcernResult Remove(IMongoQuery query, WriteConcern writeConcern);
+        WriteConcernResult Remove(IMongoQuery query, RemoveFlags removeFlags);
+        WriteConcernResult Remove(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
 
         void RemoveAsync(IMongoQuery query);
         void RemoveAsync(IMongoQuery query, WriteConcern writeConcern);
@@ -23,6 +23,7 @@ namespace EasyMongo.Contract
         FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
         FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
         FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
+
         FindAndModifyResult FindAndRemove(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy);
 
         void FindAndModifyAsync(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);

@@ -60,9 +60,9 @@ namespace Ninject.Extensions.EasyMongo
             Bind(typeof(ICollectionWriter)).To(typeof(CollectionWriter)).WithConstructorArgument("collectionName", COLLECTION_NAME);
             Bind(typeof(ICollectionUpdater)).To(typeof(CollectionUpdater)).WithConstructorArgument("collectionName", COLLECTION_NAME);
 
-            //Bind(typeof(ICollectionReader<>)).To(typeof(CollectionReader<>));
-            //Bind(typeof(ICollectionWriter<>)).To(typeof(CollectionWriter<>));
-            //Bind(typeof(ICollectionUpdater<>)).To(typeof(CollectionUpdater<>));
+            Bind(typeof(ICollectionReader<>)).To(typeof(CollectionReader<>));
+            Bind(typeof(ICollectionWriter<>)).To(typeof(CollectionWriter<>));
+            Bind(typeof(ICollectionUpdater<>)).To(typeof(CollectionUpdater<>));
         }
     }
 }

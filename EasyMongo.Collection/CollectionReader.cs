@@ -92,4 +92,100 @@ namespace EasyMongo.Collection
                 AsyncDistinctCompleted(e, ex);
         }
     }
+
+    public class CollectionReader<T> : ICollectionReader<T>
+    {
+        public event ReadCompletedEvent AsyncReadCompleted
+        {
+            add
+            {
+                lock (_collectionReader)
+                {
+                    _collectionReader.AsyncReadCompleted += value;
+                }
+            }
+            remove
+            {
+                lock (_collectionReader)
+                {
+                    _collectionReader.AsyncReadCompleted -= value;
+                }
+            }
+        }
+
+        public event DistinctCompletedEvent AsyncDistinctCompleted
+        {
+            add
+            {
+                lock (_collectionReader)
+                {
+                    _collectionReader.AsyncDistinctCompleted += value;
+                }
+            }
+            remove
+            {
+                lock (_collectionReader)
+                {
+                    _collectionReader.AsyncDistinctCompleted -= value;
+                }
+            }
+        }
+
+        private ICollectionReader _collectionReader;
+
+        public CollectionReader(ICollectionReader collectionReader)
+        {
+            _collectionReader = collectionReader;
+        }
+
+        public IEnumerable<T> Read(string fieldName, string regexPattern)
+        {
+            return _collectionReader.Read<T>(fieldName, regexPattern);
+        }
+
+        public IEnumerable<T> Read(string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _collectionReader.Read<T>(dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _collectionReader.Read<T>(fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public void ReadAsync(string fieldName, string regexPattern)
+        {
+            _collectionReader.ReadAsync<T>(fieldName, regexPattern);
+        }
+
+        public void ReadAsync(string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            _collectionReader.ReadAsync<T>(dateTimeFieldName, start, end);
+        }
+
+        public void ReadAsync(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            _collectionReader.ReadAsync<T>(fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<Y> Distinct<Y>(string fieldName)
+        {
+            return _collectionReader.Distinct<Y>(fieldName);
+        }
+
+        public IEnumerable<Y> Distinct<Y>(string fieldName, IMongoQuery query)
+        {
+            return _collectionReader.Distinct<Y>(fieldName, query);
+        }
+
+        public void DistinctAsync<Y>(string fieldName)
+        {
+            _collectionReader.DistinctAsync<Y>(fieldName);
+        }
+
+        public void DistinctAsync<Y>(string fieldName, IMongoQuery query)
+        {
+            _collectionReader.DistinctAsync<Y>(fieldName, query);
+        }
+    }
 }

@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="CollectionUpdaterTest.cs" />
     <Compile Include="CollectionWriterTest.cs" />
+    <Compile Include="CollectionUpdaterTTest.cs" />
+    <Compile Include="CollectionReaderTTest.cs" />
+    <Compile Include="CollectionWriterTTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CollectionReaderTest.cs" />
   </ItemGroup>

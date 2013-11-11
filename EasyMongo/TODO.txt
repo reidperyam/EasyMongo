@@ -9,8 +9,11 @@ General
 	// TODO - implement ICollectionReader<T>, CollectionReader<T>
 	// TODO - implement ICollectionWriter<T>, CollectionWriter<T>
 	// TODO - implement ICollectionUpdater<T>, CollectionUpdater<T>
-    // TODO - Add unit tests for new CollectionReader<T>/CollectionUpdater<T>/CollectionWriter<T>
+    // TODO - Add unit tests for new CollectionReader<T>/CollectionUpdater<T>/CollectionWriter<T> Update CollectionUpdater's Remove test to check returned result
 
+	// TODO - automate assembly merging on build
+	// TODO - automate assembly versioning on build
+	// TODO - add simple construction to generic implementations (so that users don't have to construct underlying impl first in order to use).
 	// TODO - More elegantly implement component's events -- see ReaderAsync<T>'s impl of IReaderAsync's events
     // TODO - Remove Database.Adapter class - it's no longer needed with constructor injection
 	// TODO - investigate need for underlying MongoDB Aggregate methods... are these similiar to Distinct fuctionality?

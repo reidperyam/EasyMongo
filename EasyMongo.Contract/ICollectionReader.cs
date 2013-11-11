@@ -18,10 +18,10 @@ namespace EasyMongo.Contract
         void ReadAsync(string dateTimeFieldName, DateTime start, DateTime end);
         void ReadAsync(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
 
-        IEnumerable<T> Distinct(string fieldName);
-        IEnumerable<T> Distinct(string fieldName, IMongoQuery query);
+        IEnumerable<Y> Distinct<Y>(string fieldName);
+        IEnumerable<Y> Distinct<Y>(string fieldName, IMongoQuery query);
 
-        void DistinctAsync(string fieldName);
-        void DistinctAsync(string fieldName, IMongoQuery query);
+        void DistinctAsync<Y>(string fieldName);
+        void DistinctAsync<Y>(string fieldName, IMongoQuery query);
     }
 }

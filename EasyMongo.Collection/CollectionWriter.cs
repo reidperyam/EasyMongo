@@ -42,4 +42,42 @@ namespace EasyMongo.Collection
                 AsyncWriteCompleted(sender);
         }
     }
+
+    public class CollectionWriter<T> : ICollectionWriter<T>
+    {
+        public event WriteCompletedEvent AsyncWriteCompleted
+        {
+            add
+            {
+                lock (_collectionWriter)
+                {
+                    _collectionWriter.AsyncWriteCompleted += value;
+                }
+            }
+            remove
+            {
+                lock (_collectionWriter)
+                {
+                    _collectionWriter.AsyncWriteCompleted -= value;
+                }
+            }
+        }
+
+        private ICollectionWriter _collectionWriter;
+
+        public CollectionWriter(ICollectionWriter collectionWriter)
+        {
+            _collectionWriter = collectionWriter;
+        }
+
+        public void Write(T entry)
+        {
+            _collectionWriter.Write<T>(entry);
+        }
+
+        public void WriteAsync(T entry)
+        {
+            _collectionWriter.Write<T>(entry);
+        }
+    }
 }

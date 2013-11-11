@@ -124,15 +124,15 @@ namespace EasyMongo.Test.Base
 
             // generic classes
             _collectionReaderT = _configurator.Kernel.TryGet<ICollectionReader<TestEntry>>();
-            //_collectionReaderT.AsyncReadCompleted += new ReadCompletedEvent(_collectionReader_AsyncReadCompleted);
-            //_collectionReaderT.AsyncDistinctCompleted += new DistinctCompletedEvent(_collectionReaderT_AsyncDistinctCompleted);
+            _collectionReaderT.AsyncReadCompleted += new ReadCompletedEvent(_collectionReaderT_AsyncReadCompleted);
+            _collectionReaderT.AsyncDistinctCompleted += new DistinctCompletedEvent(_collectionReaderT_AsyncDistinctCompleted);
 
             _collectionWriterT = _configurator.Kernel.TryGet<ICollectionWriter<TestEntry>>();
-            //_collectionWriterT.AsyncWriteCompleted += new WriteCompletedEvent(_collectionWriterT_AsyncWriteCompleted);
+            _collectionWriterT.AsyncWriteCompleted += new WriteCompletedEvent(_collectionWriterT_AsyncWriteCompleted);
 
             _collectionUpdaterT = _configurator.Kernel.TryGet<ICollectionUpdater<TestEntry>>();
-            //_collectionUpdaterT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_collectionUpdaterT_AsyncFindAndModifyCompleted);
-            //_collectionUpdaterT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_collectionUpdaterT_AsyncFindAndRemoveCompleted);
+            _collectionUpdaterT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_collectionUpdaterT_AsyncFindAndModifyCompleted);
+            _collectionUpdaterT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_collectionUpdaterT_AsyncFindAndRemoveCompleted);
             #endregion EasyMongo.Collection.Test
 
             _beforeTest = DateTime.Now;

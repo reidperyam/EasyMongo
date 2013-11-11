@@ -9,10 +9,10 @@ namespace EasyMongo.Contract
         event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
         // Are the WriteConcern overloads required or are they defined in embedded objects?
-        void Remove<T>(IMongoQuery query);
-        void Remove<T>(IMongoQuery query, WriteConcern writeConcern);
-        void Remove<T>(IMongoQuery query, RemoveFlags removeFlags);
-        void Remove<T>(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
+        WriteConcernResult Remove<T>(IMongoQuery query);
+        WriteConcernResult Remove<T>(IMongoQuery query, WriteConcern writeConcern);
+        WriteConcernResult Remove<T>(IMongoQuery query, RemoveFlags removeFlags);
+        WriteConcernResult Remove<T>(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
 
         void RemoveAsync<T>(IMongoQuery query);
         void RemoveAsync<T>(IMongoQuery query, WriteConcern writeConcern);
