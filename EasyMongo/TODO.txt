@@ -5,12 +5,6 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 
 General
 
-	// 2
-	// TODO - implement IDatabaseReader<T>, DatabaseReader<T>
-	// TODO - implement IDatabaseWriter<T>, DatabaseWriter<T>
-	// TODO - implement IDatabaseUpdater<T>, DatabaseUpdater<T>
-    // TODO - Add unit tests for new DatabaseReader<T>/DatabaseUpdater<T>/DatabaseWriter<T>
-
 	// 3
 	// TODO - implement ICollectionReader<T>, CollectionReader<T>
 	// TODO - implement ICollectionWriter<T>, CollectionWriter<T>

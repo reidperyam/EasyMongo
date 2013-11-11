@@ -9,6 +9,7 @@ using EasyMongo.Database;
 using EasyMongo.Collection;
 using Ninject;
 using Ninject.Modules;
+using Ninject.Extensions.Conventions;
 using Ninject.Syntax;
 using EasyMongo.Test.Model;
 
@@ -47,14 +48,22 @@ namespace EasyMongo.Test.Base.Ninject
             Bind(typeof(IUpdaterAsync<>)).To(typeof(UpdaterAsync<>));
 
             // bind our database r/w/u to an implementation pointing to our test server and database
-            Bind(typeof(IDatabaseReader)).To(typeof(DatabaseReader)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseWriter)).To(typeof(DatabaseWriter)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseUpdater)).To(typeof(DatabaseUpdater)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseReader)).To(typeof(DatabaseReader));
+            Bind(typeof(IDatabaseWriter)).To(typeof(DatabaseWriter));
+            Bind(typeof(IDatabaseUpdater)).To(typeof(DatabaseUpdater));
+
+            Bind(typeof(IDatabaseReader<TestEntry>)).To(typeof(DatabaseReader<TestEntry>));
+            //Bind(typeof(IDatabaseWriter<>)).To(typeof(DatabaseWriter<>));
+            //Bind(typeof(IDatabaseUpdater<>)).To(typeof(DatabaseUpdater<>));
 
             // bind our collection r/w/u our test collection
             Bind(typeof(ICollectionReader)).To(typeof(CollectionReader)).WithConstructorArgument("collectionName", COLLECTION_NAME);
             Bind(typeof(ICollectionWriter)).To(typeof(CollectionWriter)).WithConstructorArgument("collectionName", COLLECTION_NAME);
             Bind(typeof(ICollectionUpdater)).To(typeof(CollectionUpdater)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+
+            //Bind(typeof(ICollectionReader<>)).To(typeof(CollectionReader<>));
+            //Bind(typeof(ICollectionWriter<>)).To(typeof(CollectionWriter<>));
+            //Bind(typeof(ICollectionUpdater<>)).To(typeof(CollectionUpdater<>));
         }
     }
 }

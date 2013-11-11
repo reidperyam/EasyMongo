@@ -41,4 +41,42 @@ namespace EasyMongo.Database
                 AsyncWriteCompleted(sender);
         }
     }
+
+    public class DatabaseWriter<T> : IDatabaseWriter<T>
+    {
+        public event WriteCompletedEvent AsyncWriteCompleted
+        {
+            add
+            {
+                lock (_databaseWriter)
+                {
+                    _databaseWriter.AsyncWriteCompleted += value;
+                }
+            }
+            remove
+            {
+                lock (_databaseWriter)
+                {
+                    _databaseWriter.AsyncWriteCompleted -= value;
+                }
+            }
+        }
+
+        IDatabaseWriter _databaseWriter;
+
+        public DatabaseWriter(IDatabaseWriter databaseWriter)
+        {
+            _databaseWriter = databaseWriter;
+        }
+
+        public void Write(string collectionName, T entry)
+        {
+            _databaseWriter.Write<T>(collectionName, entry);
+        }
+
+        public void WriteAsync(string collectionName, T entry)
+        {
+            _databaseWriter.WriteAsync<T>(collectionName, entry);
+        }
+    }
 }

@@ -64,6 +64,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="EasyMongo.Collection.pfx" />
     <None Include="packages.config" />
   </ItemGroup>

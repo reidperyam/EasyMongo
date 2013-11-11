@@ -150,4 +150,159 @@ namespace EasyMongo.Database
                 AsyncDistinctCompleted(e, ex);
         }
     }
+
+    public class DatabaseReader<T> : IDatabaseReader<T> where T : class
+    {
+        public event ReadCompletedEvent AsyncReadCompleted
+        {
+            add
+            {
+                lock (_databaseReader)
+                {
+                    _databaseReader.AsyncReadCompleted += value;
+                }
+            }
+            remove
+            {
+                lock (_databaseReader)
+                {
+                    _databaseReader.AsyncReadCompleted -= value;
+                }
+            }
+        }
+
+        public event DistinctCompletedEvent AsyncDistinctCompleted
+        {
+            add
+            {
+                lock (_databaseReader)
+                {
+                    _databaseReader.AsyncDistinctCompleted += value;
+                }
+            }
+            remove
+            {
+                lock (_databaseReader)
+                {
+                    _databaseReader.AsyncDistinctCompleted -= value;
+                }
+            }
+        }
+
+        IDatabaseReader _databaseReader;
+
+        public DatabaseReader(IDatabaseReader databaseReader)
+        {
+            _databaseReader = databaseReader;
+        }
+
+        #region    Synchronous
+        #region    Read
+        public IEnumerable<T> Read(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _databaseReader.Read<T>(collectionName, dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _databaseReader.Read<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern)
+        {
+            return _databaseReader.Read<T>(collectionName, fieldName, regexPattern);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
+        {
+            return _databaseReader.Read<T>(collectionNames, fieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            return _databaseReader.Read<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        {
+            return _databaseReader.Read<T>(collectionNames, fieldName, regexPattern);
+        }
+        #endregion Read
+        #region    Distinct
+        public IEnumerable<Y> Distinct<Y>(string collectionName, string fieldName)
+        {
+            return _databaseReader.Distinct<Y>(collectionName, fieldName);
+        }
+
+        public IEnumerable<Y> Distinct<Y>(string collectionName, string fieldName, IMongoQuery query)
+        {
+            return _databaseReader.Distinct<Y>( collectionName, fieldName, query);
+        }
+
+        public IEnumerable<Y> Distinct<Y>(IEnumerable<string> collectionNames, string fieldName)
+        {
+            return _databaseReader.Distinct<Y>(collectionNames, fieldName);
+        }
+
+        public IEnumerable<Y> Distinct<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        {
+            return _databaseReader.Distinct<Y>(collectionNames, fieldName, query);
+        }
+        #endregion Distinct
+        #endregion Synchronous
+        #region    Asynchronous
+        #region    Read
+        public void ReadAsync(string collectionName, string fieldName, string regexPattern)
+        {
+            _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern);
+        }
+
+        public void ReadAsync(string collectionName, string fieldName, DateTime start, DateTime end)
+        {
+            _databaseReader.ReadAsync<T>(collectionName, fieldName, start, end);
+        }
+
+        public void ReadAsync(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        {
+            _databaseReader.ReadAsync<T>(collectionNames, fieldName, regexPattern);
+        }
+
+        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
+        {
+            _databaseReader.ReadAsync<T>( collectionNames, fieldName, start, end);
+        }
+
+        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        {
+            _databaseReader.ReadAsync<T>( collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+        #endregion Read
+        #region    Distinct
+        public void DistinctAsync<Y>(string collectionName, string fieldName)
+        {
+            _databaseReader.DistinctAsync<Y>(collectionName, fieldName);
+        }
+
+        public void DistinctAsync<Y>(string collectionName, string fieldName, IMongoQuery query)
+        {
+            _databaseReader.DistinctAsync<Y>(collectionName, fieldName, query);
+        }
+
+        public void DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName)
+        {
+            _databaseReader.DistinctAsync<Y>(collectionNames, fieldName);
+        }
+
+        public void DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        {
+            _databaseReader.DistinctAsync<Y>(collectionNames, fieldName, query);
+        }
+        #endregion Distinct
+        #endregion Asynchronous
+    }
 }

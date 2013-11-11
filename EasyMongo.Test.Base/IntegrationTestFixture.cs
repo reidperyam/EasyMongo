@@ -35,26 +35,26 @@ namespace EasyMongo.Test.Base
         [TestFixtureSetUp]
         public void TestFixtureSetup()
         {
-           // System.Diagnostics.Debugger.Launch();
+            // System.Diagnostics.Debugger.Launch();
             // binding logic for Ninject happens here
-            _configurator = new Configurator();   
+            _configurator = new Configurator();
         }
 
         [SetUp]
         public void Setup()
         {
-            _mongoServerConnection   = _configurator.Kernel.TryGet<IServerConnection>();
+            _mongoServerConnection = _configurator.Kernel.TryGet<IServerConnection>();
             _mongoDatabaseConnection = _configurator.Kernel.TryGet<IDatabaseConnection>();
             _mongoDatabaseConnection.Connect();
- 
+
             #region    EasyMongo.Test
-            _reader  = _configurator.Kernel.TryGet<IReader>();
-            _writer  = _configurator.Kernel.TryGet<IWriter>();
+            _reader = _configurator.Kernel.TryGet<IReader>();
+            _writer = _configurator.Kernel.TryGet<IWriter>();
             _updater = _configurator.Kernel.TryGet<IUpdater>();
 
-            // Generic classes
-            _readerT  = _configurator.Kernel.TryGet<IReader<TestEntry>>();
-            _writerT  = _configurator.Kernel.TryGet<IWriter<TestEntry>>();
+            // generic classes
+            _readerT = _configurator.Kernel.TryGet<IReader<TestEntry>>();
+            _writerT = _configurator.Kernel.TryGet<IWriter<TestEntry>>();
             _updaterT = _configurator.Kernel.TryGet<IUpdater<TestEntry>>();
             #endregion EasyMongo.Test
 
@@ -70,9 +70,9 @@ namespace EasyMongo.Test.Base
             _updaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsync_AsyncFindAndModifyCompleted);
             _updaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsync_AsyncFindAndRemoveCompleted);
 
-            // Generic classes
+            // generic classes
             _readerAsyncT = _configurator.Kernel.TryGet<IReaderAsync<TestEntry>>();
-            _readerAsyncT.AsyncReadCompleted     += new ReadCompletedEvent(_readerAsyncT_AsyncReadCompleted);
+            _readerAsyncT.AsyncReadCompleted += new ReadCompletedEvent(_readerAsyncT_AsyncReadCompleted);
             _readerAsyncT.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsyncT_AsyncDistinctCompleted);
 
             _writerAsyncT = _configurator.Kernel.TryGet<IWriterAsync<TestEntry>>();
@@ -95,6 +95,19 @@ namespace EasyMongo.Test.Base
             _databaseUpdater = _configurator.Kernel.TryGet<IDatabaseUpdater>();
             _databaseUpdater.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_databaseUpdater_AsyncFindAndModifyCompleted);
             _databaseUpdater.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_databaseUpdater_AsyncFindAndRemoveCompleted);
+
+            //System.Diagnostics.Debugger.Launch();
+            // generic classes
+            _databaseReaderT = _configurator.Kernel.TryGet<IDatabaseReader<TestEntry>>();
+            _databaseReaderT.AsyncReadCompleted += new ReadCompletedEvent(_databaseReaderT_AsyncReadCompleted);
+            _databaseReaderT.AsyncDistinctCompleted += new DistinctCompletedEvent(_databaseReaderT_AsyncDistinctCompleted);
+
+            _databaseWriterT = _configurator.Kernel.TryGet<IDatabaseWriter<TestEntry>>();
+            //_databaseWriterT.AsyncWriteCompleted += new WriteCompletedEvent(_databaseWriterT_AsyncWriteCompleted);
+
+            _databaseUpdaterT = _configurator.Kernel.TryGet<IDatabaseUpdater<TestEntry>>();
+            _databaseUpdaterT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_databaseUpdaterT_AsyncFindAndModifyCompleted);
+            _databaseUpdaterT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_databaseUpdaterT_AsyncFindAndRemoveCompleted);
             #endregion EasyMongo.Database.Test
 
             #region    EasyMongo.Collection.Test
@@ -108,6 +121,18 @@ namespace EasyMongo.Test.Base
             _collectionUpdater = _configurator.Kernel.TryGet<ICollectionUpdater>();
             _collectionUpdater.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_collectionUpdater_AsyncFindAndModifyCompleted);
             _collectionUpdater.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_collectionUpdater_AsyncFindAndRemoveCompleted);
+
+            // generic classes
+            _collectionReaderT = _configurator.Kernel.TryGet<ICollectionReader<TestEntry>>();
+            //_collectionReaderT.AsyncReadCompleted += new ReadCompletedEvent(_collectionReader_AsyncReadCompleted);
+            //_collectionReaderT.AsyncDistinctCompleted += new DistinctCompletedEvent(_collectionReaderT_AsyncDistinctCompleted);
+
+            _collectionWriterT = _configurator.Kernel.TryGet<ICollectionWriter<TestEntry>>();
+            //_collectionWriterT.AsyncWriteCompleted += new WriteCompletedEvent(_collectionWriterT_AsyncWriteCompleted);
+
+            _collectionUpdaterT = _configurator.Kernel.TryGet<ICollectionUpdater<TestEntry>>();
+            //_collectionUpdaterT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_collectionUpdaterT_AsyncFindAndModifyCompleted);
+            //_collectionUpdaterT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_collectionUpdaterT_AsyncFindAndRemoveCompleted);
             #endregion EasyMongo.Collection.Test
 
             _beforeTest = DateTime.Now;
@@ -176,9 +201,17 @@ namespace EasyMongo.Test.Base
         protected IDatabaseWriter _databaseWriter;
         protected IDatabaseUpdater _databaseUpdater;
 
+        protected IDatabaseReader<TestEntry> _databaseReaderT;
+        protected IDatabaseWriter<TestEntry> _databaseWriterT;
+        protected IDatabaseUpdater<TestEntry> _databaseUpdaterT;
+
         protected ICollectionReader _collectionReader;
         protected ICollectionWriter _collectionWriter;
         protected ICollectionUpdater _collectionUpdater;
+
+        protected ICollectionReader<TestEntry> _collectionReaderT;
+        protected ICollectionWriter<TestEntry> _collectionWriterT;
+        protected ICollectionUpdater<TestEntry> _collectionUpdaterT;
 
         protected DateTime              _beforeTest;
         protected WriteConcern          _writeConcern                     = WriteConcern.Acknowledged;
@@ -243,6 +276,19 @@ namespace EasyMongo.Test.Base
         }
 
         /// <summary>
+        /// Method useful for synchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriter<T> class
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="collectionName"></param>
+        protected void AddMongoEntryT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        {
+            TestEntry mongoEntry = new TestEntry();
+            mongoEntry.Message = message;
+            mongoEntry.TimeStamp = DateTime.Now;
+            _writerT.Write(collectionName, mongoEntry);
+        }
+
+        /// <summary>
         ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsync class
         /// </summary>
         /// <param name="message"></param>
@@ -258,7 +304,7 @@ namespace EasyMongo.Test.Base
         }
 
         /// <summary>
-        ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsyncT class
+        ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsync<T> class
         /// </summary>
         /// <param name="message"></param>
         /// <param name="collectionName"></param>
@@ -276,7 +322,6 @@ namespace EasyMongo.Test.Base
         {
             return _reader.Read<T>(collectionName, fieldName, field);
         }
-
 
         #region    EasyMongo.Async
         protected void _updaterAsync_AsyncFindAndRemoveCompleted(WriteConcernResult result)
@@ -381,6 +426,39 @@ namespace EasyMongo.Test.Base
             _findAndModifyResult = result;
             _updaterAutoResetEvent.Set();
         }
+        #region    Generics
+        protected void _databaseReaderT_AsyncReadCompleted(object e, Exception ex)
+        {
+            _asyncException = ex;
+            IEnumerable<TestEntry> results = (IEnumerable<TestEntry>)e;
+            _asyncReadResults.AddRange(results);
+            _readerAutoResetEvent.Set();
+        }
+
+        protected void _databaseReaderT_AsyncDistinctCompleted(object e, Exception ex)
+        {
+            _asyncException = ex;
+            _asyncDistinctResults.AddRange((IEnumerable<string>)e);
+            _readerAutoResetEvent.Set();
+        }
+
+        protected void _databaseWriterT_AsyncWriteCompleted(object sender)
+        {
+            _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
+        }
+
+        protected void _databaseUpdaterT_AsyncFindAndRemoveCompleted(WriteConcernResult result)
+        {
+            _writeConcernResult = result;
+            _updaterAutoResetEvent.Set();
+        }
+
+        protected void _databaseUpdaterT_AsyncFindAndModifyCompleted(FindAndModifyResult result)
+        {
+            _findAndModifyResult = result;
+            _updaterAutoResetEvent.Set();
+        }
+        #endregion Generics
         #endregion EasyMongo.Database
 
         #region EasyMongo.Collection
@@ -416,6 +494,40 @@ namespace EasyMongo.Test.Base
             _findAndModifyResult = result;
             _updaterAutoResetEvent.Set();
         }
+
+        #region    Generics
+        protected void _collectionWriterT_AsyncWriteCompleted(object sender)
+        {
+            _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
+        }
+
+        protected void _collectionReaderT_AsyncReadCompleted(object e, Exception ex)
+        {
+            _asyncException = ex;
+            IEnumerable<TestEntry> results = (IEnumerable<TestEntry>)e;// HEY! Can this instead be IEnumerable<TestEntry>
+            _asyncReadResults.AddRange(results);
+            _readerAutoResetEvent.Set();
+        }
+
+        protected void _collectionReaderT_AsyncDistinctCompleted(object e, Exception ex)
+        {
+            _asyncException = ex;
+            _asyncDistinctResults.AddRange((IEnumerable<string>)e);
+            _readerAutoResetEvent.Set();
+        }
+
+        protected void _collectionUpdaterT_AsyncFindAndRemoveCompleted(WriteConcernResult result)
+        {
+            _writeConcernResult = result;
+            _updaterAutoResetEvent.Set();
+        }
+
+        protected void _collectionUpdaterT_AsyncFindAndModifyCompleted(FindAndModifyResult result)
+        {
+            _findAndModifyResult = result;
+            _updaterAutoResetEvent.Set();
+        }
+        #endregion Generics
         #endregion EasyMongo.Collection
 
         #endregion Helper Methods

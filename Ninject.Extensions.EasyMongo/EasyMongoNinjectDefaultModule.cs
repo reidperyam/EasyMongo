@@ -47,14 +47,22 @@ namespace Ninject.Extensions.EasyMongo
             Bind(typeof(IUpdaterAsync<>)).To(typeof(UpdaterAsync<>));
 
             // bind our database r/w/u to an implementation pointing to our test server and database
-            Bind(typeof(IDatabaseReader)).To(typeof(DatabaseReader)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseWriter)).To(typeof(DatabaseWriter)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
-            Bind(typeof(IDatabaseUpdater)).To(typeof(DatabaseUpdater)).WithConstructorArgument("connectionString", CONNECTION_STRING).WithConstructorArgument("databaseName", DATABASE_NAME);
+            Bind(typeof(IDatabaseReader)).To(typeof(DatabaseReader));
+            Bind(typeof(IDatabaseWriter)).To(typeof(DatabaseWriter));
+            Bind(typeof(IDatabaseUpdater)).To(typeof(DatabaseUpdater));
+
+            Bind(typeof(IDatabaseReader<>)).To(typeof(DatabaseReader<>));
+            Bind(typeof(IDatabaseWriter<>)).To(typeof(DatabaseWriter<>));
+            Bind(typeof(IDatabaseUpdater<>)).To(typeof(DatabaseUpdater<>));
 
             // bind our collection r/w/u our test collection
             Bind(typeof(ICollectionReader)).To(typeof(CollectionReader)).WithConstructorArgument("collectionName", COLLECTION_NAME);
             Bind(typeof(ICollectionWriter)).To(typeof(CollectionWriter)).WithConstructorArgument("collectionName", COLLECTION_NAME);
             Bind(typeof(ICollectionUpdater)).To(typeof(CollectionUpdater)).WithConstructorArgument("collectionName", COLLECTION_NAME);
+
+            //Bind(typeof(ICollectionReader<>)).To(typeof(CollectionReader<>));
+            //Bind(typeof(ICollectionWriter<>)).To(typeof(CollectionWriter<>));
+            //Bind(typeof(ICollectionUpdater<>)).To(typeof(CollectionUpdater<>));
         }
     }
 }

@@ -50,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseWriterTTest.cs" />
+    <Compile Include="DatabaseUpdaterTTest.cs" />
+    <Compile Include="DatabaseReaderTTest.cs" />
     <Compile Include="DatabaseUpdaterTest.cs" />
     <Compile Include="DatabaseReaderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
