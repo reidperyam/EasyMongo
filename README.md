@@ -1,10 +1,9 @@
 EasyMongo Overview
 ==================
 
-- A C# facade to the official 10gen MongoDB C# driver that aims to obfuscates underlying complexity when convenient.
-- Simplifies and objectifies servers, databases and collections. 
-- Provides "Readers", "Writers", "Updaters" for simplified CRUD operations.
-- Provides both synchronous and asynchronous implementations of CRUD operations
+- A C# facade to the official 10gen MongoDB C# driver. that aims to obfuscates underlying complexity when convenient.
+- Simplified, interface-driven object model which makes testing easy.
+- Contains a default, NinjectModule plugin for auto-loaded bindings to support IoC out of the box.
 
 Implementation
 ==============
@@ -13,12 +12,23 @@ Implementation
 
 Tests
 =====
-- Over 150 end-to-end NUnit integration tests designed to execute against local mongoDB server included in src.
+- Over 200 end-to-end NUnit integration tests written to execute against locally-deployed mongoDB server.
 
 QuickStart
 ==============
 
 //TODO
+
+using EasyMongo;
+using EasyMongo.Contract;
+
+...
+
+[Test]
+public void Test()
+{
+
+}
 
 
 
