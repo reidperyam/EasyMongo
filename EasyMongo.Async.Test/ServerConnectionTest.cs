@@ -23,9 +23,10 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(ConnectionState.NotConnected, _mongoServerConnection.ConnectionState);
             Assert.AreEqual(ConnectionResult.Empty,_serverConnectionResult);
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
-            Assert.IsTrue(_mongoServerConnection.ConnectionState == ConnectionState.Connecting || 
-                          _mongoServerConnection.ConnectionState == ConnectionState.Connected);
-            Assert.AreEqual(ConnectionResult.Empty,_serverConnectionResult);
+            Assert.IsTrue(_mongoServerConnection.ConnectionState == ConnectionState.Connecting || // these asserts are variable becuase this is a race condition...
+                          _mongoServerConnection.ConnectionState == ConnectionState.Connected);   // crappy unit test design but it's meant to give a view into use case
+            Assert.IsTrue(_serverConnectionResult == ConnectionResult.Empty ||                    // considerations
+                          _serverConnectionResult == ConnectionResult.Success);
             _serverConnectionAutoResetEvent.WaitOne();
             Assert.AreEqual(ConnectionState.Connected,_mongoServerConnection.ConnectionState);/**/
             Assert.AreEqual(ConnectionResult.Success, _serverConnectionResult);/**/

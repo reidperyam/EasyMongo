@@ -9,20 +9,16 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Test.Model
+namespace EasyMongo
 {
     /// <summary>
-    /// This class exists for unit testing purposes to replace an usage instance of an object that will 
-    /// be stored/retrieved from the MongoDB. It exists in a separate assembly from the TestFixtures in order
-    /// to be bound via a Ninject module to the objects in the TestFixtures
+    /// An class useful for inheriting MongoDB model classes from for development or testing purposes.
     /// </summary>
-    /// TODO - Investigate removal of EasyMongo.Test.Model & TestEntry ?? why is this currently needed after refactoring
-    /// of EasyMongo classes to not take a model object at construction time? I think it can be removed...
-    public class TestEntry : IEasyMongoEntry
+    public class Entry
     {
-        public TestEntry()
+        public Entry()
         {
-            TimeStamp = DateTime.Now;
+            TimeStamp = DateTime.Now.ToUniversalTime();
         }
 
         [BsonId(IdGenerator = typeof(BsonObjectIdGenerator))]
@@ -43,7 +39,7 @@ namespace EasyMongo.Test.Model
         }
 
         /// <summary>
-        /// A field representing the time the Log Entry was initialized
+        /// A field representing the time the Entry was initialized in UTC
         /// </summary>
         public DateTime TimeStamp
         {

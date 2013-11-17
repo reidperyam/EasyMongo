@@ -8,7 +8,6 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
 
 namespace EasyMongo.Collection.Test
 {
@@ -19,7 +18,7 @@ namespace EasyMongo.Collection.Test
         public void ConstructorTest()
         {
             // construct a collection reader from a database reader and a collection name
-            _collectionReaderT = new CollectionReader<TestEntry>(_collectionReader);
+            _collectionReaderT = new CollectionReader<Entry>(_collectionReader);
             Assert.IsNotNull(_collectionReader);
         }
 

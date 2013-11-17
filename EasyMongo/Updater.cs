@@ -79,70 +79,56 @@ namespace EasyMongo
 
     public class Updater<T> : IUpdater<T>
     {
-        private IDatabaseConnection _databaseConnection;
+        private IUpdater _updater;
 
-        public Updater(IDatabaseConnection databaseConnection)
+        public Updater(IUpdater updater)
         {
-            _databaseConnection = databaseConnection;
+            _updater = updater;
         }
 
         public WriteConcernResult Remove(string collectionName, IMongoQuery query)
         {
-            var collection = GetCollection(collectionName);
-            return collection.Remove(query);
+            return _updater.Remove<T>(collectionName, query);
         }
 
         public WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            var collection = GetCollection(collectionName);
-            return collection.Remove(query, removeFlags);
+            return _updater.Remove<T>(collectionName, query, removeFlags);
         }
 
         public WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            var collection = GetCollection(collectionName);
-            return collection.Remove(query, removeFlags, writeConcern);
+            return _updater.Remove<T>(collectionName, query, removeFlags, writeConcern);
         }
 
         public WriteConcernResult Remove(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            var collection = GetCollection(collectionName);
-            return collection.Remove(query, writeConcern);
+            return _updater.Remove<T>(collectionName, query, writeConcern);
         }
 
         public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
         {
-            var collection = GetCollection(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate);
+            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate);
         }
 
         public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
         {
-            var collection = GetCollection(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, returnNew);
+            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
         }
 
         public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
         {
-            var collection = GetCollection(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
+            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
         }
 
         public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
         {
-            var collection = GetCollection(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
+            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
 
         public FindAndModifyResult FindAndRemove(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
         {
-            var collection = GetCollection(collectionName);
-            return collection.FindAndRemove(mongoQuery, mongoSortBy);
-        }
-
-        private MongoCollection<T> GetCollection(string collectionName)
-        {
-            return _databaseConnection.GetCollection<T>(collectionName);
+            return _updater.FindAndRemove<T>(collectionName, mongoQuery, mongoSortBy);
         }
     }
 }

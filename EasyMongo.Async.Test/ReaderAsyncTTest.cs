@@ -8,7 +8,6 @@ using EasyMongo;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
 
 namespace EasyMongo.Async.Test
 {

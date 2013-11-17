@@ -94,6 +94,7 @@ namespace EasyMongo.Async
             }
             catch (RuntimeBinderException ex)
             {
+                // TODO: add ex handling!
                 if (AsyncFindAndRemoveCompleted != null)
                     AsyncFindAndRemoveCompleted(result);
             }
@@ -127,6 +128,7 @@ namespace EasyMongo.Async
             }
             catch (RuntimeBinderException ex)
             {
+                // TODO: add ex handling!
                 if (AsyncFindAndModifyCompleted != null)
                     AsyncFindAndModifyCompleted(result);
             }

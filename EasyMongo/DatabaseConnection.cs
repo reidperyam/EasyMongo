@@ -56,6 +56,7 @@ namespace EasyMongo
             }
             catch (Exception ex)
             {
+                // TODO: add ex handling!
                 ConnectionState = ConnectionState.NotConnected;
             }
         }
@@ -269,11 +270,6 @@ namespace EasyMongo
             return MongoServerConnection.CanConnect();
         }
 
-        public MongoDatabaseSettings CreateDatabaseSettings()
-        {
-            return MongoServerConnection.CreateDatabaseSettings(Db.Name);
-        }
-
         public void CopyDatabase(string to)
         {
             MongoServerConnection.CopyDatabase(Db.Name, to);
@@ -284,9 +280,9 @@ namespace EasyMongo
             return MongoServerConnection.RequestStart(Db, mongoServerInstance);
         }
 
-        public IDisposable RequestStart(bool slaveOk)
+        public IDisposable RequestStart(ReadPreference readPreference)
         {
-            return MongoServerConnection.RequestStart(Db, slaveOk);
+            return MongoServerConnection.RequestStart(Db, readPreference);
         }
 
         public void RequestDone()
@@ -307,7 +303,7 @@ namespace EasyMongo
             {
                 // This indexer is very simple, and just returns 
                 // the corresponding collection from the internal array. 
-                return MongoServerConnection[Db.Name][collectionName];
+                return MongoServerConnection.GetDatabase(Db.Name,WriteConcern.Acknowledged).GetCollection(collectionName);
             }
         }
 
@@ -323,7 +319,8 @@ namespace EasyMongo
                     case ConnectionState.NotConnected: /*Connect();*/ //break;
                     throw new MongoConnectionException("DatabaseConnection is not connected");
                 }
-            } while (ConnectionState != ConnectionState.Connected);
+            } 
+            while (ConnectionState != ConnectionState.Connected);
         }
     }
 }

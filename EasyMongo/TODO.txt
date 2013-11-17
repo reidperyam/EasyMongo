@@ -5,31 +5,24 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 
 General
 
-	// 3
-	// TODO - implement ICollectionReader<T>, CollectionReader<T>
-	// TODO - implement ICollectionWriter<T>, CollectionWriter<T>
-	// TODO - implement ICollectionUpdater<T>, CollectionUpdater<T>
-    // TODO - Add unit tests for new CollectionReader<T>/CollectionUpdater<T>/CollectionWriter<T> Update CollectionUpdater's Remove test to check returned result
-
-	// TODO - automate assembly merging on build
+	// TODO - refactor WriterAsync, UpdaterAsync, ReaderAsync to handle errors during async operations and return information in case of failure
+	//        via Completion event
+	// TODO - return results from *ALL* asynchronous operations -- pass or fail
 	// TODO - automate assembly versioning on build
 	// TODO - add simple construction to generic implementations (so that users don't have to construct underlying impl first in order to use).
 	// TODO - More elegantly implement component's events -- see ReaderAsync<T>'s impl of IReaderAsync's events
-    // TODO - Remove Database.Adapter class - it's no longer needed with constructor injection
 	// TODO - investigate need for underlying MongoDB Aggregate methods... are these similiar to Distinct fuctionality?
     // TODO - integrate or remove EasyMongo.EasyMongoEntry ?
     // TODO - Digitall sign assemblies with certificate
 	//        - http://blog.codingoutloud.com/2010/03/13/three-ways-to-tell-whether-an-assembly-dl-is-strong-named/
 	//        - https://knowledge.verisign.com/support/code-signing-support/index?page=content&id=AR190
-	// TODO - return results from *ALL* asynchronous operations -- pass or fail
     // TODO - Decouple DatabaseConnection and ServerConnection into async implmentations  and move async into EasyMongo.Async
 	// TODO - have AsyncWriter classes return a result in the return event - specifying success/error/etc
 	// TODO - Add interface for EasyMongo.Database.Adapter class...
 	// TODO - refactor callback methods of asyncReader and AsyncUPdater to be templated to remove code duplications
 	// TODO - refactor ReaderAsync,WriterAsync,UpdaterAsync to take callback Action<,> as argument to Async methods instead of 
 	//        subscribing to Connection event (See example of ServerConnection and DatabaseConnection)
-	// TODO - refactor WriterAsync, UpdaterAsync, ReaderAsync to handle errors during async operations and return information in case of failure
-	//        via Completion event
+	// TODO - automate assembly merging on build
 	//
 	// TODO - Add asynchronous constructor logic... so that no timeout ever occurs on object creation
 	// using BeginInvoke with a callback method that in turn calls EndInvoke:
@@ -47,9 +40,6 @@ General
 	//        'AutoResetEvent'. If 'TestBase' has previously shipped, adding new members 
 	//         that implement IDisposable to this type is considered a breaking change to 
 	//         existing consumers.	C:\Users\rperyam.rperyam-win7\SkyDrive\Documents\Code\MongoDB.Database.Test\TestBase.cs	15	MongoDB.Database.Test
-	// TODO - when future need dictates support of MongoServerSettings for MongoServerConnection, finish implementing MongoServerSettings adapter class
-	//        in order to absolve consumer from need to reference MongoDB C# driver assemblies along with our own. I've done most of the work - ServerSettings.cs
-	//        but still need to decouple classes defined in c# driver assemblies from the public contract by replacing them with component parts
 	//
 	// TODO - implement asynchronous implementations of "GetCollection" methods - Connect(), Write(), Read() methods shouldn't be the only asynchronous functions
 	// 
@@ -66,8 +56,6 @@ General
 	//
 	// TODO - implement NCover or some unit test coverage mechanism
 	// TODO - write Ninject nunit test proving using singletons to create all of our integration testing classes results in async testing problems
-	// TODO - Investigate removal of EasyMongo.Test.Model & TestEntry ?? why is this currently needed after refactoring
-    //        of EasyMongo classes to not take a model object at construction time? I think it can be removed...
 
 Reader classes
 

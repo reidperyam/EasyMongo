@@ -8,8 +8,6 @@ using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
-using Ninject.Extensions.EasyMongo;
 
 namespace EasyMongo.Test
 {
@@ -45,14 +43,14 @@ namespace EasyMongo.Test
             List<string> databaseNames = _mongoServerConnection.GetDbNamesForConnection();
             Assert.AreEqual(0, databaseNames.Count, "There should be no mongo databases on the server");
 
-            _writer.Write(MONGO_COLLECTION_1_NAME, new TestEntry());//create a db in the process of writing an entry to a child collection
+            _writer.Write(MONGO_COLLECTION_1_NAME, new Entry());//create a db in the process of writing an entry to a child collection
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_2_NAME);
             _mongoDatabaseConnection.Connect();
             _reader = new Reader(_mongoDatabaseConnection);
             _writer = new Writer(_mongoDatabaseConnection);// need to reinitialize writer when we change the DatabaseConnection
 
-            _writer.Write(MONGO_COLLECTION_1_NAME, new TestEntry());//create a db in the process of writing an entry to a child collection
+            _writer.Write(MONGO_COLLECTION_1_NAME, new Entry());//create a db in the process of writing an entry to a child collection
 
             databaseNames = _mongoServerConnection.GetDbNamesForConnection();
             Assert.AreEqual(2, databaseNames.Count, "There should be two mongo databases on the server");
@@ -92,7 +90,7 @@ namespace EasyMongo.Test
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
 
-            List<MongoCollection<TestEntry>> mongoCollections = _mongoDatabaseConnection.GetCollections<TestEntry>();
+            List<MongoCollection<Entry>> mongoCollections = _mongoDatabaseConnection.GetCollections<Entry>();
             Assert.AreEqual(3, mongoCollections.Count());// with system.indexes too
 
             CommandResult commandResult = _mongoServerConnection.DropDatabase(MONGO_DATABASE_1_NAME);
@@ -101,7 +99,7 @@ namespace EasyMongo.Test
             Assert.IsNull(commandResult.ErrorMessage);
 
             // the collections that we added will be removed with the database drop
-            mongoCollections = _mongoDatabaseConnection.GetCollections<TestEntry>();
+            mongoCollections = _mongoDatabaseConnection.GetCollections<Entry>();
             Assert.AreEqual(0, mongoCollections.Count());
 
             // this is confusing functionality; the MongoDatabase object returned does not actually exist on the server
@@ -119,7 +117,7 @@ namespace EasyMongo.Test
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
 
-            mongoCollections = _mongoDatabaseConnection.GetCollections<TestEntry>();
+            mongoCollections = _mongoDatabaseConnection.GetCollections<Entry>();
             Assert.AreEqual(3, mongoCollections.Count());//system.indexes too
 
             commandResult = _mongoServerConnection.DropDatabase(MONGO_DATABASE_2_NAME);
@@ -128,7 +126,7 @@ namespace EasyMongo.Test
             Assert.IsNull(commandResult.ErrorMessage);
 
             // the collections that we added will be removed with the database drop
-            mongoCollections = _mongoDatabaseConnection.GetCollections<TestEntry>();
+            mongoCollections = _mongoDatabaseConnection.GetCollections<Entry>();
             Assert.AreEqual(0, mongoCollections.Count());
 
             // see comments above

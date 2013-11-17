@@ -32,7 +32,7 @@ namespace EasyMongo.Collection
         #region    Asynchronous
         public void WriteAsync<T>(T entry)
         {
-            _mongoDBWriter.Write<T>(_collectionName, entry);
+            _mongoDBWriter.WriteAsync<T>(_collectionName, entry);
         }
         #endregion Asynchronous
 
@@ -77,7 +77,7 @@ namespace EasyMongo.Collection
 
         public void WriteAsync(T entry)
         {
-            _collectionWriter.Write<T>(entry);
+            _collectionWriter.WriteAsync<T>(entry);
         }
     }
 }

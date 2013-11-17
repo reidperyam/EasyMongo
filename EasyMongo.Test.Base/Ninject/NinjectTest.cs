@@ -5,9 +5,9 @@ using System.Text;
 using NUnit.Framework;
 using EasyMongo.Contract;
 using EasyMongo.Async;
-using EasyMongo.Test.Model;
 using EasyMongo.Database;
 using EasyMongo.Collection;
+using Ninject;
 
 namespace EasyMongo.Test.Base.Ninject
 {
@@ -18,10 +18,6 @@ namespace EasyMongo.Test.Base.Ninject
         public void IntegrationTestNinjectBindingTest()
         {
             string nullErrorFormatString = "{0} did not bind to implementation class as expected";
-
-            IEasyMongoEntry _iEasyMongoEntry = _configurator.TryGet<IEasyMongoEntry>();
-            Assert.IsNotNull(_iEasyMongoEntry, string.Format(nullErrorFormatString, "IEasyMongoEntry"));
-            Assert.IsInstanceOf<TestEntry>(_iEasyMongoEntry);
 
             Assert.IsNotNull(_mongoServerConnection, string.Format(nullErrorFormatString, "IServerConnection"));
             Assert.IsInstanceOf<ServerConnection>(_mongoServerConnection);
@@ -41,13 +37,13 @@ namespace EasyMongo.Test.Base.Ninject
 
             #region    Generics
             Assert.IsNotNull(_readerT, string.Format(nullErrorFormatString, "IReader<T>"));
-            Assert.IsInstanceOf<Reader<TestEntry>>(_readerT);
+            Assert.IsInstanceOf<Reader<Entry>>(_readerT);
 
             Assert.IsNotNull(_writerT, string.Format(nullErrorFormatString, "IWriter<T>"));
-            Assert.IsInstanceOf<Writer<TestEntry>>(_writerT);
+            Assert.IsInstanceOf<Writer<Entry>>(_writerT);
 
             Assert.IsNotNull(_updaterT, string.Format(nullErrorFormatString, "IUpdater<T>"));
-            Assert.IsInstanceOf<Updater<TestEntry>>(_updaterT);
+            Assert.IsInstanceOf<Updater<Entry>>(_updaterT);
             #endregion Generics
             #endregion EasyMongo
 
@@ -63,13 +59,13 @@ namespace EasyMongo.Test.Base.Ninject
 
             #region    Generics
             Assert.IsNotNull(_readerAsyncT, string.Format(nullErrorFormatString, "IReaderAsync<T>"));
-            Assert.IsInstanceOf<ReaderAsync<TestEntry>>(_readerAsyncT);
+            Assert.IsInstanceOf<ReaderAsync<Entry>>(_readerAsyncT);
 
             Assert.IsNotNull(_writerAsyncT, string.Format(nullErrorFormatString, "IWriterAsync<T>"));
-            Assert.IsInstanceOf<WriterAsync<TestEntry>>(_writerAsyncT);
+            Assert.IsInstanceOf<WriterAsync<Entry>>(_writerAsyncT);
 
             Assert.IsNotNull(_updaterAsyncT, string.Format(nullErrorFormatString, "IUpdaterAsync<T>"));
-            Assert.IsInstanceOf<UpdaterAsync<TestEntry>>(_updaterAsyncT);
+            Assert.IsInstanceOf<UpdaterAsync<Entry>>(_updaterAsyncT);
             #endregion Generics
             #endregion EasyMongo.Async
 
@@ -85,13 +81,13 @@ namespace EasyMongo.Test.Base.Ninject
 
             #region    Generics
             Assert.IsNotNull(_databaseReaderT, string.Format(nullErrorFormatString, "IDatabaseReader<T>"));
-            Assert.IsInstanceOf<DatabaseReader<TestEntry>>(_databaseReaderT);
+            Assert.IsInstanceOf<DatabaseReader<Entry>>(_databaseReaderT);
 
-            //Assert.IsNotNull(_databaseWriterT, string.Format(nullErrorFormatString, "IDatabaseWriter<T>"));
-            //Assert.IsInstanceOf<DatabaseWriter<TestEntry>>(_databaseWriterT);
+            Assert.IsNotNull(_databaseWriterT, string.Format(nullErrorFormatString, "IDatabaseWriter<T>"));
+            Assert.IsInstanceOf<DatabaseWriter<Entry>>(_databaseWriterT);
 
-            //Assert.IsNotNull(_databaseUpdaterT, string.Format(nullErrorFormatString, "IDatabaseUpdater<T>"));
-            //Assert.IsInstanceOf<DatabaseUpdater<TestEntry>>(_databaseUpdaterT);
+            Assert.IsNotNull(_databaseUpdaterT, string.Format(nullErrorFormatString, "IDatabaseUpdater<T>"));
+            Assert.IsInstanceOf<DatabaseUpdater<Entry>>(_databaseUpdaterT);
             #endregion Generics
             #endregion EasyMongo.Database
 
@@ -106,14 +102,14 @@ namespace EasyMongo.Test.Base.Ninject
             Assert.IsInstanceOf<CollectionUpdater>(_collectionUpdater);
 
             #region    Generics
-            //Assert.IsNotNull(_collectionReaderT, string.Format(nullErrorFormatString, "ICollectionReader<T>"));
-            //Assert.IsInstanceOf<CollectionReader<TestEntry>>(_collectionReaderT);
+            Assert.IsNotNull(_collectionReaderT, string.Format(nullErrorFormatString, "ICollectionReader<T>"));
+            Assert.IsInstanceOf<CollectionReader<Entry>>(_collectionReaderT);
 
-            //Assert.IsNotNull(_collectionWriterT, string.Format(nullErrorFormatString, "ICollectionWriter<T>"));
-            //Assert.IsInstanceOf<CollectionWriter<TestEntry>>(_collectionWriterT);
+            Assert.IsNotNull(_collectionWriterT, string.Format(nullErrorFormatString, "ICollectionWriter<T>"));
+            Assert.IsInstanceOf<CollectionWriter<Entry>>(_collectionWriterT);
 
-            //Assert.IsNotNull(_collectionUpdaterT, string.Format(nullErrorFormatString, "ICollectionUpdater<T>"));
-            //Assert.IsInstanceOf<CollectionUpdater<TestEntry>>(_collectionUpdaterT);
+            Assert.IsNotNull(_collectionUpdaterT, string.Format(nullErrorFormatString, "ICollectionUpdater<T>"));
+            Assert.IsInstanceOf<CollectionUpdater<Entry>>(_collectionUpdaterT);
             #endregion Generics
             #endregion EasyMongo.Collection
         }

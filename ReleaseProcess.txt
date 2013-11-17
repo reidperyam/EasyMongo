@@ -1,0 +1,13 @@
+Steps for merging .dlls into single EasyMongo .dll for release to Nuget
+1.Rebuild all in Release
+2.gather all EasyMongo assemblies
+3.Copy them to C:/Temp
+4.Copy MongoDB official .dlls (Bson.dll & Driver.dll) to C:/Temp
+5.Use IlMerge to Merge Bson.dll & Driver.dll to a new assembly within C:/Temp/MongoDB
+	- 4.0 client profile
+6.Use IlMerge to Merge EasyMongo assemblies to a new assembly within C:/Temp/EasyMongo
+	- 4.0 client profile
+7.Use IlMerge to Merge the outputs of 5&6 to C:/Temp/Final/EasyMongo.dll
+	- 4.0 client profile
+	- internalize
+	- sign with the key file: EasyMongoKeyPair.snk

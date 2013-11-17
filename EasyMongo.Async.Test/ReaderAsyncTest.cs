@@ -8,7 +8,6 @@ using EasyMongo;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
 
 namespace EasyMongo.Async.Test
 {
@@ -24,7 +23,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage);
-            _readerAsync.ReadAsync<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
+            _readerAsync.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -40,7 +39,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage);
-            _readerAsync.ReadAsync<TestEntry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now);
+            _readerAsync.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -56,7 +55,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage);
-            _readerAsync.ReadAsync<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now);
+            _readerAsync.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -72,7 +71,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
-            _readerAsync.ReadAsync<TestEntry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", entryMessage);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", entryMessage);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -82,7 +81,7 @@ namespace EasyMongo.Async.Test
 
             string entryMessage2 = "Hello World Again";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_2_NAME);
-            _readerAsync.ReadAsync<TestEntry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", entryMessage);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", entryMessage);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(2, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage2, _asyncReadResults[1].Message);
@@ -98,7 +97,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
-            _readerAsync.ReadAsync<TestEntry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "TimeStamp", _beforeTest, DateTime.Now);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -108,7 +107,7 @@ namespace EasyMongo.Async.Test
 
             string entryMessage2 = "Hello World Again";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_2_NAME);
-            _readerAsync.ReadAsync<TestEntry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "TimeStamp", _beforeTest, DateTime.Now);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(2, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage2, _asyncReadResults[1].Message);
@@ -124,7 +123,7 @@ namespace EasyMongo.Async.Test
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
-            _readerAsync.ReadAsync<TestEntry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", "Hello", "TimeStamp", _beforeTest, DateTime.Now);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", "Hello", "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
@@ -134,7 +133,7 @@ namespace EasyMongo.Async.Test
 
             string entryMessage2 = "Hello World Again";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_2_NAME);
-            _readerAsync.ReadAsync<TestEntry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", "Hello", "TimeStamp", _beforeTest, DateTime.Now);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", "Hello", "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(2, _asyncReadResults.Count());
             Assert.AreEqual(entryMessage2, _asyncReadResults[1].Message);
@@ -151,7 +150,7 @@ namespace EasyMongo.Async.Test
             System.Diagnostics.Debugger.Launch();
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
-            _readerAsync.ReadAsync<TestEntry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", "Hello", "TimeStamp", _beforeTest, DateTime.Now);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", "Hello", "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(0, _asyncReadResults.Count());
             Assert.IsNotNull(_asyncException);

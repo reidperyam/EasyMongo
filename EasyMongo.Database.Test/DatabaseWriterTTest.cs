@@ -6,7 +6,6 @@ using NUnit.Framework;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
 
 namespace EasyMongo.Database.Test
 {
@@ -17,7 +16,7 @@ namespace EasyMongo.Database.Test
         public void WriteAsyncTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryAsyncT(entryMessage, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryDatabaseAsyncT(entryMessage, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -25,7 +24,7 @@ namespace EasyMongo.Database.Test
             _results.Clear();
 
             string entryMessage2 = "This is a test as well";
-            AddMongoEntryAsyncT(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryDatabaseAsyncT(entryMessage2, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);
@@ -35,7 +34,7 @@ namespace EasyMongo.Database.Test
         public void WriteTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryT(entryMessage, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryDatabaseT(entryMessage, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -43,7 +42,7 @@ namespace EasyMongo.Database.Test
             _results.Clear();
 
             string entryMessage2 = "This is a test as well";
-            AddMongoEntryT(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryDatabaseT(entryMessage2, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);

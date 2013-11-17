@@ -44,8 +44,6 @@ namespace EasyMongo.Contract
 
         void CopyDatabase(string from, string to);
 
-        MongoDatabaseSettings CreateDatabaseSettings(string databaseName);
-
         List<CommandResult> DropAllDatabases();
 
         CommandResult DropDatabase(MongoDatabase mongoDatabase);
@@ -62,7 +60,7 @@ namespace EasyMongo.Contract
 
         IDisposable RequestStart(MongoDatabase mongoDatabase, MongoServerInstance mongoServerInstance);
 
-        IDisposable RequestStart(MongoDatabase mongoDatabase, bool slaveOk);
+        IDisposable RequestStart(MongoDatabase mongoDatabase, ReadPreference readPreference);
 
         void RequestDone();
 

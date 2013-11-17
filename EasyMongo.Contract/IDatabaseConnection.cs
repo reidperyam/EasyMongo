@@ -9,8 +9,6 @@ namespace  EasyMongo.Contract
 {
     public interface IDatabaseConnection
     {
-        //event ConnectAsyncCompletedEvent ConnectAsyncCompleted;//now private
-
         IServerConnection MongoServerConnection
         {
             get;
@@ -33,8 +31,6 @@ namespace  EasyMongo.Contract
 
         void CopyDatabase(string to);
 
-        MongoDatabaseSettings CreateDatabaseSettings();
-
         MongoCollection<T> GetCollection<T>(string collectionName);
 
         List<MongoCollection<T>> GetCollections<T>();
@@ -53,7 +49,7 @@ namespace  EasyMongo.Contract
 
         IDisposable RequestStart(MongoServerInstance mongoServerInstance);
 
-        IDisposable RequestStart(bool slaveOk);
+        IDisposable RequestStart(ReadPreference readPreference);
 
         void RequestDone();
 

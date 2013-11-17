@@ -6,7 +6,6 @@ using NUnit.Framework;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
 using EasyMongo.Contract;
 
 namespace EasyMongo.Database.Test
@@ -23,7 +22,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
@@ -33,7 +32,7 @@ namespace EasyMongo.Database.Test
             // remove entries with Message != entryMessage1
             _databaseUpdaterT.Remove(MONGO_COLLECTION_1_NAME, searchQuery);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
         }
@@ -48,7 +47,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -60,21 +59,21 @@ namespace EasyMongo.Database.Test
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
             _databaseUpdaterT.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
             #endregion RemoveFlags.Single
 
             // clear the collection before trying different RemoveFlags value...
-            _mongoDatabaseConnection.ClearCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            _mongoDatabaseConnection.ClearCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             #region RemoveFlags.None
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -84,9 +83,9 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _databaseUpdater.Remove<TestEntry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
+            _databaseUpdater.Remove<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage2, results[0].Message);
             #endregion RemoveFlags.None
@@ -100,7 +99,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
@@ -108,9 +107,9 @@ namespace EasyMongo.Database.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _databaseUpdater.Remove<TestEntry>(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
+            _databaseUpdater.Remove<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
         }
@@ -125,7 +124,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -137,21 +136,21 @@ namespace EasyMongo.Database.Test
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
             _databaseUpdaterT.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
             #endregion RemoveFlags.Single
 
             // clear the collection before trying different RemoveFlags value...
-            _mongoDatabaseConnection.ClearCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            _mongoDatabaseConnection.ClearCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             #region RemoveFlags.None
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            results = new List<IEasyMongoEntry>(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -163,7 +162,7 @@ namespace EasyMongo.Database.Test
             // RemoveFlags.None means every occurance matching searchQuery will be removed
             _databaseUpdaterT.Remove(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage2, results[0].Message);
             #endregion RemoveFlags.None
@@ -175,7 +174,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -190,7 +189,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(MONGO_EDITED_TEXT, results[0].Message);/*This field we modified via FindAndModify...*/
         }
@@ -201,7 +200,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -222,7 +221,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNull(findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(MONGO_EDITED_TEXT, results[0].Message);/*This field we modified via FindAndModify...*/
         }
@@ -233,7 +232,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -255,7 +254,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(findAndModifyResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
 
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
         }
@@ -266,7 +265,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -281,7 +280,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(MONGO_EDITED_TEXT, results[0].Message);/*This field we modified via FindAndModify...*/
         }
@@ -292,7 +291,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -307,7 +306,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(0, results.Count());/*we deleted the entry via FindAndRemove...*/
         }
 
@@ -320,7 +319,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
@@ -328,10 +327,10 @@ namespace EasyMongo.Database.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _databaseUpdater.RemoveAsync<TestEntry>(MONGO_COLLECTION_1_NAME, searchQuery);
+            _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery);
             _updaterAutoResetEvent.WaitOne();
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
         }
@@ -346,7 +345,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -356,24 +355,24 @@ namespace EasyMongo.Database.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _databaseUpdater.RemoveAsync<TestEntry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
+            _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
             _updaterAutoResetEvent.WaitOne();
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
             #endregion RemoveFlags.Single
 
             // clear the collection before trying different RemoveFlags value...
-            _mongoDatabaseConnection.ClearCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            _mongoDatabaseConnection.ClearCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             #region RemoveFlags.None
             AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -386,7 +385,7 @@ namespace EasyMongo.Database.Test
             _databaseUpdaterT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
             _updaterAutoResetEvent.WaitOne();
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage2, results[0].Message);
             #endregion RemoveFlags.None
@@ -400,7 +399,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
@@ -411,7 +410,7 @@ namespace EasyMongo.Database.Test
             _databaseUpdaterT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
             _updaterAutoResetEvent.WaitOne();
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
         }
@@ -426,7 +425,7 @@ namespace EasyMongo.Database.Test
             string entryMessage2 = "entry 2";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -439,21 +438,21 @@ namespace EasyMongo.Database.Test
             _databaseUpdaterT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
             _updaterAutoResetEvent.WaitOne();
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage2, results[1].Message);
             #endregion RemoveFlags.Single
 
             // clear the collection before trying different RemoveFlags value...
-            _mongoDatabaseConnection.ClearCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            _mongoDatabaseConnection.ClearCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             #region RemoveFlags.None
             AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
             AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
             Assert.AreEqual(entryMessage1, results[1].Message);
@@ -466,7 +465,7 @@ namespace EasyMongo.Database.Test
             _databaseUpdaterT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
             _updaterAutoResetEvent.WaitOne();
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage2, results[0].Message);
             #endregion RemoveFlags.None
@@ -478,7 +477,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -495,7 +494,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(MONGO_EDITED_TEXT, results[0].Message);/*This field we modified via FindAndModify...*/
         }
@@ -506,7 +505,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -531,7 +530,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNull(_findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(MONGO_EDITED_TEXT, results[0].Message);/*This field we modified via FindAndModify...*/
         }
@@ -542,7 +541,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -566,7 +565,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNull(_findAndModifyResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
         }
@@ -577,7 +576,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -594,7 +593,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(MONGO_EDITED_TEXT, results[0].Message);/*This field we modified via FindAndModify...*/
         }
@@ -605,7 +604,7 @@ namespace EasyMongo.Database.Test
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
 
-            List<IEasyMongoEntry> results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage1, results[0].Message);
 
@@ -622,7 +621,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
 
-            results = new List<IEasyMongoEntry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(0, results.Count());/*we deleted the entry via FindAndRemove...*/
         }
         #endregion Async

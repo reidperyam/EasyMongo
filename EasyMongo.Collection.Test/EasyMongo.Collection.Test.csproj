@@ -12,6 +12,8 @@
     <AssemblyName>EasyMongo.Collection.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,19 +77,21 @@
       <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
       <Name>EasyMongo.Test.Base</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EasyMongo.Test.Model\EasyMongo.Test.Model.csproj">
-      <Project>{66C33FBA-2CD9-40B2-9CA0-16A0B2C73182}</Project>
-      <Name>EasyMongo.Test.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EasyMongo\EasyMongo.csproj">
       <Project>{3719B940-D317-4AAD-BDC0-5996B4A9289F}</Project>
       <Name>EasyMongo</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ninject.Extensions.EasyMongo\Ninject.Extensions.EasyMongo.csproj">
+      <Project>{691A8A30-D0D6-405A-A317-C370AD2CC8C6}</Project>
+      <Name>Ninject.Extensions.EasyMongo</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

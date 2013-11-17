@@ -42,7 +42,8 @@ namespace EasyMongo
             ConnectionState = ConnectionState.Connecting;
            
             _mongoServer = null;
-            _mongoServer    = MongoServer.Create(ConnectionString);
+            MongoClient client = new MongoClient(ConnectionString);
+            _mongoServer = client.GetServer();
             ConnectionState = ConnectionState.Connected;
         }
 
@@ -69,7 +70,8 @@ namespace EasyMongo
             if (!CanConnect())
                 throw new MongoConnectionException(string.Format("Cannot connect to {0}", ConnectionString));
 
-            return MongoServer.Create(ConnectionString);
+            MongoClient client = new MongoClient(ConnectionString);
+            return client.GetServer();
         }
 
         /// <summary>
@@ -167,9 +169,8 @@ namespace EasyMongo
                 TimeSpan oneSecond = new TimeSpan(0,0,1);
                 //TODO extend with MongoServerSettings to override default timeouts
                 MongoServerSettings settings = new MongoServerSettings() { ConnectTimeout = oneSecond, SocketTimeout = oneSecond, WaitQueueTimeout = oneSecond };
-                MongoUrlBuilder mub = new MongoUrlBuilder(ConnectionString);
-                settings.Server = new MongoServerAddress(mub.Server.Host);
-                MongoServer testServer = MongoServer.Create(settings);
+                MongoClient mongoClient = new MongoClient(ConnectionString);
+                MongoServer testServer = mongoClient.GetServer();
                 testServer.Connect(oneSecond);
                 toReturn = true;
             }
@@ -270,11 +271,6 @@ namespace EasyMongo
             return _mongoServer.GetDatabase(databaseName, writeConcern);
         }
 
-        public MongoDatabaseSettings CreateDatabaseSettings(string databaseName)
-        {
-            return _mongoServer.CreateDatabaseSettings(databaseName);
-        }
-
         public void CopyDatabase(string from, string to)
         {
             _mongoServer.CopyDatabase(from, to);
@@ -290,9 +286,9 @@ namespace EasyMongo
             return _mongoServer.RequestStart(mongoDatabase, mongoServerInstance);
         }
 
-        public IDisposable RequestStart(MongoDatabase mongoDatabase, bool slaveOk)
+        public IDisposable RequestStart(MongoDatabase mongoDatabase, ReadPreference readPreference)
         {
-            return _mongoServer.RequestStart(mongoDatabase, slaveOk);
+            return _mongoServer.RequestStart(mongoDatabase, readPreference);
         }
 
         public void RequestDone()
@@ -314,7 +310,7 @@ namespace EasyMongo
             {
                 // This indexer is very simple, and just returns 
                 // the corresponding database from the internal array. 
-                return _mongoServer[databaseName];
+                return _mongoServer.GetDatabase(databaseName);
             }
         }
     }

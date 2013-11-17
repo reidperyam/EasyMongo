@@ -9,7 +9,6 @@ using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Async;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
 
 namespace EasyMongo.Test
 {
@@ -38,13 +37,13 @@ namespace EasyMongo.Test
             List<string> collectionNames = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(0, collectionNames.Count, "The database should be empty of collections right now");
 
-            _writer.Write(MONGO_COLLECTION_1_NAME, new TestEntry());
+            _writer.Write(MONGO_COLLECTION_1_NAME, new Entry());
             collectionNames = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(2, collectionNames.Count, "The database should have one collection");
             Assert.AreEqual(MONGO_COLLECTION_1_NAME, collectionNames[0], MONGO_COLLECTION_1_NAME + " is missing");
             Assert.AreEqual("system.indexes", collectionNames[1], "system.indexes missing; was expected to be created");
 
-            _writer.Write(MONGO_COLLECTION_2_NAME, new TestEntry());
+            _writer.Write(MONGO_COLLECTION_2_NAME, new Entry());
             collectionNames = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(3, collectionNames.Count, "The database should have two collections");
             Assert.AreEqual(MONGO_COLLECTION_1_NAME, collectionNames[0], MONGO_COLLECTION_1_NAME + " is missing");
@@ -55,18 +54,18 @@ namespace EasyMongo.Test
         [Test]
         public void GetCollectionTest()
         {
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(0,collection.Count(),"Expected no collections at beginning of test");
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
 
-            collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(1, collection.Count(), "Expected a collection to be returned");
             Assert.AreEqual(MONGO_COLLECTION_1_NAME, collection.Name);
 
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
 
-            collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_2_NAME);
+            collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_2_NAME);
             Assert.AreEqual(1, collection.Count(), "Expected a collection to be returned");
             Assert.AreEqual(MONGO_COLLECTION_2_NAME, collection.Name);
         }
@@ -95,7 +94,7 @@ namespace EasyMongo.Test
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
 
-            List<MongoCollection<TestEntry>> results = _mongoDatabaseConnection.GetCollections<TestEntry>();
+            List<MongoCollection<Entry>> results = _mongoDatabaseConnection.GetCollections<Entry>();
 
             List<string> collectionNames = _mongoDatabaseConnection.GetCollectionNames();
 
@@ -137,14 +136,14 @@ namespace EasyMongo.Test
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
 
-            _mongoDatabaseConnection.DropCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            _mongoDatabaseConnection.DropCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             List<string> collection = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(2, collection.Count());
             Assert.AreEqual(MONGO_COLLECTION_2_NAME, collection[0]);
             Assert.AreEqual("system.indexes", collection[1]);
 
-            _mongoDatabaseConnection.DropCollection<TestEntry>(MONGO_COLLECTION_2_NAME);
+            _mongoDatabaseConnection.DropCollection<Entry>(MONGO_COLLECTION_2_NAME);
 
             collection = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(1, collection.Count());
@@ -157,7 +156,7 @@ namespace EasyMongo.Test
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
 
-            _mongoDatabaseConnection.DropAllCollections<TestEntry>();
+            _mongoDatabaseConnection.DropAllCollections<Entry>();
 
             List<string> collection = _mongoDatabaseConnection.GetCollectionNames();
             Assert.AreEqual(1, collection.Count());//system.indexes remains
@@ -168,13 +167,13 @@ namespace EasyMongo.Test
         {
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
 
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             Assert.AreEqual(1, collection.Count());
 
-            _mongoDatabaseConnection.ClearCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            _mongoDatabaseConnection.ClearCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
-            collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             Assert.AreEqual(0, collection.Count());
         }
@@ -185,16 +184,16 @@ namespace EasyMongo.Test
             AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
             AddMongoEntry(collectionName: MONGO_COLLECTION_2_NAME);
 
-            MongoCollection<TestEntry> collection1 = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
-            MongoCollection<TestEntry> collection2 = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_2_NAME);
+            MongoCollection<Entry> collection1 = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection2 = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_2_NAME);
 
             Assert.AreEqual(1, collection1.Count());
             Assert.AreEqual(1, collection2.Count());
 
-            _mongoDatabaseConnection.ClearAllCollections<TestEntry>();
+            _mongoDatabaseConnection.ClearAllCollections<Entry>();
 
-            collection1 = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
-            collection2 = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_2_NAME);
+            collection1 = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
+            collection2 = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_2_NAME);
 
             Assert.AreEqual(0, collection1.Count());
             Assert.AreEqual(0, collection2.Count());

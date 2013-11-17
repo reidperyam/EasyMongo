@@ -9,8 +9,6 @@ using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Async;
 using EasyMongo.Test.Base;
-using EasyMongo.Test.Model;
-using Ninject.Extensions.EasyMongo;
 
 namespace EasyMongo.Async.Test
 {
@@ -86,7 +84,7 @@ namespace EasyMongo.Async.Test
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
 
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.Fail("The line above should have generated an exception since the DatabaseConnection was not connected");
         }
 
@@ -104,7 +102,7 @@ namespace EasyMongo.Async.Test
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(ConnectionState.Connected, _mongoServerConnection.ConnectionState);
             Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
             Assert.IsNotNull(_serverConnectionReturnMessage);
@@ -117,7 +115,7 @@ namespace EasyMongo.Async.Test
         {
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             //Assert.AreEqual(ConnectionResult.Success, _databaseConnectionResult);/**/
             Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
         }
@@ -133,7 +131,7 @@ namespace EasyMongo.Async.Test
 
             // once the async operation completes, because the connection string is bad, there is no connection
             // -- attempting to use the connection results in a MongoConnectionException
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
         }
 
         [Test]
@@ -146,14 +144,14 @@ namespace EasyMongo.Async.Test
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
             Assert.AreEqual(0, collection.Count());
 
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
-            collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
             Assert.AreEqual(0, collection.Count());
         }
@@ -168,14 +166,14 @@ namespace EasyMongo.Async.Test
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
-            MongoCollection<TestEntry> collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
             Assert.AreEqual(0, collection.Count());
 
             _mongoServerConnection.Connect();
             _mongoDatabaseConnection.Connect();
 
-            collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
             Assert.AreEqual(0, collection.Count());
 
@@ -188,7 +186,7 @@ namespace EasyMongo.Async.Test
             _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
-            collection = _mongoDatabaseConnection.GetCollection<TestEntry>(MONGO_COLLECTION_1_NAME);
+            collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
             Assert.AreEqual(0, collection.Count());
         }
@@ -211,7 +209,7 @@ namespace EasyMongo.Async.Test
             _reader = new Reader(_mongoDatabaseConnection);
             
             // this call doesn't wait for asynchronous connection to finish
-           _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
+           _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
            Assert.AreEqual(1, _results.Count());
         }
 
@@ -239,7 +237,7 @@ namespace EasyMongo.Async.Test
             _reader = new Reader(_mongoDatabaseConnection);
 
             // this call doesn't wait for asynchronous connection to finish
-            _results.AddRange(_reader.Read<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
+            _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now));
 
             Assert.AreEqual(1, _results.Count());        
         }
@@ -264,7 +262,7 @@ namespace EasyMongo.Async.Test
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
             // this call doesn't wait for asynchronous connection to complete
-            _readerAsync.ReadAsync<TestEntry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
+            _readerAsync.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
 
             _readerAutoResetEvent.WaitOne();// wait for async read to return
             Assert.AreEqual(1, _asyncReadResults.Count());
