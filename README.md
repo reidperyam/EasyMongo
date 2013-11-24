@@ -23,7 +23,7 @@ Implementation
 
 Tests
 =====
-- Over 200 end-to-end NUnit integration tests written to execute against locally-deployed mongoDB server.
+- Over 250 end-to-end NUnit integration tests written to execute against a locally-deployed mongoDB server.
 
 QuickStart
 ==============
