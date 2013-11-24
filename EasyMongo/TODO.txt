@@ -4,6 +4,9 @@ CALL UNDERLYING LIBRARY METHODS WHERE APPLICABLE
 ** Refactor DistinctAsyncompleted event and ASyncReadCompleted events into one event
 
 General
+	
+	// TODO - rename EasyMongo.Database DatabaseReader, DatabaseWriter, DatabaseUpdater to Reader, Writer, Updater
+	// TODO - rename EasyMongo.Collection CollectionReader, CollectionWriter, CollectionUpdater to Reader, Writer, Updater
 
 	// TODO - refactor WriterAsync, UpdaterAsync, ReaderAsync to handle errors during async operations and return information in case of failure
 	//        via Completion event
