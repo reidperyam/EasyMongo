@@ -31,141 +31,140 @@ QuickStart
   Install the latest nuget package via Visual Studio's Package Manager Console:
  - Install-Package EasyMongo -Pre
 
-using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using EasyMongo;
-using EasyMongo.Contract;
-using EasyMongo.Async;
-using EasyMongo.Database;
-using EasyMongo.Collection;
-using Ninject;
 
-namespace JunkyProject
-{
-    /// <summary>
-    /// A flexible TestFixture useful for verifying user functionality of the EasyMongo nuget package
-    /// </summary>
-    [TestFixture]
-    public class TestFixture
-    {
-        [TestFixtureSetUp]
-        public void TestFixtureSetup()
-        {
+		using System;
+		using System.Collections.Generic;
+		using NUnit.Framework;
+		using EasyMongo;
+		using EasyMongo.Contract;
+		using EasyMongo.Async;
+		using EasyMongo.Database;
+		using EasyMongo.Collection;
+		using Ninject;
 
-        }
+		namespace JunkyProject
+		{
+			/// <summary>
+			/// A flexible TestFixture useful for verifying user functionality of the EasyMongo nuget package
+			/// </summary>
+			[TestFixture]
+			public class TestFixture
+			{
+				[TestFixtureSetUp]
+				public void TestFixtureSetup()
+				{
 
-        private readonly string LOCAL_MONGO_SERVER_CONNECTION_STRING = "mongodb://localhost";
+				}
 
-        [Test]
-        public void Test()
-        {
-            System.Diagnostics.Debugger.Launch();
-            // initialize a server connection to a locally-running MongoDB server
-            IServerConnection serverConnection = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
-            // connect to the existing db on the server (or create it if it does not already exist)
-            IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection, "MyFirstDatabase");
+				private readonly string LOCAL_MONGO_SERVER_CONNECTION_STRING = "mongodb://localhost";
 
-            databaseConnection.Connect();
+				[Test]
+				public void Test()
+				{
+					System.Diagnostics.Debugger.Launch();
+					// initialize a server connection to a locally-running MongoDB server
+					IServerConnection serverConnection = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
+					// connect to the existing db on the server (or create it if it does not already exist)
+					IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection, "MyFirstDatabase");
 
-              /////////////////////////////
-             // OPERATIONAL GRANULARITY //
-            /////////////////////////////
+					databaseConnection.Connect();
 
-            // create a Writer to write to the database
-            IWriter writer = new Writer(databaseConnection);
-            // create a Reader to read from the database
-            IReader reader = new Reader(databaseConnection);
-            // create an Updater to update the database
-            IUpdater updater = new Updater(databaseConnection);
+					  /////////////////////////////
+					 // OPERATIONAL GRANULARITY //
+					/////////////////////////////
 
-            Entry exampleMongoDBEntry = new Entry();
-            exampleMongoDBEntry.Message = "Goodbye World";
+					// create a Writer to write to the database
+					IWriter writer = new Writer(databaseConnection);
+					// create a Reader to read from the database
+					IReader reader = new Reader(databaseConnection);
+					// create an Updater to update the database
+					IUpdater updater = new Updater(databaseConnection);
 
-            // write the created Entry object to the "MyFirstCollection" Collection that exists within the 
-            // previously referenced "MyFirstDatabase" that was used to create the "writer" object
-            writer.Write<Entry>("MyFirstCollection", exampleMongoDBEntry);
+					Entry exampleMongoDBEntry = new Entry();
+					exampleMongoDBEntry.Message = "Goodbye World";
 
-            IEnumerable<Entry> readEntrys = reader.Read<Entry>("MyFirstCollection", // within this collection...
-                                                               "Description",// for the object field "Description"
-                                                               "Hello");// return matches for 'Hello'
-              /////////////////////////////
-             // ASYNCHRONOUS OPERATIONS //
-            /////////////////////////////
+					// write the created Entry object to the "MyFirstCollection" Collection that exists within the 
+					// previously referenced "MyFirstDatabase" that was used to create the "writer" object
+					writer.Write<Entry>("MyFirstCollection", exampleMongoDBEntry);
 
-            // read, write and update asynchnronously
-            IReaderAsync readerAsync = new ReaderAsync(reader);
-            readerAsync.AsyncReadCompleted += new ReadCompletedEvent(readerCallBack);
-            readerAsync.ReadAsync<Entry>("MyFirstCollection", "Description", "Goodbye");
+					IEnumerable<Entry> readEntrys = reader.Read<Entry>("MyFirstCollection", // within this collection...
+																	   "Description",// for the object field "Description"
+																	   "Hello");// return matches for 'Hello'
+					  /////////////////////////////
+					 // ASYNCHRONOUS OPERATIONS //
+					/////////////////////////////
 
-            IWriterAsync writerAsync = new WriterAsync(writer);
-            IUpdaterAsync updaterAsync = new UpdaterAsync(updater);
+					// read, write and update asynchnronously
+					IReaderAsync readerAsync = new ReaderAsync(reader);
+					readerAsync.AsyncReadCompleted += new ReadCompletedEvent(readerCallBack);
+					readerAsync.ReadAsync<Entry>("MyFirstCollection", "Description", "Goodbye");
 
-              //////////////////////////////////////////
-             // OR LESS LESS OPERATIONAL GRANULARITY //
-            //////////////////////////////////////////
+					IWriterAsync writerAsync = new WriterAsync(writer);
+					IUpdaterAsync updaterAsync = new UpdaterAsync(updater);
 
-            // get a little higher level with the EasyMongo.Database assembly
-            IDatabaseReader databaseReader = new DatabaseReader(reader, readerAsync);
-            databaseReader.Read<Entry>("MyFirstCollection", "Description", "Goodbye");
-            databaseReader.ReadAsync<Entry>("MyFirstCollection", "Description", "Goodbye");
+					  //////////////////////////////////////////
+					 // OR LESS LESS OPERATIONAL GRANULARITY //
+					//////////////////////////////////////////
 
-            IDatabaseWriter databaseWriter = new DatabaseWriter(writer, writerAsync);
-            IDatabaseUpdater databaseUpdater = new DatabaseUpdater(updater, updaterAsync);
+					// get a little higher level with the EasyMongo.Database assembly
+					IDatabaseReader databaseReader = new DatabaseReader(reader, readerAsync);
+					databaseReader.Read<Entry>("MyFirstCollection", "Description", "Goodbye");
+					databaseReader.ReadAsync<Entry>("MyFirstCollection", "Description", "Goodbye");
 
-              /////////////////////
-             // GENERIC CLASSES //
-            /////////////////////
+					IDatabaseWriter databaseWriter = new DatabaseWriter(writer, writerAsync);
+					IDatabaseUpdater databaseUpdater = new DatabaseUpdater(updater, updaterAsync);
 
-            // Instead of defining generic type arguments at the method level,
-            // you can do it once at the class declaration
-            IWriter<Entry> writerT = new Writer<Entry>(writer);
-            writerT.Write("MyFirstCollection", new Entry() { Message = "Goodbye World (Generically)" });// cp writerT.Write<Entry>(...)
+					  /////////////////////
+					 // GENERIC CLASSES //
+					/////////////////////
 
-              //////////////////////
-             // CONTEXTUAL SCOPE //
-            //////////////////////
+					// Instead of defining generic type arguments at the method level,
+					// you can do it once at the class declaration
+					IWriter<Entry> writerT = new Writer<Entry>(writer);
+					writerT.Write("MyFirstCollection", new Entry() { Message = "Goodbye World (Generically)" });// cp writerT.Write<Entry>(...)
 
-            // control which database is referenced via composition
-            databaseConnection = new DatabaseConnection(serverConnection, "MySecondDatabase");
-            reader = new Reader(databaseConnection);
+					  //////////////////////
+					 // CONTEXTUAL SCOPE //
+					//////////////////////
 
-              //////////////////////////////////
-             // REDUCE CLIENT RESPONSIBILITY //
-            //////////////////////////////////
+					// control which database is referenced via composition
+					databaseConnection = new DatabaseConnection(serverConnection, "MySecondDatabase");
+					reader = new Reader(databaseConnection);
 
-            // operate only against "MyFirstDatabase"'s "MySecondCollection"
-            ICollectionReader collectionReader = new CollectionReader(databaseReader, "MySecondCollection");
-            collectionReader.Read<Entry>("Message", "Goodbye");
+					  //////////////////////////////////
+					 // REDUCE CLIENT RESPONSIBILITY //
+					//////////////////////////////////
 
-              ///////////////////////////////////////
-             // SIMPLIFY CREATION VIA NINJECT IoC //
-            ///////////////////////////////////////
+					// operate only against "MyFirstDatabase"'s "MySecondCollection"
+					ICollectionReader collectionReader = new CollectionReader(databaseReader, "MySecondCollection");
+					collectionReader.Read<Entry>("Message", "Goodbye");
 
-            // because EasyMongo is a componentized framework built with blocks of functionality, creating an
-            // object build from many others isn't so easy... That's why EasyMongo provides the Ninject.Extensions.EasyMongo
-            // nuget package to automatically provide dependency injection/IoC type bindings so that creating instances of
-            // otherwise onerous compositions is as easy as the following:
-            Ninject.IKernel kernel = new Ninject.StandardKernel();
-            ICollectionUpdater collectionUpdater = kernel.TryGet<ICollectionUpdater>();
+					  ///////////////////////////////////////
+					 // SIMPLIFY CREATION VIA NINJECT IoC //
+					///////////////////////////////////////
 
-            // the alternative to this:
-            IServerConnection serverConn = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
-            IDatabaseConnection databaseConnn = new DatabaseConnection(serverConn, "MyFirstDatabase");
-            IUpdater updatr = new Updater(databaseConnn);
-            IUpdaterAsync updatrAsync = new UpdaterAsync(updatr);
-            IDatabaseUpdater databaseUpdatr = new DatabaseUpdater(updatr, updaterAsync);
-            ICollectionUpdater collectionUpdaterTheHardWay = new CollectionUpdater(databaseUpdater, "MySecondCollection");
+					// because EasyMongo is a componentized framework built with blocks of functionality, creating an
+					// object build from many others isn't so easy... That's why EasyMongo provides the Ninject.Extensions.EasyMongo
+					// nuget package to automatically provide dependency injection/IoC type bindings so that creating instances of
+					// otherwise onerous compositions is as easy as the following:
+					Ninject.IKernel kernel = new Ninject.StandardKernel();
+					ICollectionUpdater collectionUpdater = kernel.TryGet<ICollectionUpdater>();
 
-        }
+					// the alternative to this:
+					IServerConnection serverConn = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
+					IDatabaseConnection databaseConnn = new DatabaseConnection(serverConn, "MyFirstDatabase");
+					IUpdater updatr = new Updater(databaseConnn);
+					IUpdaterAsync updatrAsync = new UpdaterAsync(updatr);
+					IDatabaseUpdater databaseUpdatr = new DatabaseUpdater(updatr, updaterAsync);
+					ICollectionUpdater collectionUpdaterTheHardWay = new CollectionUpdater(databaseUpdater, "MySecondCollection");
 
-        void readerCallBack(object e, Exception ex)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
+				}
 
-
+				void readerCallBack(object e, Exception ex)
+				{
+					throw new NotImplementedException();
+				}
+			}
+		}
 
 
