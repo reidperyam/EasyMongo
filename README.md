@@ -11,10 +11,10 @@ EasyMongo Overview
 
 Succinctly you might say EasyMongo is:
   - A C# facade to the official 10gen MongoDB C# driver providing interface-driven composition and operational granularity
-  - Simplified, interface-driven object model which makes testing easy.
-  - Ninject.Extensions.EasyMongo nuget package supporting DI/IoC with Ninject automagically.
-  - Takes the liberty of hiding abstract, operations of the underlying 10gen driver not typically leveraged 
-    within many application use cases explosing, for the most part, simplistic CRUD operations. 
+  - Added asynchronous implementations of CRUD operations.
+  - Interface-driven object model simplifies testing and supports DI/IoC.
+  - Available Ninject.Extensions.EasyMongo nuget package supporting DI/IoC with Ninject automagically.
+  - Hides some operations of the underlying 10gen driver favoring instead simplistic CRUD operations. 
 
 Implementation
 ==============
