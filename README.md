@@ -19,7 +19,7 @@ Succinctly you might say EasyMongo is:
 Implementation
 ==============
 - .Net 4.0
-- Built on top of MongoDB C# driver 1.8.2 (current EasyMongo release)
+- Built on top of MongoDB C# driver 1.9.2 (current EasyMongo release)
 
 Tests
 =====

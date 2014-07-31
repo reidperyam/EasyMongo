@@ -21,10 +21,7 @@ namespace EasyMongo.Contract
         void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags);
         void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
 
-        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
-        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
-        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
-        void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
+        void FindAndModifyAsync<T>(string collectionName, FindAndModifyArgs findAndModifyArgs);
 
         void FindAndRemoveAsync<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs);
     }

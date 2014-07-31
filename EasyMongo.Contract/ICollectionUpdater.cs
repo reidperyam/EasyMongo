@@ -19,16 +19,10 @@ namespace EasyMongo.Contract
         void RemoveAsync<T>(IMongoQuery query, RemoveFlags removeFlags);
         void RemoveAsync<T>(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
 
-        FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
-        FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
-        FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
-        FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
+        FindAndModifyResult FindAndModify<T>(FindAndModifyArgs findAndModifyArgs);
         FindAndModifyResult FindAndRemove<T>(FindAndRemoveArgs findAndRemoveArgs);
 
-        void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
-        void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
-        void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
-        void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
+        void FindAndModifyAsync<T>(FindAndModifyArgs findAndModifyArgs);
 
         void FindAndRemoveAsync<T>(FindAndRemoveArgs findAndRemoveArgs);
     }

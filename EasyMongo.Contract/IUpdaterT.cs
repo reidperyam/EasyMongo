@@ -14,10 +14,7 @@ namespace EasyMongo.Contract
         WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags);
         WriteConcernResult Remove(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern);
 
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew,      bool upsert);
-        FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
+        FindAndModifyResult FindAndModify(string collectionName, FindAndModifyArgs findAndModifyArgs);
 
         FindAndModifyResult FindAndRemove(string collectionName, FindAndRemoveArgs findAndRemoveArgs);
     }

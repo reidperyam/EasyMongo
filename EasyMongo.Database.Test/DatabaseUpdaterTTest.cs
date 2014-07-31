@@ -183,7 +183,14 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update);
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -209,13 +216,26 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true);
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(findAndModifyResult.ModifiedDocument);
 
-            findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, false);
+            findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = false;
+
+            findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -241,13 +261,26 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, true);
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(findAndModifyResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
 
-            findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, false);
+            findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = false;
+
+            findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -274,7 +307,16 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Include("TimeStamp");
-            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, fields, true, true);
+
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Fields = fields;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            var findAndModifyResult = _databaseUpdaterT.FindAndModify(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -489,7 +531,14 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update);
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
             _updaterAutoResetEvent.WaitOne();
 
             Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");
@@ -517,7 +566,14 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true);
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
             _updaterAutoResetEvent.WaitOne();
             _updaterAutoResetEvent.Reset();
 
@@ -526,7 +582,13 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
 
-            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, false);
+            findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = false;
+
+            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
             _updaterAutoResetEvent.WaitOne();
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
@@ -553,7 +615,14 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
 
-            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, true);
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
             _updaterAutoResetEvent.WaitOne();
 
             Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");
@@ -561,7 +630,13 @@ namespace EasyMongo.Database.Test
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);/*This should be populated as per the last argument to FindAndModify...*/
 
-            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, true, false);
+            findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Upsert = false;
+
+            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
             _updaterAutoResetEvent.WaitOne();
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
@@ -588,7 +663,16 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Include("TimeStamp");
-            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, searchQuery, sortBy, update, fields, true, true);
+
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Fields = fields;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            _databaseUpdaterT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
             _updaterAutoResetEvent.WaitOne();
 
             Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");

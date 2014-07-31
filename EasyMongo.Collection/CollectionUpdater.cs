@@ -42,22 +42,11 @@ namespace EasyMongo.Collection
             return _mongoDBUpdater.Remove<T>(_collectionName, query, removeFlags, writeConcern);
         }
 
-        public FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public FindAndModifyResult FindAndModify<T>(FindAndModifyArgs findAndModifyArgs)
         {
-            return _mongoDBUpdater.FindAndModify<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate);
+            return _mongoDBUpdater.FindAndModify<T>(_collectionName, findAndModifyArgs);
         }
-        public FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
-        {
-            return _mongoDBUpdater.FindAndModify<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
-        }
-        public FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
-        {
-            return _mongoDBUpdater.FindAndModify<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
-        }
-        public FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
-        {
-            return _mongoDBUpdater.FindAndModify<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
-        }
+
         public FindAndModifyResult FindAndRemove<T>(FindAndRemoveArgs findAndRemoveArgs)
         {
             return _mongoDBUpdater.FindAndRemove<T>(_collectionName, findAndRemoveArgs);
@@ -82,21 +71,9 @@ namespace EasyMongo.Collection
             _mongoDBUpdater.RemoveAsync<T>(_collectionName, query, removeFlags, writeConcern);
         }
 
-        public void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public void FindAndModifyAsync<T>(FindAndModifyArgs findAndModifyArgs)
         {
-            _mongoDBUpdater.FindAndModifyAsync<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate);
-        }
-        public void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
-        {
-            _mongoDBUpdater.FindAndModifyAsync<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
-        }
-        public void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
-        {
-            _mongoDBUpdater.FindAndModifyAsync<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
-        }
-        public void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
-        {
-            _mongoDBUpdater.FindAndModifyAsync<T>(_collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
+            _mongoDBUpdater.FindAndModifyAsync<T>(_collectionName, findAndModifyArgs);
         }
         public void FindAndRemoveAsync<T>(FindAndRemoveArgs findAndRemoveArgs)
         {
@@ -202,24 +179,9 @@ namespace EasyMongo.Collection
             _collectionUpdater.RemoveAsync<T>(query, removeFlags, writeConcern);
         }
 
-        public FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public FindAndModifyResult FindAndModify(FindAndModifyArgs findAndModifyArgs)
         {
-            return _collectionUpdater.FindAndModify<T>(mongoQuery, mongoSortBy, mongoUpdate);
-        }
-
-        public FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
-        {
-            return _collectionUpdater.FindAndModify<T>(mongoQuery, mongoSortBy, mongoUpdate, returnNew);
-        }
-
-        public FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
-        {
-            return _collectionUpdater.FindAndModify<T>(mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
-        }
-
-        public FindAndModifyResult FindAndModify(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
-        {
-            return _collectionUpdater.FindAndModify<T>(mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
+            return _collectionUpdater.FindAndModify<T>(findAndModifyArgs);
         }
 
         public FindAndModifyResult FindAndRemove(FindAndRemoveArgs findAndRemoveArgs)
@@ -227,24 +189,9 @@ namespace EasyMongo.Collection
             return _collectionUpdater.FindAndRemove<T>(findAndRemoveArgs);
         }
 
-        public void FindAndModifyAsync(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public void FindAndModifyAsync(FindAndModifyArgs findAndModifyArgs)
         {
-            _collectionUpdater.FindAndModifyAsync<T>(mongoQuery, mongoSortBy, mongoUpdate);
-        }
-
-        public void FindAndModifyAsync(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
-        {
-            _collectionUpdater.FindAndModifyAsync<T>(mongoQuery, mongoSortBy, mongoUpdate, returnNew);
-        }
-
-        public void FindAndModifyAsync(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
-        {
-            _collectionUpdater.FindAndModifyAsync<T>(mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
-        }
-
-        public void FindAndModifyAsync(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
-        {
-            _collectionUpdater.FindAndModifyAsync<T>(mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
+            _collectionUpdater.FindAndModifyAsync<T>(findAndModifyArgs);
         }
 
         public void FindAndRemoveAsync(FindAndRemoveArgs findAndRemoveArgs)

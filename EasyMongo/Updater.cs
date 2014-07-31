@@ -41,28 +41,10 @@ namespace EasyMongo
             return collection.Remove(query, writeConcern);
         }
 
-        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public FindAndModifyResult FindAndModify<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)
         {
             var collection = GetCollection<T>(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate);
-        }
-
-        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
-        {
-            var collection = GetCollection<T>(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, returnNew);
-        }
-
-        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
-        {
-            var collection = GetCollection<T>(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
-        }
-
-        public FindAndModifyResult FindAndModify<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
-        {
-            var collection = GetCollection<T>(collectionName);
-            return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
+            return collection.FindAndModify(findAndModifyArgs);
         }
 
         public FindAndModifyResult FindAndRemove<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
@@ -106,24 +88,9 @@ namespace EasyMongo
             return _updater.Remove<T>(collectionName, query, writeConcern);
         }
 
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
+        public FindAndModifyResult FindAndModify(string collectionName, FindAndModifyArgs findAndModifyArgs)
         {
-            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate);
-        }
-
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew)
-        {
-            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew);
-        }
-
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert)
-        {
-            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, returnNew, upsert);
-        }
-
-        public FindAndModifyResult FindAndModify(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert)
-        {
-            return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
+            return _updater.FindAndModify<T>(collectionName, findAndModifyArgs);
         }
 
         public FindAndModifyResult FindAndRemove(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
