@@ -16,7 +16,7 @@ namespace EasyMongo.Test.Base
     [TestFixture]
     class RandomTest : IntegrationTestFixture
     {
-        [Explicit,Test]
+        [Test, Ignore]
         public void DateParse()
         {
             Debugger.Launch();
@@ -28,7 +28,7 @@ namespace EasyMongo.Test.Base
             Assert.IsNotNull(date);
         }
 
-        [Explicit, Test]
+        [Test, Ignore]
         public void ServerConnectionAsyncCtorTest()
         {
             Debugger.Launch();
