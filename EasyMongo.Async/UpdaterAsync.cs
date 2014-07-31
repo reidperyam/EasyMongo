@@ -61,9 +61,9 @@ namespace EasyMongo.Async
             new Func<string, IMongoQuery, IMongoSortBy, IMongoUpdate, IMongoFields, bool, bool, FindAndModifyResult>(_mongoUpdater.FindAndModify<T>).BeginInvoke(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert, CallbackFindAndModify, null);
         }
 
-        public void FindAndRemoveAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public void FindAndRemoveAsync<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            new Func<string, IMongoQuery, IMongoSortBy, FindAndModifyResult>(_mongoUpdater.FindAndRemove<T>).BeginInvoke(collectionName, mongoQuery, mongoSortBy, CallbackFindAndModify, null);
+            new Func<string, FindAndRemoveArgs, FindAndModifyResult>(_mongoUpdater.FindAndRemove<T>).BeginInvoke(collectionName, findAndRemoveArgs, CallbackFindAndModify, null);
         }
 
         protected void CallbackwriteConcernResult(IAsyncResult asyncRes)
@@ -220,9 +220,9 @@ namespace EasyMongo.Async
             _mongoUpdater.FindAndModifyAsync<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
 
-        public void FindAndRemoveAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public void FindAndRemoveAsync(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            _mongoUpdater.FindAndRemoveAsync<T>(collectionName, mongoQuery, mongoSortBy);
+            _mongoUpdater.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs);
         }
     }
 }

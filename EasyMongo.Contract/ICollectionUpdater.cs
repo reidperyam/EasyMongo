@@ -23,13 +23,13 @@ namespace EasyMongo.Contract
         FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
         FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
         FindAndModifyResult FindAndModify<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
-        FindAndModifyResult FindAndRemove<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy);
+        FindAndModifyResult FindAndRemove<T>(FindAndRemoveArgs findAndRemoveArgs);
 
         void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate);
         void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew);
         void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, bool returnNew, bool upsert);
         void FindAndModifyAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate, IMongoFields fields, bool returnNew, bool upsert);
 
-        void FindAndRemoveAsync<T>(IMongoQuery mongoQuery, IMongoSortBy mongoSortBy);
+        void FindAndRemoveAsync<T>(FindAndRemoveArgs findAndRemoveArgs);
     }
 }

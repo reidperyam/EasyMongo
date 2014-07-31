@@ -271,11 +271,6 @@ namespace EasyMongo
             return _mongoServer.GetDatabase(databaseName, writeConcern);
         }
 
-        public void CopyDatabase(string from, string to)
-        {
-            _mongoServer.CopyDatabase(from, to);
-        }
-
         public IDisposable RequestStart(MongoDatabase mongoDatabase)
         {
             return _mongoServer.RequestStart(mongoDatabase);

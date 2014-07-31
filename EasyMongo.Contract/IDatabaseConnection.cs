@@ -29,8 +29,6 @@ namespace  EasyMongo.Contract
             get;
         }
 
-        void CopyDatabase(string to);
-
         MongoCollection<T> GetCollection<T>(string collectionName);
 
         List<MongoCollection<T>> GetCollections<T>();

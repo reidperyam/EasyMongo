@@ -76,9 +76,9 @@ namespace EasyMongo.Database
         {
             return _mongoUpdater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
-        public FindAndModifyResult FindAndRemove<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public FindAndModifyResult FindAndRemove<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            return _mongoUpdater.FindAndRemove<T>(collectionName, mongoQuery, mongoSortBy);
+            return _mongoUpdater.FindAndRemove<T>(collectionName, findAndRemoveArgs);
         }
 
         public void FindAndModifyAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy, IMongoUpdate mongoUpdate)
@@ -97,9 +97,9 @@ namespace EasyMongo.Database
         {
             _mongoUpdaterAsync.FindAndModifyAsync<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
-        public void FindAndRemoveAsync<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public void FindAndRemoveAsync<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            _mongoUpdaterAsync.FindAndRemoveAsync<T>(collectionName, mongoQuery, mongoSortBy);
+            _mongoUpdaterAsync.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs);
         }
 
         void _mongoUpdaterAsync_AsyncFindAndRemoveCompleted(WriteConcernResult result)
@@ -199,9 +199,9 @@ namespace EasyMongo.Database
             return _databaseUpdater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
 
-        public FindAndModifyResult FindAndRemove(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public FindAndModifyResult FindAndRemove(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            return _databaseUpdater.FindAndRemove<T>(collectionName, mongoQuery, mongoSortBy);
+            return _databaseUpdater.FindAndRemove<T>(collectionName, findAndRemoveArgs);
         }
 
         public void RemoveAsync(string collectionName, IMongoQuery query)
@@ -244,9 +244,9 @@ namespace EasyMongo.Database
             _databaseUpdater.FindAndModifyAsync<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
 
-        public void FindAndRemoveAsync(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public void FindAndRemoveAsync(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            _databaseUpdater.FindAndRemoveAsync<T>(collectionName, mongoQuery, mongoSortBy);
+            _databaseUpdater.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs);
         }
     }
 }

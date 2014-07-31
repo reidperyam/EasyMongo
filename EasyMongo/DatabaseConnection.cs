@@ -270,11 +270,6 @@ namespace EasyMongo
             return MongoServerConnection.CanConnect();
         }
 
-        public void CopyDatabase(string to)
-        {
-            MongoServerConnection.CopyDatabase(Db.Name, to);
-        }
-
         public IDisposable RequestStart(MongoServerInstance mongoServerInstance)
         {
             return MongoServerConnection.RequestStart(Db, mongoServerInstance);

@@ -307,7 +307,10 @@ namespace EasyMongo.Collection.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Null;
-            var findAndModifyResult = _collectionUpdaterT.FindAndRemove(searchQuery, sortBy);
+            FindAndRemoveArgs findAndRemoveArgs = new FindAndRemoveArgs();
+            findAndRemoveArgs.Query = searchQuery;
+            findAndRemoveArgs.SortBy = sortBy;
+            var findAndModifyResult = _collectionUpdaterT.FindAndRemove(findAndRemoveArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -615,7 +618,10 @@ namespace EasyMongo.Collection.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Null;
-            _collectionUpdaterT.FindAndRemoveAsync(searchQuery, sortBy);
+            FindAndRemoveArgs findAndRemoveArgs = new FindAndRemoveArgs();
+            findAndRemoveArgs.Query = searchQuery;
+            findAndRemoveArgs.SortBy = sortBy;
+            _collectionUpdaterT.FindAndRemoveAsync(findAndRemoveArgs);
             _updaterAutoResetEvent.WaitOne();
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");

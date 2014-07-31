@@ -300,7 +300,10 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Null;
-            var findAndModifyResult = _databaseUpdater.FindAndRemove<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, sortBy);
+            FindAndRemoveArgs findAndRemoveArgs = new FindAndRemoveArgs();
+            findAndRemoveArgs.Query = searchQuery;
+            findAndRemoveArgs.SortBy = sortBy;
+            var findAndModifyResult = _databaseUpdater.FindAndRemove<Entry>(MONGO_COLLECTION_1_NAME, findAndRemoveArgs);
 
             Assert.IsTrue(findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(findAndModifyResult.ErrorMessage);
@@ -613,7 +616,10 @@ namespace EasyMongo.Database.Test
             var update = Update.Set("Message", MONGO_EDITED_TEXT);
             var sortBy = SortBy.Descending("TimeStamp");
             IMongoFields fields = Fields.Null;
-            _databaseUpdater.FindAndRemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, sortBy);
+            FindAndRemoveArgs findAndRemoveArgs = new FindAndRemoveArgs();
+            findAndRemoveArgs.Query = searchQuery;
+            findAndRemoveArgs.SortBy = sortBy;
+            _databaseUpdater.FindAndRemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndRemoveArgs);
             _updaterAutoResetEvent.WaitOne();
 
             Assert.IsNotNull(_findAndModifyResult, "_updaterResult uninitialized");

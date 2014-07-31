@@ -65,10 +65,10 @@ namespace EasyMongo
             return collection.FindAndModify(mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
 
-        public FindAndModifyResult FindAndRemove<T>(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public FindAndModifyResult FindAndRemove<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
             var collection = GetCollection<T>(collectionName);
-            return collection.FindAndRemove(mongoQuery, mongoSortBy);
+            return collection.FindAndRemove(findAndRemoveArgs);
         }
 
         private MongoCollection<T> GetCollection<T>(string collectionName)
@@ -126,9 +126,9 @@ namespace EasyMongo
             return _updater.FindAndModify<T>(collectionName, mongoQuery, mongoSortBy, mongoUpdate, fields, returnNew, upsert);
         }
 
-        public FindAndModifyResult FindAndRemove(string collectionName, IMongoQuery mongoQuery, IMongoSortBy mongoSortBy)
+        public FindAndModifyResult FindAndRemove(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            return _updater.FindAndRemove<T>(collectionName, mongoQuery, mongoSortBy);
+            return _updater.FindAndRemove<T>(collectionName, findAndRemoveArgs);
         }
     }
 }

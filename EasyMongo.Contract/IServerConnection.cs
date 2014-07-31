@@ -42,8 +42,6 @@ namespace EasyMongo.Contract
 
         void ConnectAsync(Action<ConnectionResult,string> callaback);
 
-        void CopyDatabase(string from, string to);
-
         List<CommandResult> DropAllDatabases();
 
         CommandResult DropDatabase(MongoDatabase mongoDatabase);
