@@ -12,7 +12,7 @@ using EasyMongo.Test.Base;
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class ReaderAsyncTest : IntegrationTestFixture
+    public class ReaderTaskTest : IntegrationTestFixture
     {
         /// <summary>
         /// Writes a MongoTestEntry to a MongoDB and verifies that it was asynchronously retrieved using

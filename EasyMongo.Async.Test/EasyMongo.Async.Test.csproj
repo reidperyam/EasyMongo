@@ -68,15 +68,15 @@
     <Compile Include="Deprecated\UpdaterAsyncTTest.cs" />
     <Compile Include="Deprecated\WriterAsyncTest.cs" />
     <Compile Include="Deprecated\WriterAsyncTTest.cs" />
-    <Compile Include="WriterAsyncTTest.cs" />
-    <Compile Include="UpdaterAsyncTTest.cs" />
-    <Compile Include="ReaderAsyncTTest.cs" />
+    <Compile Include="WriterTaskTTest.cs" />
+    <Compile Include="UpdaterTaskTTest.cs" />
+    <Compile Include="ReaderTaskTTest.cs" />
     <Compile Include="DatabaseConnectionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReaderAsyncTest.cs" />
+    <Compile Include="ReaderTaskTest.cs" />
     <Compile Include="ServerConnectionTest.cs" />
-    <Compile Include="UpdaterAsyncTest.cs" />
-    <Compile Include="WriterAsyncTest.cs" />
+    <Compile Include="UpdaterTaskTest.cs" />
+    <Compile Include="WriterTaskTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">

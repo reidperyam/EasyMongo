@@ -18,9 +18,9 @@ namespace EasyMongo.Contract
         Task<IEnumerable<T>> ReadAsync(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end);
         Task<IEnumerable<T>> ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
 
-        Task<IEnumerable<T>> DistinctAsync<Y>(string collectionName, string fieldName);
-        Task<IEnumerable<T>> DistinctAsync<Y>(string collectionName, string fieldName, IMongoQuery query);
-        Task<IEnumerable<T>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName);
-        Task<IEnumerable<T>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+        Task<IEnumerable<Y>> DistinctAsync<Y>(string collectionName, string fieldName);
+        Task<IEnumerable<Y>> DistinctAsync<Y>(string collectionName, string fieldName, IMongoQuery query);
+        Task<IEnumerable<Y>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName);
+        Task<IEnumerable<Y>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
     }
 }
