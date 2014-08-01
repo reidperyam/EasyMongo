@@ -24,65 +24,6 @@ namespace EasyMongo
         }
 
         #region    Methods
-        #region Read Implementation methods
-        private void Find<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
-        {
-            results = new List<T>();
-            var searchQuery = Query.And(Query.GTE(dateTimeFieldName, start), Query.LTE(dateTimeFieldName, end));
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
-            results.AddRange(collection.Find(searchQuery));
-        }
-        private void Find<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
-        {
-            results = new List<T>();
-            var searchQuery = Query.And(Query.GTE(dateTimeFieldName, start), Query.LTE(dateTimeFieldName, end), Query.Matches(fieldName, new BsonRegularExpression(regexPattern)));
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
-            results.AddRange(collection.Find(searchQuery));
-        }
-        private void Find<T>(string collectionName, string fieldName, string regexPattern, out List<T> results)
-        {
-            results = new List<T>();
-            var searchQuery = Query.Matches(fieldName, new BsonRegularExpression(regexPattern));
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
-            results.AddRange(collection.Find(searchQuery));
-        }
-        private void Find<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
-        {
-            results = new List<T>();
-            List<T> resultsForCollection;
-
-            foreach (string collectionName in collectionNames)
-            {
-                Find(collectionName, dateTimeFieldName, start, end, out resultsForCollection);
-                results.AddRange(resultsForCollection);
-                resultsForCollection.Clear();
-            }
-        }
-        private void Find<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
-        {
-            results = new List<T>();
-            List<T> resultsForCollection;
-
-            foreach (string collectionName in collectionNames)
-            {
-                Find(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end, out resultsForCollection);
-                results.AddRange(resultsForCollection);
-                resultsForCollection.Clear();
-            }
-        }
-        private void Find<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, out List<T> results)
-        {
-            results = new List<T>();
-            List<T> resultsForCollection;
-
-            foreach (string collectionName in collectionNames)
-            {
-                Find(collectionName, fieldName, regexPattern, out resultsForCollection);
-                results.AddRange(resultsForCollection);
-                resultsForCollection.Clear();
-            }
-        }
-        #endregion Read Implementation methods
         #region   Read Against a Collection
         /// <summary>
         /// Synchronously searches against a MongoDB collection
@@ -179,7 +120,94 @@ namespace EasyMongo
             return results;
         }
         #endregion Read Against Multiple Collections
+        #region Read Implementation methods
+        private void Find<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
+        {
+            results = new List<T>();
+            var searchQuery = Query.And(Query.GTE(dateTimeFieldName, start), Query.LTE(dateTimeFieldName, end));
+            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Find(searchQuery));
+        }
+        private void Find<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
+        {
+            results = new List<T>();
+            var searchQuery = Query.And(Query.GTE(dateTimeFieldName, start), Query.LTE(dateTimeFieldName, end), Query.Matches(fieldName, new BsonRegularExpression(regexPattern)));
+            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Find(searchQuery));
+        }
+        private void Find<T>(string collectionName, string fieldName, string regexPattern, out List<T> results)
+        {
+            results = new List<T>();
+            var searchQuery = Query.Matches(fieldName, new BsonRegularExpression(regexPattern));
+            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Find(searchQuery));
+        }
+        private void Find<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
+        {
+            results = new List<T>();
+            List<T> resultsForCollection;
 
+            foreach (string collectionName in collectionNames)
+            {
+                Find(collectionName, dateTimeFieldName, start, end, out resultsForCollection);
+                results.AddRange(resultsForCollection);
+                resultsForCollection.Clear();
+            }
+        }
+        private void Find<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
+        {
+            results = new List<T>();
+            List<T> resultsForCollection;
+
+            foreach (string collectionName in collectionNames)
+            {
+                Find(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end, out resultsForCollection);
+                results.AddRange(resultsForCollection);
+                resultsForCollection.Clear();
+            }
+        }
+        private void Find<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, out List<T> results)
+        {
+            results = new List<T>();
+            List<T> resultsForCollection;
+
+            foreach (string collectionName in collectionNames)
+            {
+                Find(collectionName, fieldName, regexPattern, out resultsForCollection);
+                results.AddRange(resultsForCollection);
+                resultsForCollection.Clear();
+            }
+        }
+        #endregion Read Implementation methods
+
+        #region Distinct Across Collection T
+        public IEnumerable<T> Distinct<T>(string collectionName, string fieldName)
+        {
+            List<T> results;
+            Distinct<T>(collectionName, fieldName, out results);
+            return results;
+        }
+        public IEnumerable<T> Distinct<T>(string collectionName, string fieldName, IMongoQuery query)
+        {
+            List<T> results;
+            Distinct<T>(collectionName, fieldName, query, out results);
+            return results;
+        }
+        #endregion Distinct Across Collection T
+        #region Distinct Across Multiple Collections T
+        public IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName)
+        {
+            List<T> results;
+            Distinct<T>(collectionNames, fieldName, out results);
+            return results;
+        }
+        public IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        {
+            List<T> results;
+            Distinct<T>(collectionNames, fieldName, query, out results);
+            return results;
+        }
+        #endregion Distinct Across Multiple Collections T
         #region    Distinct Implementation
         #region    T
         private void Distinct<T>(string collectionName, string fieldName, out List<T> results)
@@ -235,34 +263,6 @@ namespace EasyMongo
         }
         #endregion T
         #endregion Distinct Implementation
-        #region Distinct Across Collection T
-        public IEnumerable<T> Distinct<T>(string collectionName, string fieldName)
-        {
-            List<T> results;
-            Distinct<T>(collectionName, fieldName, out results);
-            return results;
-        }
-        public IEnumerable<T> Distinct<T>(string collectionName, string fieldName, IMongoQuery query)
-        {
-            List<T> results;
-            Distinct<T>(collectionName, fieldName, query, out results);
-            return results;
-        }
-        #endregion Distinct Across Collection T
-        #region Distinct Across Multiple Collections T
-        public IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName)
-        {
-            List<T> results;
-            Distinct<T>(collectionNames, fieldName, out results);
-            return results;
-        }
-        public IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
-        {
-            List<T> results;
-            Distinct<T>(collectionNames, fieldName, query, out results);
-            return results;
-        }
-        #endregion Distinct Across Multiple Collections T
         #endregion Methods
     }
 

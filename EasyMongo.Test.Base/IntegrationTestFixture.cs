@@ -10,7 +10,6 @@ using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Async;
 using Ninject;
-//using Ninject.Extensions.EasyMongo;
 using EasyMongo.Test.Base.Ninject;
 
 namespace EasyMongo.Test.Base
@@ -216,8 +215,8 @@ namespace EasyMongo.Test.Base
 
         protected DateTime              _beforeTest;
         protected WriteConcern          _writeConcern                     = WriteConcern.Acknowledged;
-        protected List<Entry> _results                          = new List<Entry>();
-        protected List<Entry> _asyncReadResults                 = new List<Entry>();
+        protected List<Entry>           _results                          = new List<Entry>();
+        protected List<Entry>           _asyncReadResults                 = new List<Entry>();
         protected List<BsonValue>       _asyncDistinctBSONResults         = new List<BsonValue>();
         protected List<string>          _asyncDistinctResults             = new List<string>();
         protected Exception             _asyncException                   = null;
