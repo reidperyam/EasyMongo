@@ -35,7 +35,7 @@ namespace EasyMongo.Async
 
         public async Task<IEnumerable<T>> ReadAsync<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            return await Task.Run(() => { return _reader.Read<T>(collectionName, fieldName, start, end); });
+            return await Task.Run(() => { return _reader.Read<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end); });
         }
 
         public async Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)

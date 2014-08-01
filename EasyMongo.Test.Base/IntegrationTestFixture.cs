@@ -234,24 +234,24 @@ namespace EasyMongo.Test.Base
         protected ICollectionWriter<Entry> _collectionWriterT;
         protected ICollectionUpdater<Entry> _collectionUpdaterT;
 
-        protected DateTime              _beforeTest;
-        protected WriteConcern          _writeConcern                     = WriteConcern.Acknowledged;
-        protected List<Entry>           _results                          = new List<Entry>();
-        protected List<Entry>           _asyncReadResults                 = new List<Entry>();
-        protected List<BsonValue>       _asyncDistinctBSONResults         = new List<BsonValue>();
-        protected List<string>          _asyncDistinctResults             = new List<string>();
-        protected Exception             _asyncException                   = null;
-        protected FindAndModifyResult   _findAndModifyResult              = null;
-        protected WriteConcernResult    _writeConcernResult               = null;
-        protected ConnectionResult      _serverConnectionResult           = ConnectionResult.Empty;
-        protected ConnectionResult      _databaseConnectionResult         = ConnectionResult.Empty;
-        protected AutoResetEvent        _readerAutoResetEvent             = new AutoResetEvent(false);
-        protected AutoResetEvent        _writerAutoResetEvent             = new AutoResetEvent(false);
-        protected AutoResetEvent        _updaterAutoResetEvent            = new AutoResetEvent(false);
-        protected AutoResetEvent        _serverConnectionAutoResetEvent   = new AutoResetEvent(false);
-        protected AutoResetEvent        _databaseConnectionAutoResetEvent = new AutoResetEvent(false);
-        protected string                _serverConnectionReturnMessage    = string.Empty;
-        protected string                _databaseConnectionReturnMessage  = string.Empty;
+        protected DateTime            _beforeTest;
+        protected WriteConcern        _writeConcern                     = WriteConcern.Acknowledged;
+        protected List<Entry>         _results                          = new List<Entry>();
+        protected List<Entry>         _asyncReadResults                 = new List<Entry>();
+        protected List<BsonValue>     _asyncDistinctBSONResults         = new List<BsonValue>();
+        protected List<string>        _asyncDistinctResults             = new List<string>();
+        protected Exception           _asyncException                   = null;
+        protected FindAndModifyResult _findAndModifyResult              = null;
+        protected WriteConcernResult  _writeConcernResult               = null;
+        protected ConnectionResult    _serverConnectionResult           = ConnectionResult.Empty;
+        protected ConnectionResult    _databaseConnectionResult         = ConnectionResult.Empty;
+        protected AutoResetEvent      _readerAutoResetEvent             = new AutoResetEvent(false);
+        protected AutoResetEvent      _writerAutoResetEvent             = new AutoResetEvent(false);
+        protected AutoResetEvent      _updaterAutoResetEvent            = new AutoResetEvent(false);
+        protected AutoResetEvent      _serverConnectionAutoResetEvent   = new AutoResetEvent(false);
+        protected AutoResetEvent      _databaseConnectionAutoResetEvent = new AutoResetEvent(false);
+        protected string              _serverConnectionReturnMessage    = string.Empty;
+        protected string              _databaseConnectionReturnMessage  = string.Empty;
 
         #region    Helper Methods
         protected void ServerConnectionAsync()
