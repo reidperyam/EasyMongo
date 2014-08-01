@@ -9,9 +9,9 @@ using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using EasyMongo.Test.Base;
 
-namespace EasyMongo.Async.Test
+namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture, Ignore("Not yet implemented to reflect new asynchronous Task implementation")]
+    [TestFixture]
     public class ReaderAsyncTest : IntegrationTestFixture
     {
         /// <summary>

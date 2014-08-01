@@ -13,7 +13,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Async.Test
 {
-    [TestFixture]
+    [TestFixture, Ignore("Not yet implemented to reflect new asynchronous Task implementation")]
     public class UpdaterAsyncTest : IntegrationTestFixture
     {
         [Test]

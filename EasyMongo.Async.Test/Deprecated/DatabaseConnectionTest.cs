@@ -12,9 +12,9 @@ using EasyMongo.Async;
 using EasyMongo.Async.Deprecated;
 using EasyMongo.Test.Base;
 
-namespace EasyMongo.Async.Test
+namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture, Ignore("Not yet implemented to reflect new asynchronous Task implementation")]
+    [TestFixture]
     public class DatabaseConnectionTest : IntegrationTestFixture
     {
         [Test]

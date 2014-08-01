@@ -60,6 +60,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Deprecated\DatabaseConnectionTest.cs" />
+    <Compile Include="Deprecated\ReaderAsyncTest.cs" />
+    <Compile Include="Deprecated\ReaderAsyncTTest.cs" />
+    <Compile Include="Deprecated\ServerConnectionTest.cs" />
+    <Compile Include="Deprecated\UpdaterAsyncTest.cs" />
+    <Compile Include="Deprecated\UpdaterAsyncTTest.cs" />
+    <Compile Include="Deprecated\WriterAsyncTest.cs" />
+    <Compile Include="Deprecated\WriterAsyncTTest.cs" />
     <Compile Include="WriterAsyncTTest.cs" />
     <Compile Include="UpdaterAsyncTTest.cs" />
     <Compile Include="ReaderAsyncTTest.cs" />

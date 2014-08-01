@@ -8,9 +8,9 @@ using EasyMongo;
 using EasyMongo.Test.Base;
 using System.Threading;
 
-namespace EasyMongo.Async.Test
+namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture, Ignore("Not yet implemented to reflect new asynchronous Task implementation")]
+    [TestFixture]
     public class WriterAsyncTest : IntegrationTestFixture
     {
         /// <summary>

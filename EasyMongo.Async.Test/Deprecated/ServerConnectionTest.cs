@@ -9,9 +9,9 @@ using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Test.Base;
 
-namespace EasyMongo.Async.Test
+namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture, Ignore("Not yet implemented to reflect new asynchronous Task implementation")]
+    [TestFixture]
     public class ServerConnectionTest : IntegrationTestFixture
     {
         #region Asynchronous

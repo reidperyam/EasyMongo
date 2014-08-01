@@ -8,10 +8,10 @@ using EasyMongo;
 using EasyMongo.Test.Base;
 using System.Threading;
 
-namespace EasyMongo.Async.Test
+namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture, Ignore("Not yet implemented to reflect new asynchronous Task implementation")]
-    public class WriterAsyncTest : IntegrationTestFixture
+    [TestFixture]
+    public class WriterAsyncTTest : IntegrationTestFixture
     {
         /// <summary>
         /// Asynchronously writes a MongoTestEntry to a MongoDB and verifies that it was retrieved 
@@ -21,8 +21,8 @@ namespace EasyMongo.Async.Test
         public void Simple_AddTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryAsync(entryMessage, MONGO_COLLECTION_1_NAME);
-            _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
+            AddMongoEntryAsyncT(entryMessage, MONGO_COLLECTION_1_NAME);
+            _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
         }
@@ -35,7 +35,7 @@ namespace EasyMongo.Async.Test
         public void Add_TwoTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryAsync(entryMessage, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncT(entryMessage, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -43,7 +43,7 @@ namespace EasyMongo.Async.Test
             _results.Clear();
 
             string entryMessage2 = "This is a test as well";
-            AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncT(entryMessage2, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);

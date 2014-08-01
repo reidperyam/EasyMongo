@@ -70,6 +70,12 @@ namespace EasyMongo.Test.Base
             _updaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsync_AsyncFindAndModifyCompleted);
             _updaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsync_AsyncFindAndRemoveCompleted);
 
+            _readerTask = _kernel.TryGet<IReaderTask>();
+
+            _writerTask = _kernel.TryGet<IWriterTask>();
+
+            _updaterTask = _kernel.TryGet<IUpdaterTask>();
+
             // generic classes
             _readerAsyncT = _kernel.TryGet<IReaderAsync<Entry>>();
             _readerAsyncT.AsyncReadCompleted += new ReadCompletedEvent(_readerAsyncT_AsyncReadCompleted);
@@ -81,6 +87,12 @@ namespace EasyMongo.Test.Base
             _updaterAsyncT = _kernel.TryGet<IUpdaterAsync<Entry>>();
             _updaterAsyncT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsyncT_AsyncFindAndModifyCompleted);
             _updaterAsyncT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsyncT_AsyncFindAndRemoveCompleted);
+
+            _readerTaskT = _kernel.TryGet<IReaderTask<Entry>>();
+
+            _writerTaskT = _kernel.TryGet<IWriterTask<Entry>>();
+
+            _updaterTaskT = _kernel.TryGet<IUpdaterTask<Entry>>();
 
             #endregion EasyMongo.Async.Test
 
@@ -197,6 +209,14 @@ namespace EasyMongo.Test.Base
         protected IReaderAsync<Entry> _readerAsyncT;
         protected IWriterAsync<Entry> _writerAsyncT;
         protected IUpdaterAsync<Entry> _updaterAsyncT;
+
+        protected IReaderTask _readerTask;
+        protected IWriterTask _writerTask;
+        protected IUpdaterTask _updaterTask;
+
+        protected IReaderTask<Entry> _readerTaskT;
+        protected IWriterTask<Entry> _writerTaskT;
+        protected IUpdaterTask<Entry> _updaterTaskT;
 
         protected IDatabaseReader _databaseReader;
         protected IDatabaseWriter _databaseWriter;
