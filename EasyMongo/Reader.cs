@@ -16,11 +16,11 @@ namespace EasyMongo
 {
     public class Reader : IReader
     {
-        IDatabaseConnection _mongoDatabaseConnection;
+        IDatabaseConnection _databaseConnection;
 
-        public Reader(IDatabaseConnection mongoDatabaseConnection)
+        public Reader(IDatabaseConnection databaseConnection)
         {
-            _mongoDatabaseConnection = mongoDatabaseConnection;
+            _databaseConnection = databaseConnection;
         }
 
         #region    Methods
@@ -125,21 +125,21 @@ namespace EasyMongo
         {
             results = new List<T>();
             var searchQuery = Query.And(Query.GTE(dateTimeFieldName, start), Query.LTE(dateTimeFieldName, end));
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             results.AddRange(collection.Find(searchQuery));
         }
         private void Find<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
         {
             results = new List<T>();
             var searchQuery = Query.And(Query.GTE(dateTimeFieldName, start), Query.LTE(dateTimeFieldName, end), Query.Matches(fieldName, new BsonRegularExpression(regexPattern)));
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             results.AddRange(collection.Find(searchQuery));
         }
         private void Find<T>(string collectionName, string fieldName, string regexPattern, out List<T> results)
         {
             results = new List<T>();
             var searchQuery = Query.Matches(fieldName, new BsonRegularExpression(regexPattern));
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             results.AddRange(collection.Find(searchQuery));
         }
         private void Find<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
@@ -213,13 +213,13 @@ namespace EasyMongo
         private void Distinct<T>(string collectionName, string fieldName, out List<T> results)
         {
             results = new List<T>();
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             results.AddRange(collection.Distinct<T>(fieldName));
         }
         private void Distinct<T>(string collectionName, string fieldName, IMongoQuery query, out List<T> results)
         {
             results = new List<T>();
-            var collection = _mongoDatabaseConnection.GetCollection<T>(collectionName);
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
             results.AddRange(collection.Distinct<T>(fieldName, query));
         }
         private void Distinct<T>(IEnumerable<string> collectionNames, string fieldName, out List<T> results)

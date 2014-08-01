@@ -11,16 +11,16 @@ namespace EasyMongo.Async
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 
-        IWriter _mongoWriter;
+        IWriter _writer;
 
-        public WriterAsync(IWriter mongoWriter)
+        public WriterAsync(IWriter writer)
         {
-            _mongoWriter = mongoWriter;
+            _writer = writer;
         }
 
         public void WriteAsync<T>(string collectionName, T entry)
         {
-            new Action<string, T>(_mongoWriter.Write).BeginInvoke(collectionName, entry, Callback, null);
+            new Action<string, T>(_writer.Write).BeginInvoke(collectionName, entry, Callback, null);
         }
 
         private void Callback(IAsyncResult asyncRes)
@@ -42,30 +42,30 @@ namespace EasyMongo.Async
         {
             add
             {
-                lock (_mongoWriterAsync)
+                lock (_writerAsync)
                 {
-                    _mongoWriterAsync.AsyncWriteCompleted += value;
+                    _writerAsync.AsyncWriteCompleted += value;
                 }
             }
             remove
             {
-                lock (_mongoWriterAsync)
+                lock (_writerAsync)
                 {
-                    _mongoWriterAsync.AsyncWriteCompleted -= value;
+                    _writerAsync.AsyncWriteCompleted -= value;
                 }
             }
         }
 
-        IWriterAsync _mongoWriterAsync;
+        IWriterAsync _writerAsync;
 
-        public WriterAsync(IWriterAsync mongoWriterAsync)
+        public WriterAsync(IWriterAsync writerAsync)
         {
-            _mongoWriterAsync = mongoWriterAsync;
+            _writerAsync = writerAsync;
         }
 
         public void WriteAsync(string collectionName, T entry)
         {
-            _mongoWriterAsync.WriteAsync<T>(collectionName, entry);
+            _writerAsync.WriteAsync<T>(collectionName, entry);
         }
     }
 }
