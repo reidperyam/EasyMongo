@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture]
+    [TestFixture, Ignore, Obsolete("These tests cover code and functionality that has been replaced")]
     public class WriterAsyncTTest : IntegrationTestFixture
     {
         /// <summary>

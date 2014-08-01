@@ -14,7 +14,7 @@ using EasyMongo.Test.Base;
 
 namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture]
+    [TestFixture, Ignore, Obsolete("These tests cover code and functionality that has been replaced")]
     public class DatabaseConnectionTest : IntegrationTestFixture
     {
         [Test]
