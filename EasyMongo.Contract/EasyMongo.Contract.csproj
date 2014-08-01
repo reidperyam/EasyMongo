@@ -65,22 +65,26 @@
     <Compile Include="ICollectionWriterT.cs" />
     <Compile Include="IDatabaseWriterT.cs" />
     <Compile Include="IDatabaseUpdaterT.cs" />
-    <Compile Include="IReaderAsync.cs" />
+    <Compile Include="Legacy\IReaderAsync.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Legacy\IReaderAsyncT.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IReaderTaskT.cs" />
     <Compile Include="IUpdaterTaskT.cs" />
     <Compile Include="IUpdaterTask.cs" />
     <Compile Include="IWriterTask.cs" />
     <Compile Include="IWriterTaskT.cs" />
-    <Compile Include="IWriterAsyncT.cs" />
-    <Compile Include="IUpdaterAsyncT.cs" />
+    <Compile Include="Legacy\IWriterAsyncT.cs" />
+    <Compile Include="Legacy\IUpdaterAsyncT.cs" />
     <Compile Include="IUpdaterT.cs" />
     <Compile Include="IWriterT.cs" />
-    <Compile Include="IReaderAsyncT.cs" />
     <Compile Include="IDatabaseReaderT.cs" />
     <Compile Include="IReaderT.cs" />
     <Compile Include="IDatabaseUpdater.cs" />
     <Compile Include="ICollectionUpdater.cs" />
-    <Compile Include="IUpdaterAsync.cs" />
+    <Compile Include="Legacy\IUpdaterAsync.cs" />
     <Compile Include="IUpdater.cs" />
     <Compile Include="ICollectionReader.cs" />
     <Compile Include="ICollectionWriter.cs" />
@@ -91,7 +95,7 @@
     <Compile Include="IReaderTask.cs" />
     <Compile Include="IServerConnection.cs" />
     <Compile Include="IWriter.cs" />
-    <Compile Include="IWriterAsync.cs" />
+    <Compile Include="Legacy\IWriterAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

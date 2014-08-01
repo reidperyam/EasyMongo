@@ -5,6 +5,7 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
+using EasyMongo.Contract.Deprecated;
 
 namespace EasyMongo.Database
 {
@@ -16,8 +17,8 @@ namespace EasyMongo.Database
 
         protected IWriterAsync _mongoWriterAsync;
 
-        public DatabaseWriter(IWriter       writer,
-                              IWriterAsync  writerAsync)
+        public DatabaseWriter(IWriter      writer,
+                              IWriterAsync writerAsync)
         {
             _mongoWriter = writer;
             _mongoWriterAsync = writerAsync;

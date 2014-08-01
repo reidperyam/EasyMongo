@@ -5,15 +5,13 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace EasyMongo.Contract
+namespace EasyMongo.Contract.Deprecated
 {
-    public delegate void WriteCompletedEvent(object sender);
-
     [Obsolete("This interface is obselete")]
-    public interface IWriterAsync
+    public interface IWriterAsync<T>
     {
         event WriteCompletedEvent AsyncWriteCompleted;
 
-        void WriteAsync<T>(string collectionName, T entry);
+        void WriteAsync(string collectionName, T entry);
     }
 }

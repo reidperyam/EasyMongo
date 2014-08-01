@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using EasyMongo.Contract.Deprecated;
 
 namespace EasyMongo.Contract
 {

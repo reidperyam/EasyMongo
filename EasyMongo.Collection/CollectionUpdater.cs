@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using EasyMongo.Contract;
 using MongoDB.Driver;
+using EasyMongo.Contract.Deprecated;
 
 namespace EasyMongo.Collection
 {
@@ -12,72 +13,72 @@ namespace EasyMongo.Collection
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
-        IDatabaseUpdater _mongoDBUpdater;
+        IDatabaseUpdater _databaseUpdater;
         string _collectionName; 
 
-        public CollectionUpdater(IDatabaseUpdater mongoDatabaseUpdater, string collectionName)
+        public CollectionUpdater(IDatabaseUpdater databaseUpdater, string collectionName)
         {
-            _mongoDBUpdater = mongoDatabaseUpdater;
+            _databaseUpdater = databaseUpdater;
             _collectionName = collectionName;
 
-            _mongoDBUpdater.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_mongoUpdaterAsync_AsyncFindAndModifyCompleted);
-            _mongoDBUpdater.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
+            _databaseUpdater.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_mongoUpdaterAsync_AsyncFindAndModifyCompleted);
+            _databaseUpdater.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
         }
 
         #region    Synchronous
         public WriteConcernResult Remove<T>(IMongoQuery query)
         {
-            return _mongoDBUpdater.Remove<T>(_collectionName, query);
+            return _databaseUpdater.Remove<T>(_collectionName, query);
         }
         public WriteConcernResult Remove<T>(IMongoQuery query, RemoveFlags removeFlags)
         {
-            return _mongoDBUpdater.Remove<T>(_collectionName, query, removeFlags);
+            return _databaseUpdater.Remove<T>(_collectionName, query, removeFlags);
         }
         public WriteConcernResult Remove<T>(IMongoQuery query, WriteConcern writeConcern)
         {
-            return _mongoDBUpdater.Remove<T>(_collectionName, query, writeConcern);
+            return _databaseUpdater.Remove<T>(_collectionName, query, writeConcern);
         }
         public WriteConcernResult Remove<T>(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            return _mongoDBUpdater.Remove<T>(_collectionName, query, removeFlags, writeConcern);
+            return _databaseUpdater.Remove<T>(_collectionName, query, removeFlags, writeConcern);
         }
 
         public FindAndModifyResult FindAndModify<T>(FindAndModifyArgs findAndModifyArgs)
         {
-            return _mongoDBUpdater.FindAndModify<T>(_collectionName, findAndModifyArgs);
+            return _databaseUpdater.FindAndModify<T>(_collectionName, findAndModifyArgs);
         }
 
         public FindAndModifyResult FindAndRemove<T>(FindAndRemoveArgs findAndRemoveArgs)
         {
-            return _mongoDBUpdater.FindAndRemove<T>(_collectionName, findAndRemoveArgs);
+            return _databaseUpdater.FindAndRemove<T>(_collectionName, findAndRemoveArgs);
         }
         #endregion Synchronous
 
         #region    Asynchronous
         public void RemoveAsync<T>(IMongoQuery query)
         {
-            _mongoDBUpdater.RemoveAsync<T>(_collectionName, query);
+            _databaseUpdater.RemoveAsync<T>(_collectionName, query);
         }
         public void RemoveAsync<T>(IMongoQuery query, RemoveFlags removeFlags)
         {
-            _mongoDBUpdater.RemoveAsync<T>(_collectionName, query, removeFlags);
+            _databaseUpdater.RemoveAsync<T>(_collectionName, query, removeFlags);
         }
         public void RemoveAsync<T>(IMongoQuery query, WriteConcern writeConcern)
         {
-            _mongoDBUpdater.RemoveAsync<T>(_collectionName, query, writeConcern);
+            _databaseUpdater.RemoveAsync<T>(_collectionName, query, writeConcern);
         }
         public void RemoveAsync<T>(IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            _mongoDBUpdater.RemoveAsync<T>(_collectionName, query, removeFlags, writeConcern);
+            _databaseUpdater.RemoveAsync<T>(_collectionName, query, removeFlags, writeConcern);
         }
 
         public void FindAndModifyAsync<T>(FindAndModifyArgs findAndModifyArgs)
         {
-            _mongoDBUpdater.FindAndModifyAsync<T>(_collectionName, findAndModifyArgs);
+            _databaseUpdater.FindAndModifyAsync<T>(_collectionName, findAndModifyArgs);
         }
         public void FindAndRemoveAsync<T>(FindAndRemoveArgs findAndRemoveArgs)
         {
-            _mongoDBUpdater.FindAndRemoveAsync<T>(_collectionName, findAndRemoveArgs);
+            _databaseUpdater.FindAndRemoveAsync<T>(_collectionName, findAndRemoveArgs);
         }
         #endregion Asynchronous
 

@@ -7,7 +7,9 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
+using EasyMongo.Contract.Deprecated;
 using EasyMongo.Async;
+using EasyMongo.Async.Deprecated;
 using EasyMongo.Test.Base;
 
 namespace EasyMongo.Async.Test

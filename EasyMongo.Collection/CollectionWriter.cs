@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EasyMongo.Contract;
+using EasyMongo.Contract.Deprecated;
 using MongoDB.Driver;
 
 namespace EasyMongo.Collection
@@ -11,28 +12,28 @@ namespace EasyMongo.Collection
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 
-        IDatabaseWriter _mongoDBWriter;
+        IDatabaseWriter _databaseWriter;
         string _collectionName; 
 
-        public CollectionWriter(IDatabaseWriter mongoDatabaseWriter, string collectionName)
+        public CollectionWriter(IDatabaseWriter databaseWriter, string collectionName)
         {
-            _mongoDBWriter = mongoDatabaseWriter;
+            _databaseWriter = databaseWriter;
             _collectionName = collectionName;
 
-            _mongoDBWriter.AsyncWriteCompleted += new WriteCompletedEvent(_mongoDBWriter_AsyncWriteCompleted);
+            _databaseWriter.AsyncWriteCompleted += new WriteCompletedEvent(_mongoDBWriter_AsyncWriteCompleted);
         }
 
         #region    Synchronous
         public void Write<T>(T entry)
         {
-            _mongoDBWriter.Write(_collectionName, entry);
+            _databaseWriter.Write(_collectionName, entry);
         }
         #endregion Synchronous
 
         #region    Asynchronous
         public void WriteAsync<T>(T entry)
         {
-            _mongoDBWriter.WriteAsync<T>(_collectionName, entry);
+            _databaseWriter.WriteAsync<T>(_collectionName, entry);
         }
         #endregion Asynchronous
 

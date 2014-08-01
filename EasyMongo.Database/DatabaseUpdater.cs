@@ -5,6 +5,7 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
+using EasyMongo.Contract.Deprecated;
 
 namespace EasyMongo.Database
 {
@@ -13,69 +14,69 @@ namespace EasyMongo.Database
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
-        protected IUpdater _mongoUpdater;
+        protected IUpdater _updater;
 
-        protected IUpdaterAsync _mongoUpdaterAsync;
+        protected IUpdaterAsync _updaterAsync;
 
         public DatabaseUpdater(IUpdater      updater,
                                IUpdaterAsync updaterAsync)
         {
-            _mongoUpdater = updater;
-            _mongoUpdaterAsync = updaterAsync;
+            _updater = updater;
+            _updaterAsync = updaterAsync;
 
-            _mongoUpdaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_mongoUpdaterAsync_AsyncFindAndModifyCompleted);
-            _mongoUpdaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
+            _updaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_mongoUpdaterAsync_AsyncFindAndModifyCompleted);
+            _updaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_mongoUpdaterAsync_AsyncFindAndRemoveCompleted);
         }
 
         public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query)
         {
-            return _mongoUpdater.Remove<T>(collectionName, query);
+            return _updater.Remove<T>(collectionName, query);
         }
         public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            return _mongoUpdater.Remove<T>(collectionName, query, removeFlags);
+            return _updater.Remove<T>(collectionName, query, removeFlags);
         }
         public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            return _mongoUpdater.Remove<T>(collectionName, query, writeConcern);
+            return _updater.Remove<T>(collectionName, query, writeConcern);
         }
         public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            return _mongoUpdater.Remove<T>(collectionName, query, removeFlags, writeConcern);
+            return _updater.Remove<T>(collectionName, query, removeFlags, writeConcern);
         }
         public void RemoveAsync<T>(string collectionName, IMongoQuery query)
         {
-            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query);
+            _updaterAsync.RemoveAsync<T>(collectionName, query);
         }
         public void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query, removeFlags);
+            _updaterAsync.RemoveAsync<T>(collectionName, query, removeFlags);
         }
         public void RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query, writeConcern);
+            _updaterAsync.RemoveAsync<T>(collectionName, query, writeConcern);
         }
         public void RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            _mongoUpdaterAsync.RemoveAsync<T>(collectionName, query, removeFlags, writeConcern);
+            _updaterAsync.RemoveAsync<T>(collectionName, query, removeFlags, writeConcern);
         }
 
         public FindAndModifyResult FindAndModify<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)
         {
-            return _mongoUpdater.FindAndModify<T>(collectionName, findAndModifyArgs);
+            return _updater.FindAndModify<T>(collectionName, findAndModifyArgs);
         }
         public FindAndModifyResult FindAndRemove<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            return _mongoUpdater.FindAndRemove<T>(collectionName, findAndRemoveArgs);
+            return _updater.FindAndRemove<T>(collectionName, findAndRemoveArgs);
         }
 
         public void FindAndModifyAsync<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)
         {
-            _mongoUpdaterAsync.FindAndModifyAsync<T>(collectionName, findAndModifyArgs);
+            _updaterAsync.FindAndModifyAsync<T>(collectionName, findAndModifyArgs);
         }
         public void FindAndRemoveAsync<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            _mongoUpdaterAsync.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs);
+            _updaterAsync.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs);
         }
 
         void _mongoUpdaterAsync_AsyncFindAndRemoveCompleted(WriteConcernResult result)

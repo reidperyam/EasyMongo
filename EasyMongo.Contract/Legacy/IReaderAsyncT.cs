@@ -5,7 +5,7 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace EasyMongo.Contract
+namespace EasyMongo.Contract.Deprecated
 {
     [Obsolete("This interface is obselete")]
     public interface IReaderAsync<T>

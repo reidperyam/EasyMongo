@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Contract
+namespace EasyMongo.Contract.Deprecated
 {
     [Obsolete("This interface is obselete")]
     public interface IUpdaterAsync<T>

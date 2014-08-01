@@ -8,6 +8,7 @@ using System.Threading;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
+using EasyMongo.Contract.Deprecated;
 using EasyMongo.Async;
 using Ninject;
 using EasyMongo.Test.Base.Ninject;
