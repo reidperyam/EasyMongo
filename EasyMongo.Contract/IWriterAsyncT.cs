@@ -7,6 +7,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
+    [Obsolete("This interface is obselete")]
     public interface IWriterAsync<T>
     {
         event WriteCompletedEvent AsyncWriteCompleted;

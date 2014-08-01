@@ -7,6 +7,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Async
 {
+    [Obsolete("This class is obselete")]
     public class WriterAsync : IWriterAsync
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
@@ -36,6 +37,7 @@ namespace EasyMongo.Async
         }
     }
 
+    [Obsolete("This class is obselete")]
     public class WriterAsync<T> : IWriterAsync<T>
     {
         public event WriteCompletedEvent AsyncWriteCompleted

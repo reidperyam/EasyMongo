@@ -66,11 +66,11 @@
     <Compile Include="IDatabaseWriterT.cs" />
     <Compile Include="IDatabaseUpdaterT.cs" />
     <Compile Include="IReaderAsync.cs" />
-    <Compile Include="IReaderAsyncTaskT.cs" />
-    <Compile Include="IUpdaterAsyncTaskT.cs" />
-    <Compile Include="IUpdaterAsyncTask.cs" />
-    <Compile Include="IWriterAsyncTask.cs" />
-    <Compile Include="IWriterAsyncTaskT.cs" />
+    <Compile Include="IReaderTaskT.cs" />
+    <Compile Include="IUpdaterTaskT.cs" />
+    <Compile Include="IUpdaterTask.cs" />
+    <Compile Include="IWriterTask.cs" />
+    <Compile Include="IWriterTaskT.cs" />
     <Compile Include="IWriterAsyncT.cs" />
     <Compile Include="IUpdaterAsyncT.cs" />
     <Compile Include="IUpdaterT.cs" />
@@ -88,7 +88,7 @@
     <Compile Include="IDatabaseReader.cs" />
     <Compile Include="IDatabaseWriter.cs" />
     <Compile Include="IReader.cs" />
-    <Compile Include="IReaderAsyncTask.cs" />
+    <Compile Include="IReaderTask.cs" />
     <Compile Include="IServerConnection.cs" />
     <Compile Include="IWriter.cs" />
     <Compile Include="IWriterAsync.cs" />

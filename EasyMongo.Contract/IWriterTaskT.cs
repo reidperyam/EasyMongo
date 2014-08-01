@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IWriterAsyncTask<T>
+    public interface IWriterTask<T>
     {
         void WriteAsync(string collectionName, T entry);
     }

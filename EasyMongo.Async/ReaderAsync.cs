@@ -13,6 +13,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Async
 {
+    [Obsolete("This class is obselete")]
     public class ReaderAsync : IReaderAsync
     {
         private IReader _mongoReader;
@@ -145,6 +146,7 @@ namespace EasyMongo.Async
         #endregion Callback methods
     }
 
+    [Obsolete("This class is obselete")]
     public class ReaderAsync<T> : IReaderAsync<T>
     {
         public event ReadCompletedEvent AsyncReadCompleted

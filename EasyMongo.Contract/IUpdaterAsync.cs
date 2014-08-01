@@ -11,6 +11,7 @@ namespace EasyMongo.Contract
     public delegate void FindAndRemoveCompletedEvent(WriteConcernResult result);
     public delegate void FindAndModifyCompletedEvent(FindAndModifyResult result);
 
+    [Obsolete("This interface is obselete")]
     public interface IUpdaterAsync
     {
         event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;

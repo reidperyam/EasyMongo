@@ -14,11 +14,11 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Async
 {
-    public class ReaderAsyncTask : IReaderAsyncTask
+    public class ReaderTask : IReaderTask
     {
         private IReader _reader;
 
-        public ReaderAsyncTask(IReader reader)
+        public ReaderTask(IReader reader)
         {
             _reader = reader;
         }
@@ -74,11 +74,11 @@ namespace EasyMongo.Async
         }
     }
 
-    public class ReaderAsyncTask<T> : IReaderAsyncTask<T>
+    public class ReaderTask<T> : IReaderTask<T>
     {
-        private IReaderAsyncTask _reader;
+        private IReaderTask _reader;
 
-        public ReaderAsyncTask(IReaderAsyncTask reader)
+        public ReaderTask(IReaderTask reader)
         {
             _reader = reader;
         }

@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IReaderAsyncTask<T>
+    public interface IReaderTask<T>
     {
         Task<IEnumerable<T>> ReadAsync(string collectionName, string fieldName, string regexPattern);
         Task<IEnumerable<T>> ReadAsync(string collectionName, string fieldName, DateTime start, DateTime end);

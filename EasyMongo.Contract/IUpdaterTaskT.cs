@@ -9,7 +9,7 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Contract
 {
-    public interface IUpdaterAsyncTask<T>
+    public interface IUpdaterTask<T>
     {
         Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query);
         Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query, WriteConcern writeConcern);
