@@ -136,7 +136,13 @@ namespace EasyMongo.Async.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
+            WriteConcernResult writeConcernResult = await _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
