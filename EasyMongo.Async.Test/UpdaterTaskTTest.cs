@@ -68,7 +68,16 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
+            WriteConcernResult writeConcernResult = await _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
+            Assert.AreEqual(1, writeConcernResult.DocumentsAffected);
+            Assert.IsNull(writeConcernResult.Code);
+            Assert.IsNull(writeConcernResult.Command);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -94,7 +103,16 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
+            writeConcernResult = await _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
+            Assert.AreEqual(2, writeConcernResult.DocumentsAffected);
+            Assert.IsNull(writeConcernResult.Code);
+            Assert.IsNull(writeConcernResult.Command);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
