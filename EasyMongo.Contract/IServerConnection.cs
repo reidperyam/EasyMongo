@@ -6,14 +6,10 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    //public delegate void ConnectAsyncCompletedEvent(ConnectionResult result);
-
-    public enum ConnectionState  : uint { NotConnected, Connecting, Connected }
     public enum ConnectionResult : uint { Empty, Success, Failure }
 
     public interface IServerConnection
     {
-        //event ConnectAsyncCompletedEvent ConnectAsyncCompleted;//now private
         bool CanConnect();
         List<string> GetDbNamesForConnection();
 
@@ -33,14 +29,16 @@ namespace EasyMongo.Contract
             get;
         }
 
-        ConnectionState ConnectionState
-        {
-            get;
-        }
+        //ConnectionState ConnectionState
+        //{
+        //    get;
+        //}
 
         void Connect();
 
-        void ConnectAsync(Action<ConnectionResult,string> callaback);
+        void ConnectAsyncDelegate(Action<ConnectionResult,string> callback);
+
+        void ConnectAsyncTask();
 
         List<CommandResult> DropAllDatabases();
 

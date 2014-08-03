@@ -7,6 +7,7 @@ using MongoDB.Driver.Builders;
 using MongoDB.Bson.Serialization;
 using EasyMongo.Contract;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Runtime.Remoting.Messaging;
 
 namespace EasyMongo
@@ -14,7 +15,6 @@ namespace EasyMongo
     public class ServerConnection : IServerConnection 
     {
         private event Action<ConnectionResult,string> ConnectAsyncCompleted;
-        //private event ConnectAsyncCompletedEvent ConnectAsyncCompleted;
         static readonly object _object = new object();
 
         private MongoServer _mongoServer;
@@ -25,39 +25,44 @@ namespace EasyMongo
 
         public ServerConnection(string connectionString)
         {
-            ConnectionState = ConnectionState.NotConnected;
             ConnectionString = connectionString;
 
             CreateMongoServerAsyncDelegatePointer = ConnectMongoServerAsync;
         }
 
         /// <summary>
-        /// Synchronous connection. This method or <see cref="ConnectAsync"/> must be called prior to utilizing the ServerConnection.
+        /// Synchronous connection. This method or <see cref="ConnectAsyncDelegate"/> must be called prior to utilizing the ServerConnection.
         /// </summary>
         public void Connect()
         {
             if (!CanConnect())
                 throw new MongoConnectionException(string.Format("Cannot connect to {0}", ConnectionString));
-
-            ConnectionState = ConnectionState.Connecting;
            
             _mongoServer = null;
             MongoClient client = new MongoClient(ConnectionString);
             _mongoServer = client.GetServer();
-            ConnectionState = ConnectionState.Connected;
         }
 
         /// <summary>
         /// Asynchronous connection. This method or <see cref="Connect"/> must be called prior to utilizing the ServerConnection.
         /// </summary>
         /// <param name="callback">The method to invoke to handle the ConnectAsyncCompleted event when it is invoked</param>
-        public void ConnectAsync(Action<ConnectionResult,string> callback)
+        public void ConnectAsyncDelegate(Action<ConnectionResult,string> callback)
         {
             ConnectAsyncCompleted += callback;// new ConnectAsyncCompletedEvent(callback);
             _mongoServer = null;
             _serverConnectionResetEvent.Reset();
-            ConnectionState = ConnectionState.Connecting;
             CreateMongoServerAsyncDelegatePointer.BeginInvoke(AsyncConnectCallback, null);
+        }
+
+        public async void ConnectAsyncTask()
+        {
+            if (!CanConnect())
+                throw new MongoConnectionException(string.Format("Cannot connect to {0}", ConnectionString));
+
+            _mongoServer = null;
+            MongoClient client = new MongoClient(ConnectionString);
+            _mongoServer = await Task.Run(() => client.GetServer());
         }
 
         /// <summary>
@@ -97,29 +102,26 @@ namespace EasyMongo
                     throw new MongoServerConnectionException("Asynchronous server connection failed");
                 }
 
-                ConnectionState = ConnectionState.Connected;
                 returnMessage = "Successful connection";
             }
             catch (MongoDatabaseConnectionException mdcx)
             {
-                ConnectionState = ConnectionState.NotConnected;
                 returnMessage = mdcx.Message;
             }
             catch (Exception ex)
             {
-                ConnectionState = ConnectionState.NotConnected;
                 returnMessage = ex.Message;
             }
             finally
             {
                 _serverConnectionResetEvent.Set(); // allow dependent process that are waiting via VerifyConnected() to proceed
 
-                if (ConnectionState == ConnectionState.NotConnected)
+                if (_mongoServer.State == MongoServerState.Disconnected)
                 {
                     if (ConnectAsyncCompleted != null)
                         ConnectAsyncCompleted(ConnectionResult.Failure, returnMessage);
                 }
-                else if (ConnectionState == ConnectionState.Connected)
+                else if (_mongoServer.State == MongoServerState.Connected)
                 {
                     if (ConnectAsyncCompleted != null)
                         ConnectAsyncCompleted(ConnectionResult.Success, returnMessage);
@@ -138,21 +140,21 @@ namespace EasyMongo
             set;
         }
 
-        private ConnectionState _connectionState = ConnectionState.NotConnected;
-        public ConnectionState ConnectionState
-        {
-            get
-            {
-                return _connectionState;
-            }
-            private set
-            {
-                lock (_object)
-                {
-                    _connectionState = value;
-                }
-            }
-        }
+        //private ConnectionState _connectionState = ConnectionState.NotConnected;
+        //public ConnectionState ConnectionState
+        //{
+        //    get
+        //    {
+        //        return _connectionState;
+        //    }
+        //    private set
+        //    {
+        //        lock (_object)
+        //        {
+        //            _connectionState = value;
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// TODO - This method needs to be reworked to efficiently check ability to connect; be able to configure
@@ -161,25 +163,44 @@ namespace EasyMongo
         /// <returns></returns>
         public bool CanConnect()
         {
-            bool toReturn;
+            bool canConnect;
 
             try
             {
-                //System.Diagnostics.Debugger.Launch();
+                #region   TODO
                 TimeSpan oneSecond = new TimeSpan(0,0,1);
-                //TODO extend with MongoServerSettings to override default timeouts
-                MongoServerSettings settings = new MongoServerSettings() { ConnectTimeout = oneSecond, SocketTimeout = oneSecond, WaitQueueTimeout = oneSecond };
+
+                MongoInternalIdentity identity = new MongoInternalIdentity(string.Empty, string.Empty);
+                PasswordEvidence passwordEvidence = new PasswordEvidence(string.Empty);
+
+                MongoCredential credential = new MongoCredential(ConnectionString, identity, passwordEvidence);
+                List<MongoCredential> credentials = new List<MongoCredential>();
+                credentials.Add(credential);
+
+                //TODO extend with MongoClientSettings to override default timeout
+                MongoClientSettings clientSettings = new MongoClientSettings()
+                {              
+                    ConnectTimeout = oneSecond,
+                    SocketTimeout = oneSecond,
+                    WaitQueueTimeout = oneSecond,
+                    MaxConnectionIdleTime = oneSecond,
+                    MaxConnectionLifeTime = oneSecond,
+                    Credentials = credentials,
+                    ConnectionMode = MongoDB.Driver.ConnectionMode.Automatic
+                };
+                #endregion TODO
+
                 MongoClient mongoClient = new MongoClient(ConnectionString);
                 MongoServer testServer = mongoClient.GetServer();
                 testServer.Connect(oneSecond);
-                toReturn = true;
+                canConnect = true;
             }
             catch (Exception ex)
             {   // for debugging step-throughs
                 string message = ex.Message;
-                toReturn = false;
+                canConnect = false;
             }
-            return toReturn;
+            return canConnect;
         }
 
         public List<string> GetDbNamesForConnection()
@@ -235,12 +256,12 @@ namespace EasyMongo
 
         private void VerifyConnected()
         {
-            switch (ConnectionState)
+            switch (State)
             {
-                case ConnectionState.Connected: break;
-                case ConnectionState.Connecting: _serverConnectionResetEvent.WaitOne(); // wait for the ServerConnection to connect
+                case MongoServerState.Connected: break;
+                case MongoServerState.Connecting: _serverConnectionResetEvent.WaitOne(); // wait for the ServerConnection to connect
                     break;
-                case ConnectionState.NotConnected: throw new MongoConnectionException("DatabaseConnection is not connected");
+                case MongoServerState.Disconnected: throw new MongoConnectionException("DatabaseConnection is not connected");
             }
         }
 
@@ -255,7 +276,10 @@ namespace EasyMongo
         public MongoServerState State
         {
             get
-            {            
+            {
+                if (_mongoServer == null)
+                    return MongoServerState.Disconnected;
+                else
                 return _mongoServer.State;
             }
         }

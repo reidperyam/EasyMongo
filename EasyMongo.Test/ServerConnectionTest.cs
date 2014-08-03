@@ -26,13 +26,13 @@ namespace EasyMongo.Test
         public void ConnectionStateTest()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
-            Assert.AreEqual(ConnectionState.NotConnected, _mongoServerConnection.ConnectionState);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
             Assert.IsTrue(_mongoServerConnection.CanConnect());
 
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoServerConnection.Connect();
 
-            Assert.AreEqual(ConnectionState.Connected, _mongoServerConnection.ConnectionState);
+            Assert.AreEqual(MongoServerState.Connected, _mongoServerConnection.State);
 
             Assert.IsTrue(_mongoServerConnection.CanConnect());
         }

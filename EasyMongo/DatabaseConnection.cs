@@ -28,7 +28,6 @@ namespace EasyMongo
 
         public DatabaseConnection(IServerConnection serverConnection, string databaseName) 
         {
-            ConnectionState = ConnectionState.NotConnected;
             _dbName = databaseName;
             ConnectAsyncDelegatePointer = ConnectMongoDatabaseAsync;
             MongoServerConnection = serverConnection;
@@ -41,23 +40,20 @@ namespace EasyMongo
         {
             try
             {
-                ConnectionState = ConnectionState.Connecting;
                 Db = null;
                 _databaseConnectionResetEvent.Reset();
 
                 // if the underlying MongoServerConnection is not connected, connect it since we 
                 // depend on it to execute queries
-                if (MongoServerConnection.ConnectionState == ConnectionState.NotConnected)
+                if (MongoServerConnection.State == MongoServerState.Disconnected)
                     MongoServerConnection.Connect();
 
                 // if the database already exists than it is fetched otherwise created
-                Db = MongoServerConnection.GetDatabase(_dbName, WriteConcern.Acknowledged);
-                ConnectionState = ConnectionState.Connected;              
+                Db = MongoServerConnection.GetDatabase(_dbName, WriteConcern.Acknowledged);              
             }
             catch (Exception ex)
             {
                 // TODO: add ex handling!
-                ConnectionState = ConnectionState.NotConnected;
             }
         }
 
@@ -65,7 +61,6 @@ namespace EasyMongo
         {
             ConnectAsyncCompleted += callback;// new ConnectAsyncCompletedEvent(callback);
 
-            ConnectionState = ConnectionState.Connecting;
             Db = null;
             _serverConnectionResetEvent.Reset();
             _databaseConnectionResetEvent.Reset();
@@ -79,17 +74,17 @@ namespace EasyMongo
             try
             {
                 // if the underlying server connection is not connected...
-                if (MongoServerConnection.ConnectionState == ConnectionState.NotConnected)
+                if (MongoServerConnection.State == MongoServerState.Disconnected)
                 {
                     // connect to the server asynchronously
-                    MongoServerConnection.ConnectAsync(serverConnection_AsyncConnectionCompleted);
+                    MongoServerConnection.ConnectAsyncDelegate(serverConnection_AsyncConnectionCompleted);
 
                     // but wait for the connected event call back to notify us that the server is connected
                     // before proceeding
                     _serverConnectionResetEvent.WaitOne();
                     _serverConnectionResetEvent.Reset();
                 }
-                else while(MongoServerConnection.ConnectionState == ConnectionState.Connecting)  
+                else while (MongoServerConnection.State == MongoServerState.Disconnected)  
                 {
                     ;
                     // spin until the server gets connected
@@ -137,31 +132,27 @@ namespace EasyMongo
                     throw new MongoServerConnectionException("Asynchronous server connection failed");
                 }
 
-                ConnectionState = ConnectionState.Connected;
                 returnMessage = "Successful connection";
             }
             catch (MongoDatabaseConnectionException mdcx)
             {
-                ConnectionState = ConnectionState.NotConnected;
                 returnMessage = mdcx.Message;
             }
             catch (Exception ex)
             {
                 //TODO: add additional exception handling
-
-                ConnectionState = ConnectionState.NotConnected;
                 returnMessage = ex.Message;
             }
             finally
             {
                 _databaseConnectionResetEvent.Set(); // allow dependent process that are waiting via VerifyConnected() to proceed
 
-                if( ConnectionState == ConnectionState.NotConnected)
+                if (State == MongoServerState.Disconnected)
                 {
                     if (ConnectAsyncCompleted != null)
                         ConnectAsyncCompleted(ConnectionResult.Failure, returnMessage);
                 }
-                else if (ConnectionState == ConnectionState.Connected)
+                else if (State == MongoServerState.Connected)
                 {
                     if (ConnectAsyncCompleted != null)
                         ConnectAsyncCompleted(ConnectionResult.Success, returnMessage);
@@ -174,19 +165,27 @@ namespace EasyMongo
             }
         }
 
-        private ConnectionState _connectionState = ConnectionState.NotConnected;
-        public ConnectionState ConnectionState
+        //private ConnectionState _connectionState = ConnectionState.NotConnected;
+        //public ConnectionState ConnectionState
+        //{
+        //    get
+        //    {
+        //        return _connectionState;
+        //    }
+        //    private set
+        //    {
+        //        lock (_object)
+        //        {
+        //            _connectionState = value;
+        //        }
+        //    }
+        //}
+
+        public MongoServerState State
         {
             get
             {
-                return _connectionState;
-            }
-            private set
-            {
-                lock (_object)
-                {
-                    _connectionState = value;
-                }
+                return MongoServerConnection.State;
             }
         }
 
@@ -306,16 +305,16 @@ namespace EasyMongo
         {
             do
             {
-                switch (ConnectionState)
+                switch (State)
                 {
-                    case ConnectionState.Connected: break;
-                    case ConnectionState.Connecting: _databaseConnectionResetEvent.WaitOne(); // wait for the DatabaseConnection to connect
+                    case MongoServerState.Connected: break;
+                    case MongoServerState.Connecting: _databaseConnectionResetEvent.WaitOne(); // wait for the DatabaseConnection to connect
                         break;
-                    case ConnectionState.NotConnected: /*Connect();*/ //break;
+                    case MongoServerState.Disconnected: /*Connect();*/ //break;
                     throw new MongoConnectionException("DatabaseConnection is not connected");
                 }
-            } 
-            while (ConnectionState != ConnectionState.Connected);
+            }
+            while (State != MongoServerState.Connected);
         }
     }
 }

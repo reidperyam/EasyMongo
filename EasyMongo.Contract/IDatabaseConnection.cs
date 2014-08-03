@@ -24,7 +24,12 @@ namespace  EasyMongo.Contract
 
         void ConnectAsync(Action<ConnectionResult,string> callback);
 
-        ConnectionState ConnectionState
+        //ConnectionState ConnectionState
+        //{
+        //    get;
+        //}
+
+        MongoServerState State 
         {
             get;
         }

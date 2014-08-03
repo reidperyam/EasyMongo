@@ -19,14 +19,16 @@ namespace EasyMongo.Test
         public void ConnectionStateTest()
         {
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            Assert.AreEqual(ConnectionState.NotConnected, _mongoDatabaseConnection.ConnectionState);
+            Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
+            Assert.IsNull(_mongoDatabaseConnection.Db);
 
             Assert.IsTrue(_mongoDatabaseConnection.CanConnect());
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
             _mongoDatabaseConnection.Connect();
 
-            Assert.AreEqual(ConnectionState.Connected, _mongoDatabaseConnection.ConnectionState);
+            Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
+            Assert.IsNotNull(_mongoDatabaseConnection.Db);
 
             Assert.IsTrue(_mongoDatabaseConnection.CanConnect());
         }

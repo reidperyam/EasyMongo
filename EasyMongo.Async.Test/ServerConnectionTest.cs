@@ -20,17 +20,11 @@ namespace EasyMongo.Async.Test
         public void AsynchronousTest1()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
-            Assert.AreEqual(ConnectionState.NotConnected, _mongoServerConnection.ConnectionState);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
             Assert.AreEqual(ConnectionResult.Empty,_serverConnectionResult);
-            _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
-            Assert.IsTrue(_mongoServerConnection.ConnectionState == ConnectionState.Connecting || // these asserts are variable becuase this is a race condition...
-                          _mongoServerConnection.ConnectionState == ConnectionState.Connected);   // crappy test design but it's meant to give a view into use case
-            Assert.IsTrue(_serverConnectionResult == ConnectionResult.Empty ||                    // considerations
-                          _serverConnectionResult == ConnectionResult.Success);
-            _serverConnectionAutoResetEvent.WaitOne();
-            Assert.AreEqual(ConnectionState.Connected,_mongoServerConnection.ConnectionState);/**/
-            Assert.AreEqual(ConnectionResult.Success, _serverConnectionResult);/**/
-            Assert.IsNotNull(_serverConnectionReturnMessage);
+            _mongoServerConnection.ConnectAsyncTask();
+            System.Threading.Thread.Sleep(200);
+            Assert.AreEqual(MongoServerState.Connected, _mongoServerConnection.State);
         }
 
         [Test]
@@ -38,11 +32,11 @@ namespace EasyMongo.Async.Test
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             Assert.AreEqual(ConnectionResult.Empty, _serverConnectionResult);
-            _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
+            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
 
             List<string> returned = _mongoServerConnection.GetDbNamesForConnection();
             Assert.AreEqual(ConnectionResult.Success, _serverConnectionResult);
-            Assert.IsTrue(_mongoServerConnection.ConnectionState == ConnectionState.Connected);
+            Assert.AreEqual(MongoServerState.Connected, _mongoServerConnection.State);
             Assert.IsNotNull(_serverConnectionReturnMessage);
 
             Assert.AreEqual(0, returned.Count(),"no database names since nothing has been written yet");
@@ -58,11 +52,11 @@ namespace EasyMongo.Async.Test
         public void AsynchronousTest3()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);
-            _mongoServerConnection.ConnectAsync(_mongoServerConnection_Connected);
+            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
             _serverConnectionAutoResetEvent.WaitOne();
 
             Assert.AreEqual(ConnectionResult.Failure, _serverConnectionResult);
-            Assert.IsTrue(_mongoServerConnection.ConnectionState == ConnectionState.NotConnected);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
             Assert.IsNotNull(_serverConnectionReturnMessage);
         }
 
