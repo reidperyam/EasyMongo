@@ -22,11 +22,6 @@ namespace EasyMongo
             var collection = _databaseConnection.GetCollection<T>(collectionName);
             collection.Save(entry);
         }
-
-        private MongoCollection<T> GetCollection<T>(string collectionName)
-        {
-            return _databaseConnection.GetCollection<T>(collectionName);
-        }
     }
 
     public class Writer<T> : IWriter<T>

@@ -360,9 +360,9 @@ namespace EasyMongo.Database.Test
         public void RemoveAsyncTest1()
         {
             string entryMessage1 = "entry 1";
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
             string entryMessage2 = "entry 2";
-            AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage2, MONGO_COLLECTION_1_NAME);
 
             List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -385,10 +385,10 @@ namespace EasyMongo.Database.Test
         {
             #region RemoveFlags.Single
             string entryMessage1 = "entry 1";
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
             string entryMessage2 = "entry 2";
-            AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage2, MONGO_COLLECTION_1_NAME);
 
             List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
@@ -413,9 +413,9 @@ namespace EasyMongo.Database.Test
             _mongoDatabaseConnection.ClearCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             #region RemoveFlags.None
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
-            AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage2, MONGO_COLLECTION_1_NAME);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());
@@ -440,9 +440,9 @@ namespace EasyMongo.Database.Test
         public void RemoveAsyncTest3()
         {
             string entryMessage1 = "entry 1";
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
             string entryMessage2 = "entry 2";
-            AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage2, MONGO_COLLECTION_1_NAME);
 
             List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -465,8 +465,8 @@ namespace EasyMongo.Database.Test
         {
             #region RemoveFlags.Single
             string entryMessage1 = "entry 1";
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
             string entryMessage2 = "entry 2";
             AddMongoEntry(entryMessage2, MONGO_COLLECTION_1_NAME);
 
@@ -493,9 +493,9 @@ namespace EasyMongo.Database.Test
             _mongoDatabaseConnection.ClearCollection<Entry>(MONGO_COLLECTION_1_NAME);
 
             #region RemoveFlags.None
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
-            AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
-            AddMongoEntryAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage1, MONGO_COLLECTION_1_NAME);
+            AddMongoEntryAsyncDelegate(entryMessage2, MONGO_COLLECTION_1_NAME);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(3, results.Count());

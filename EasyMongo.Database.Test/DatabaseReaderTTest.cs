@@ -17,7 +17,7 @@ namespace EasyMongo.Database.Test
         public void ReadAsyncTest1()
         {
             string entryMessage = "Hello World";
-            AddMongoEntryAsync(message:entryMessage);
+            AddMongoEntryAsyncDelegate(message:entryMessage);
             _databaseReaderT.ReadAsync(MONGO_COLLECTION_1_NAME, "Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());
@@ -28,7 +28,7 @@ namespace EasyMongo.Database.Test
         public void ReadAsyncTest2()
         {
             string entryMessage = "Hello World";
-            AddMongoEntryAsync(message: entryMessage);
+            AddMongoEntryAsyncDelegate(message: entryMessage);
             _databaseReaderT.ReadAsync(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
             _readerAutoResetEvent.WaitOne();
             Assert.AreEqual(1, _asyncReadResults.Count());

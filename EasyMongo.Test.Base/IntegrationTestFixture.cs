@@ -309,11 +309,10 @@ namespace EasyMongo.Test.Base
         }
 
         /// <summary>
-        ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsync class
+        ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsync class.
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="collectionName"></param>
-        protected void AddMongoEntryAsync(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        /// <remarks>This asynchronous implementation utilizes asynchronous delegates</remarks>
+        protected void AddMongoEntryAsyncDelegate(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
         {
             Entry mongoEntry = new Entry();
             mongoEntry.Message = message;
@@ -322,6 +321,20 @@ namespace EasyMongo.Test.Base
             _writerAsync.WriteAsync<Entry>(collectionName, mongoEntry);
             _writerAutoResetEvent.WaitOne();
         }
+
+        /// <summary>
+        ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterTask class.
+        /// </summary>
+        /// <remarks>This asynchronous implementation utilizes System.Threading.Tasks</remarks>
+        protected void AddMongoEntryAsyncTask(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        {
+            Entry mongoEntry = new Entry();
+            mongoEntry.Message = message;
+            mongoEntry.TimeStamp = DateTime.Now;
+
+            _writerTask.WriteAsync<Entry>(collectionName, mongoEntry);
+        }
+
 
         /// <summary>
         ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsync<T> class
