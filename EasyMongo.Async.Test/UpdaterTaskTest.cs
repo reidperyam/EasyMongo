@@ -397,11 +397,13 @@ namespace EasyMongo.Async.Test
             FindAndRemoveArgs findAndRemoveArgs = new FindAndRemoveArgs();
             findAndRemoveArgs.Query = searchQuery;
             findAndRemoveArgs.SortBy = sortBy;
-            _updaterTask.FindAndRemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndRemoveArgs);
 
-            Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_findAndModifyResult.ErrorMessage);
-            Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
+            FindAndModifyResult findAndModifyResult = await _updaterTask.FindAndRemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndRemoveArgs);
+
+            Assert.IsTrue(findAndModifyResult.Ok);
+            Assert.IsNotNull(findAndModifyResult.Command);
+            Assert.IsNull(findAndModifyResult.ErrorMessage);
+            Assert.IsNotNull(findAndModifyResult.ModifiedDocument); 
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(0, results.Count());/*we deleted the entry via FindAndRemove...*/
