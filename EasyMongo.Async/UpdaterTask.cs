@@ -26,17 +26,17 @@ namespace EasyMongo.Async
 
         public async Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query); });
+            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query, writeConcern); });
         }
 
         public async Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query); });
+            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query, removeFlags); });
         }
 
         public async Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query); });
+            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query, removeFlags, writeConcern); });
         }
 
         public async Task<FindAndModifyResult> FindAndModifyAsync<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)

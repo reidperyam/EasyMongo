@@ -13,11 +13,11 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Async.Test
 {
-    [TestFixture, Ignore("Not yet implemented to reflect new asynchronous Task implementation")]
+    [TestFixture]
     public class UpdaterTaskTest : IntegrationTestFixture
     {
         [Test]
-        public void RemoveTest1()
+        public async void RemoveTest1()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -32,8 +32,16 @@ namespace EasyMongo.Async.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _updaterAsync.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery);
-            _updaterAutoResetEvent.WaitOne();
+            WriteConcernResult writeConcernResult = await _updaterTask.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);       
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
+            Assert.AreEqual(1, writeConcernResult.DocumentsAffected);
+            Assert.IsNull(writeConcernResult.Code);
+            Assert.IsNull(writeConcernResult.Command);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -41,7 +49,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void RemoveTest2()
+        public async void RemoveTest2()
         {
             #region RemoveFlags.Single
             string entryMessage1 = "entry 1";
@@ -60,8 +68,16 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updaterAsync.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
-            _updaterAutoResetEvent.WaitOne();
+            WriteConcernResult writeConcernResult = await _updaterTask.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
+            Assert.AreEqual(1, writeConcernResult.DocumentsAffected);
+            Assert.IsNull(writeConcernResult.Code);
+            Assert.IsNull(writeConcernResult.Command);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -87,8 +103,16 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updaterAsync.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
-            _updaterAutoResetEvent.WaitOne();
+            writeConcernResult = await _updaterTask.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
+            Assert.AreEqual(2, writeConcernResult.DocumentsAffected);
+            Assert.IsNull(writeConcernResult.Code);
+            Assert.IsNull(writeConcernResult.Command);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -97,7 +121,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void RemoveTest3()
+        public async void RemoveTest3()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntryAsync(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -112,8 +136,7 @@ namespace EasyMongo.Async.Test
             var searchQuery = Query.NE("Message", entryMessage1);
 
             // remove entries with Message != entryMessage1
-            _updaterAsync.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -121,7 +144,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void RemoveTest4()
+        public async void RemoveTest4()
         {
             #region RemoveFlags.Single
             string entryMessage1 = "entry 1";
@@ -140,8 +163,7 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updaterAsync.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -167,8 +189,7 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updaterAsync.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -177,7 +198,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void FindAndModifyTest1()
+        public async void FindAndModifyTest1()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -198,8 +219,7 @@ namespace EasyMongo.Async.Test
             findAndModifyArgs.Upsert = true;
             findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
 
-            _updaterAsync.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
@@ -211,7 +231,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void FindAndModifyTest2()
+        public async void FindAndModifyTest2()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -232,8 +252,7 @@ namespace EasyMongo.Async.Test
             findAndModifyArgs.Upsert = true;
             findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
 
-            _updaterAsync.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
@@ -245,8 +264,7 @@ namespace EasyMongo.Async.Test
             findAndModifyArgs.Update = update;
             findAndModifyArgs.Upsert = false;
 
-            _updaterAsync.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
@@ -258,7 +276,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void FindAndModifyTest3()
+        public async void FindAndModifyTest3()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -279,8 +297,7 @@ namespace EasyMongo.Async.Test
             findAndModifyArgs.Upsert = true;
             findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
 
-            _updaterAsync.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
@@ -292,8 +309,7 @@ namespace EasyMongo.Async.Test
             findAndModifyArgs.Update = update;
             findAndModifyArgs.Upsert = false;
 
-            _updaterAsync.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
@@ -305,7 +321,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void FindAndModifyTest4()
+        public async void FindAndModifyTest4()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -328,8 +344,7 @@ namespace EasyMongo.Async.Test
             findAndModifyArgs.Upsert = true;
             findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
 
-            _updaterAsync.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.FindAndModifyAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
@@ -341,7 +356,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public void FindAndRemoveTest()
+        public async void FindAndRemoveTest()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -358,8 +373,7 @@ namespace EasyMongo.Async.Test
             FindAndRemoveArgs findAndRemoveArgs = new FindAndRemoveArgs();
             findAndRemoveArgs.Query = searchQuery;
             findAndRemoveArgs.SortBy = sortBy;
-            _updaterAsync.FindAndRemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndRemoveArgs);
-            _updaterAutoResetEvent.WaitOne();
+            _updaterTask.FindAndRemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, findAndRemoveArgs);
 
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
