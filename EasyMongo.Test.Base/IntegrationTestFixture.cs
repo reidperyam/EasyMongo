@@ -335,13 +335,11 @@ namespace EasyMongo.Test.Base
             _writerTask.WriteAsync<Entry>(collectionName, mongoEntry);
         }
 
-
         /// <summary>
         ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsync<T> class
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="collectionName"></param>
-        protected void AddMongoEntryAsyncT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        /// <remarks>Uses async Delegates</remarks>
+        protected void AddMongoEntryAsyncDelegateT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
         {
             Entry mongoEntry = new Entry();
             mongoEntry.Message = message;
@@ -349,6 +347,19 @@ namespace EasyMongo.Test.Base
 
             _writerAsyncT.WriteAsync(collectionName, mongoEntry);
             _writerAutoResetEvent.WaitOne();
+        }
+
+        /// <summary>
+        ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterAsync<T> class
+        /// </summary>
+        /// <remarks>Uses async System.Threading.Task</remarks>
+        protected void AddMongoEntryAsyncTaskT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        {
+            Entry mongoEntry = new Entry();
+            mongoEntry.Message = message;
+            mongoEntry.TimeStamp = DateTime.Now;
+
+            _writerTaskT.WriteAsync(collectionName, mongoEntry);
         }
 
         /// <summary>
