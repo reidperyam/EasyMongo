@@ -237,11 +237,12 @@ namespace EasyMongo.Async.Test
             findAndModifyArgs.Upsert = true;
             findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
 
-            _updaterTaskT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
+            FindAndModifyResult findAndModifyResult = await _updaterTaskT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
 
-            Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
-            Assert.IsNull(_findAndModifyResult.ErrorMessage);
-            Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
+            Assert.IsTrue(findAndModifyResult.Ok);
+            Assert.IsNotNull(findAndModifyResult.Command);
+            Assert.IsNull(findAndModifyResult.ErrorMessage);
+            Assert.IsNotNull(findAndModifyResult.ModifiedDocument);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
