@@ -23,10 +23,8 @@ namespace EasyMongo.Async.Test.Deprecated
             Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
             Assert.AreEqual(ConnectionResult.Empty,_serverConnectionResult);
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            Assert.IsTrue(_mongoServerConnection.State == MongoServerState.Connecting || // these asserts are variable becuase this is a race condition...
-                          _mongoServerConnection.State == MongoServerState.Connected);   // crappy test design but it's meant to give a view into use case
-            Assert.IsTrue(_serverConnectionResult == ConnectionResult.Empty ||                    // considerations
-                          _serverConnectionResult == ConnectionResult.Success);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
+            Assert.AreEqual(ConnectionResult.Empty, _serverConnectionResult);
             _serverConnectionAutoResetEvent.WaitOne();
             Assert.AreEqual(MongoServerState.Connected, _mongoServerConnection.State);/**/
             Assert.AreEqual(ConnectionResult.Success, _serverConnectionResult);/**/

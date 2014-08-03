@@ -24,9 +24,9 @@ namespace EasyMongo.Async.Test.Deprecated
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Disconnected);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Connecting);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
 
             _databaseConnectionAutoResetEvent.WaitOne(); // wait for the async operation to complete to verify it's results
 
@@ -40,12 +40,12 @@ namespace EasyMongo.Async.Test.Deprecated
         public void AsynchronousTest1()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
-            Assert.AreEqual( MongoServerState.Disconnected, _mongoServerConnection.State);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
             Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Disconnected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Connecting);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
 
             _databaseConnectionAutoResetEvent.WaitOne();// wait for the async operation to complete so that we can compare the connection state
 
@@ -64,9 +64,9 @@ namespace EasyMongo.Async.Test.Deprecated
             Assert.AreEqual(_mongoServerConnection.State, MongoServerState.Disconnected);
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Disconnected);
+            Assert.AreEqual(MongoServerState.Disconnected,_mongoDatabaseConnection.State);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Connecting);
+            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
 
             _databaseConnectionAutoResetEvent.WaitOne();// wait for the async operation to complete so that we can compare the connection state
 
@@ -104,6 +104,8 @@ namespace EasyMongo.Async.Test.Deprecated
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
+            _databaseConnectionAutoResetEvent.WaitOne();
+
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoServerConnection.State);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
@@ -116,7 +118,7 @@ namespace EasyMongo.Async.Test.Deprecated
         public void AsynchronousTest5()
         {
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
-
+            _databaseConnectionAutoResetEvent.WaitOne();
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             //Assert.AreEqual(ConnectionResult.Success, _databaseConnectionResult);/**/
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
@@ -146,12 +148,16 @@ namespace EasyMongo.Async.Test.Deprecated
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
+            _databaseConnectionAutoResetEvent.WaitOne();
+
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
             Assert.AreEqual(0, collection.Count());
 
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
+
+            _databaseConnectionAutoResetEvent.WaitOne();
 
             collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
@@ -168,6 +174,8 @@ namespace EasyMongo.Async.Test.Deprecated
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
 
+            _databaseConnectionAutoResetEvent.WaitOne();
+
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
             Assert.AreEqual(0, collection.Count());
@@ -187,6 +195,8 @@ namespace EasyMongo.Async.Test.Deprecated
             _mongoDatabaseConnection.Connect();
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
+
+            _databaseConnectionAutoResetEvent.WaitOne();
 
             collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);

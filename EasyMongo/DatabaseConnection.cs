@@ -311,7 +311,7 @@ namespace EasyMongo
                     case MongoServerState.Connecting: _databaseConnectionResetEvent.WaitOne(); // wait for the DatabaseConnection to connect
                         break;
                     case MongoServerState.Disconnected: /*Connect();*/ //break;
-                    throw new MongoConnectionException("DatabaseConnection is not connected");
+                         throw new MongoConnectionException("DatabaseConnection is not connected");
                 }
             }
             while (State != MongoServerState.Connected);

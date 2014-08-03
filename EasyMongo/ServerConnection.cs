@@ -116,7 +116,7 @@ namespace EasyMongo
             {
                 _serverConnectionResetEvent.Set(); // allow dependent process that are waiting via VerifyConnected() to proceed
 
-                if (_mongoServer.State == MongoServerState.Disconnected)
+                if (_mongoServer == null || _mongoServer.State == MongoServerState.Disconnected)
                 {
                     if (ConnectAsyncCompleted != null)
                         ConnectAsyncCompleted(ConnectionResult.Failure, returnMessage);
