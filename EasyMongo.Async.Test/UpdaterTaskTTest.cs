@@ -169,7 +169,13 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.Single means only one occurance matching searchQuery will be removed
-            _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
+            WriteConcernResult writeConcernResult = await _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, results.Count());
@@ -195,7 +201,13 @@ namespace EasyMongo.Async.Test
 
             // remove entries with Message != entryMessage1
             // RemoveFlags.None means every occurance matching searchQuery will be removed
-            _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
+            writeConcernResult = await _updaterTaskT.RemoveAsync(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
+
+            Assert.IsTrue(writeConcernResult.Ok);
+            Assert.IsFalse(writeConcernResult.UpdatedExisting);
+            Assert.IsFalse(writeConcernResult.HasLastErrorMessage);
+            Assert.IsNull(writeConcernResult.LastErrorMessage);
+            Assert.IsNull(writeConcernResult.Upserted);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
