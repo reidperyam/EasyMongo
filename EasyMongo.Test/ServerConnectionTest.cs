@@ -15,11 +15,12 @@ namespace EasyMongo.Test
     public class ServerConnectionTest : IntegrationTestFixture
     {
         #region Synchronous
-        [Test,ExpectedException(typeof(MongoConnectionException))]
+        [Test]
         public void ConstructorBadConnStringTest()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);
-            _mongoServerConnection.Connect();
+            Assert.IsFalse(_mongoServerConnection.CanConnect());
+            _mongoServerConnection = null;
         }
 
         [Test]

@@ -156,6 +156,7 @@ namespace EasyMongo.Test.Base
         {
             _mongoServerConnection   = _kernel.TryGet<IServerConnection>();
             _mongoDatabaseConnection = _kernel.TryGet<IDatabaseConnection>();
+
             _mongoDatabaseConnection.Connect();
             _mongoDatabaseConnection.ClearAllCollections<Entry>();
             _mongoServerConnection.Connect();
