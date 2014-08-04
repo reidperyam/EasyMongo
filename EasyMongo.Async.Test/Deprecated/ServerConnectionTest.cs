@@ -11,7 +11,7 @@ using EasyMongo.Test.Base;
 
 namespace EasyMongo.Async.Test.Deprecated
 {
-    [TestFixture, Ignore, Obsolete("These tests cover code and functionality that has been replaced")]
+    [TestFixture, Obsolete("These tests cover code and functionality that has been replaced")]
     public class ServerConnectionTest : IntegrationTestFixture
     {
         #region Asynchronous
@@ -37,7 +37,7 @@ namespace EasyMongo.Async.Test.Deprecated
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             Assert.AreEqual(ConnectionResult.Empty, _serverConnectionResult);
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-
+            _serverConnectionAutoResetEvent.WaitOne();
             List<string> returned = _mongoServerConnection.GetDbNamesForConnection();
             Assert.AreEqual(ConnectionResult.Success, _serverConnectionResult);
             Assert.IsTrue(_mongoServerConnection.State == MongoServerState.Connected);

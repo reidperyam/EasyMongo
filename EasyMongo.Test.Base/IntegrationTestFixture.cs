@@ -265,7 +265,7 @@ namespace EasyMongo.Test.Base
         protected void DatabaseConnectionAsync()
         {
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            _mongoDatabaseConnection.ConnectAsync(_mongoDatabaseConnection_Connected);
+            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
             _databaseConnectionAutoResetEvent.WaitOne();
         }
 

@@ -140,22 +140,6 @@ namespace EasyMongo
             set;
         }
 
-        //private ConnectionState _connectionState = ConnectionState.NotConnected;
-        //public ConnectionState ConnectionState
-        //{
-        //    get
-        //    {
-        //        return _connectionState;
-        //    }
-        //    private set
-        //    {
-        //        lock (_object)
-        //        {
-        //            _connectionState = value;
-        //        }
-        //    }
-        //}
-
         /// <summary>
         /// TODO - This method needs to be reworked to efficiently check ability to connect; be able to configure
         /// the timeout check to a couple of seconds. Will probably need MongoDB support to figure out how.

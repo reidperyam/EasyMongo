@@ -29,11 +29,6 @@ namespace EasyMongo.Contract
             get;
         }
 
-        //ConnectionState ConnectionState
-        //{
-        //    get;
-        //}
-
         void Connect();
 
         void ConnectAsyncDelegate(Action<ConnectionResult,string> callback);
