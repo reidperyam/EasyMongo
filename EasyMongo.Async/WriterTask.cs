@@ -18,9 +18,9 @@ namespace EasyMongo.Async
             _writer = writer;
         }
 
-        public async void WriteAsync<T>(string collectionName, T entry)
+        public void WriteAsync<T>(string collectionName, T entry)
         {
-            await Task.Run(() => { _writer.Write<T>(collectionName, entry); });
+            Task.Run(() => { _writer.Write<T>(collectionName, entry); });
         }
     }
 
@@ -33,9 +33,9 @@ namespace EasyMongo.Async
             _writerAsync = writerAsync;
         }
 
-        public async void WriteAsync(string collectionName, T entry)
+        public void WriteAsync(string collectionName, T entry)
         {
-            await Task.Run(() => { _writerAsync.WriteAsync<T>(collectionName, entry); });
+            Task.Run(() => { _writerAsync.WriteAsync<T>(collectionName, entry); });
         }
     }
 }

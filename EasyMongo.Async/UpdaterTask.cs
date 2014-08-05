@@ -19,34 +19,34 @@ namespace EasyMongo.Async
             _updater = updater;
         }
 
-        public async Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query)
+        public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query)
         {
-            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query); });
+            return Task.Run(() => { return _updater.Remove<T>(collectionName, query); });
         }
 
-        public async Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
+        public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query, writeConcern); });
+            return Task.Run(() => { return _updater.Remove<T>(collectionName, query, writeConcern); });
         }
 
-        public async Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
+        public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query, removeFlags); });
+            return Task.Run(() => { return _updater.Remove<T>(collectionName, query, removeFlags); });
         }
 
-        public async Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
+        public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            return await Task.Run(() => { return _updater.Remove<T>(collectionName, query, removeFlags, writeConcern); });
+            return Task.Run(() => { return _updater.Remove<T>(collectionName, query, removeFlags, writeConcern); });
         }
 
-        public async Task<FindAndModifyResult> FindAndModifyAsync<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)
+        public Task<FindAndModifyResult> FindAndModifyAsync<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)
         {
-            return await Task.Run(() => { return _updater.FindAndModify<T>(collectionName, findAndModifyArgs); });
+            return Task.Run(() => { return _updater.FindAndModify<T>(collectionName, findAndModifyArgs); });
         }
 
-        public async Task<FindAndModifyResult> FindAndRemoveAsync<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
+        public Task<FindAndModifyResult> FindAndRemoveAsync<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            return await Task.Run(() => { return _updater.FindAndRemove<T>(collectionName, findAndRemoveArgs); });
+            return Task.Run(() => { return _updater.FindAndRemove<T>(collectionName, findAndRemoveArgs); });
         }
     }
 
@@ -59,34 +59,34 @@ namespace EasyMongo.Async
             _updater = updater;
         }
 
-        public async Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query)
+        public Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query)
         {
-            return await Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query); });
+            return Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query); });
         }
 
-        public async Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query, WriteConcern writeConcern)
+        public Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            return await Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query, writeConcern); });
+            return Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query, writeConcern); });
         }
 
-        public async Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
+        public Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            return await Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query, removeFlags); });
+            return Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query, removeFlags); });
         }
 
-        public async Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
+        public Task<WriteConcernResult> RemoveAsync(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            return await Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query, removeFlags, writeConcern); });
+            return Task.Run(() => { return _updater.RemoveAsync<T>(collectionName, query, removeFlags, writeConcern); });
         }
 
-        public async Task<FindAndModifyResult> FindAndModifyAsync(string collectionName, FindAndModifyArgs findAndModifyArgs)
+        public Task<FindAndModifyResult> FindAndModifyAsync(string collectionName, FindAndModifyArgs findAndModifyArgs)
         {
-            return await Task.Run(() => { return _updater.FindAndModifyAsync<T>(collectionName, findAndModifyArgs); });
+            return Task.Run(() => { return _updater.FindAndModifyAsync<T>(collectionName, findAndModifyArgs); });
         }
 
-        public async Task<FindAndModifyResult> FindAndRemoveAsync(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
+        public Task<FindAndModifyResult> FindAndRemoveAsync(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            return await Task.Run(() => { return _updater.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs); });
+            return Task.Run(() => { return _updater.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs); });
         }
     }
 }
