@@ -443,7 +443,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
-            Assert.AreEqual(1, result.DocumentsAffected);
+            Assert.AreEqual(2, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);
             Assert.IsNull(result.Upserted);
 
@@ -541,7 +541,7 @@ namespace EasyMongo.Database.Test
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
-            Assert.AreEqual(1, result.DocumentsAffected);
+            Assert.AreEqual(2, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);
             Assert.IsNull(result.Upserted);
 
