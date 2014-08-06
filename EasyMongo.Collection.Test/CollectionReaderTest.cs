@@ -23,36 +23,36 @@ namespace EasyMongo.Collection.Test
         }
 
         [Test]
-        public void ReadAsyncTest1()
+        public async void ReadAsyncTest1()
         {
             string entryMessage = "Hello World";
             AddMongoEntryAsyncDelegate(message: entryMessage);
-            _collectionReader.ReadAsync<Entry>("TimeStamp", _beforeTest, DateTime.Now);
-            _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(1, _asyncReadResults.Count());
-            Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
+            IEnumerable<Entry> results = await _collectionReader.ReadAsync<Entry>("TimeStamp", _beforeTest, DateTime.Now);
+
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(entryMessage, results.ElementAt(0).Message);
         }
 
         [Test]
-        public void ReadAsyncTest2()
+        public async void ReadAsyncTest2()
         {
             string entryMessage = "Hello World";
             AddMongoEntryAsyncDelegate(message: entryMessage);
-            _collectionReader.ReadAsync<Entry>("Message", entryMessage);
-            _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(1, _asyncReadResults.Count());
-            Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
+            IEnumerable<Entry> results = await _collectionReader.ReadAsync<Entry>("Message", entryMessage);
+
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(entryMessage, results.ElementAt(0).Message);
         }
 
         [Test]
-        public void ReadAsyncTest3()
+        public async void ReadAsyncTest3()
         {
             string entryMessage = "Hello World";
             AddMongoEntryAsyncDelegate(message: entryMessage);
-            _collectionReader.ReadAsync<Entry>("Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now);
-            _readerAutoResetEvent.WaitOne();
-            Assert.AreEqual(1, _asyncReadResults.Count());
-            Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
+            IEnumerable<Entry> results = await _collectionReader.ReadAsync<Entry>("Message", entryMessage, "TimeStamp", _beforeTest, DateTime.Now);
+
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(entryMessage, results.ElementAt(0).Message);
         }
 
         [Test]
@@ -117,24 +117,23 @@ namespace EasyMongo.Collection.Test
         }
 
         [Test]
-        public void DistinctAsyncTest1()
+        public async void DistinctAsyncTest1()
         {
             AddMongoEntry("One");
             AddMongoEntry("One");
             AddMongoEntry("Two");
             AddMongoEntry("Three");
 
-            _collectionReader.DistinctAsync<string>("Message");
-            _readerAutoResetEvent.WaitOne();
+            IEnumerable<string> results = await _collectionReader.DistinctAsync<string>("Message");
 
-            Assert.AreEqual(3, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0]);
-            Assert.AreEqual("Two", _asyncDistinctResults[1]);
-            Assert.AreEqual("Three", _asyncDistinctResults[2]);
+            Assert.AreEqual(3, results.Count());
+            Assert.AreEqual("One", results.ElementAt(0));
+            Assert.AreEqual("Two", results.ElementAt(1));
+            Assert.AreEqual("Three", results.ElementAt(2));
         }
 
         [Test]
-        public void DistinctAsyncTest2()
+        public async void DistinctAsyncTest2()
         {
             // get distinct message values that are not "Two" or "Three"
             var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
@@ -144,11 +143,10 @@ namespace EasyMongo.Collection.Test
             AddMongoEntry("Two");
             AddMongoEntry("Three");
 
-            _collectionReader.DistinctAsync<string>("Message", searchQuery);
-            _readerAutoResetEvent.WaitOne();
+            IEnumerable<string> results = await _collectionReader.DistinctAsync<string>("Message", searchQuery);
 
-            Assert.AreEqual(1, _asyncDistinctResults.Count());
-            Assert.AreEqual("One", _asyncDistinctResults[0]);
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual("One", results.ElementAt(0));
         }
         #endregion Distinct T
     }

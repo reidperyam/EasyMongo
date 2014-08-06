@@ -7,7 +7,7 @@ using EasyMongo.Contract.Deprecated;
 
 namespace EasyMongo.Contract
 {
-    public interface IDatabaseReader : IReader, IReaderAsync
+    public interface IDatabaseReader : IReader, IReaderTask
     {
     }
 }

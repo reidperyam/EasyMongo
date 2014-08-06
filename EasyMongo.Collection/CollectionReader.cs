@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
@@ -11,9 +12,6 @@ namespace EasyMongo.Collection
 {
     public class CollectionReader: ICollectionReader
     {
-        public event ReadCompletedEvent     AsyncReadCompleted;
-        public event DistinctCompletedEvent AsyncDistinctCompleted;
-
         private string _collectionName;
         private IDatabaseReader _databaseReader;
 
@@ -21,9 +19,6 @@ namespace EasyMongo.Collection
         {
             _databaseReader  = databaseReader;
             _collectionName = collectionName;
-
-            _databaseReader.AsyncReadCompleted     += new ReadCompletedEvent(_mongoDBReader_AsyncReadCompleted);
-            _databaseReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoDBReader_AsyncDistinctCompleted);
         }
 
         #region   Synchronous
@@ -54,84 +49,35 @@ namespace EasyMongo.Collection
         #endregion Synchronous
 
         #region    Asynchronous
-        public void ReadAsync<T>(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync<T>(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _databaseReader.ReadAsync<T>(_collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _databaseReader.ReadAsync<T>(_collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync<T>(string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync<T>(string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _databaseReader.ReadAsync<T>(_collectionName, dateTimeFieldName, start, end);
+            return _databaseReader.ReadAsync<T>(_collectionName, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync<T>(string fieldName, string regexPattern)
+        public Task<IEnumerable<T>> ReadAsync<T>(string fieldName, string regexPattern)
         {
-            _databaseReader.ReadAsync<T>(_collectionName, fieldName, regexPattern);
+            return _databaseReader.ReadAsync<T>(_collectionName, fieldName, regexPattern);
         }
         #region Distinct T
-        public void DistinctAsync<T>(string fieldName)
+        public Task<IEnumerable<T>> DistinctAsync<T>(string fieldName)
         {
-            _databaseReader.DistinctAsync<T>(_collectionName, fieldName);
+            return _databaseReader.DistinctAsync<T>(_collectionName, fieldName);
         }
-        public void DistinctAsync<T>(string fieldName, IMongoQuery query)
+        public Task<IEnumerable<T>> DistinctAsync<T>(string fieldName, IMongoQuery query)
         {
-            _databaseReader.DistinctAsync<T>(_collectionName, fieldName, query);
+            return _databaseReader.DistinctAsync<T>(_collectionName, fieldName, query);
         }
         #endregion Distinct T
         #endregion Asynchronous
-
-
-        void _mongoDBReader_AsyncReadCompleted(object e, Exception ex)
-        {
-            if (AsyncReadCompleted != null)
-                AsyncReadCompleted(e, ex);
-        }
-
-        void _mongoDBReader_AsyncDistinctCompleted(object e, Exception ex)
-        {
-            if (AsyncDistinctCompleted != null)
-                AsyncDistinctCompleted(e, ex);
-        }
     }
 
     public class CollectionReader<T> : ICollectionReader<T>
     {
-        public event ReadCompletedEvent AsyncReadCompleted
-        {
-            add
-            {
-                lock (_collectionReader)
-                {
-                    _collectionReader.AsyncReadCompleted += value;
-                }
-            }
-            remove
-            {
-                lock (_collectionReader)
-                {
-                    _collectionReader.AsyncReadCompleted -= value;
-                }
-            }
-        }
-
-        public event DistinctCompletedEvent AsyncDistinctCompleted
-        {
-            add
-            {
-                lock (_collectionReader)
-                {
-                    _collectionReader.AsyncDistinctCompleted += value;
-                }
-            }
-            remove
-            {
-                lock (_collectionReader)
-                {
-                    _collectionReader.AsyncDistinctCompleted -= value;
-                }
-            }
-        }
-
         private ICollectionReader _collectionReader;
 
         public CollectionReader(ICollectionReader collectionReader)
@@ -154,19 +100,19 @@ namespace EasyMongo.Collection
             return _collectionReader.Read<T>(fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync(string fieldName, string regexPattern)
+        public Task<IEnumerable<T>> ReadAsync(string fieldName, string regexPattern)
         {
-            _collectionReader.ReadAsync<T>(fieldName, regexPattern);
+            return _collectionReader.ReadAsync<T>(fieldName, regexPattern);
         }
 
-        public void ReadAsync(string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync(string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _collectionReader.ReadAsync<T>(dateTimeFieldName, start, end);
+            return _collectionReader.ReadAsync<T>(dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _collectionReader.ReadAsync<T>(fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _collectionReader.ReadAsync<T>(fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
         public IEnumerable<Y> Distinct<Y>(string fieldName)
@@ -179,14 +125,14 @@ namespace EasyMongo.Collection
             return _collectionReader.Distinct<Y>(fieldName, query);
         }
 
-        public void DistinctAsync<Y>(string fieldName)
+        public Task<IEnumerable<Y>> DistinctAsync<Y>(string fieldName)
         {
-            _collectionReader.DistinctAsync<Y>(fieldName);
+            return _collectionReader.DistinctAsync<Y>(fieldName);
         }
 
-        public void DistinctAsync<Y>(string fieldName, IMongoQuery query)
+        public Task<IEnumerable<Y>> DistinctAsync<Y>(string fieldName, IMongoQuery query)
         {
-            _collectionReader.DistinctAsync<Y>(fieldName, query);
+            return _collectionReader.DistinctAsync<Y>(fieldName, query);
         }
     }
 }

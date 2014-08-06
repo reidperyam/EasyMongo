@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
@@ -16,18 +17,15 @@ namespace EasyMongo.Database
 
         protected IReader _reader;
 
-        protected IReaderAsync _readerAsync;
+        protected IReaderTask _readerTask;
 
         protected MongoCollection _mongoCollection;
 
-        public DatabaseReader(IReader      reader, 
-                              IReaderAsync readerAsync)
+        public DatabaseReader(IReader     reader, 
+                              IReaderTask readerTask)
         {
             _reader = reader;
-            _readerAsync = readerAsync;
-
-            _readerAsync.AsyncReadCompleted     += new ReadCompletedEvent(_mongoReaderAsync_ReadCompleted);
-            _readerAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_mongoReaderAsync_AsyncDistinctCompleted);
+            _readerTask = readerTask;
         }
 
         #region    Synchronous
@@ -84,112 +82,59 @@ namespace EasyMongo.Database
 
         #region    Asynchronous
         #region Read
-        public void ReadAsync<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _readerAsync.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _readerTask.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _readerAsync.ReadAsync<T>(collectionName, dateTimeFieldName, start, end);
+            return _readerTask.ReadAsync<T>(collectionName, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync<T>(string collectionName, string fieldName, string regexPattern)
+        public Task<IEnumerable<T>> ReadAsync<T>(string collectionName, string fieldName, string regexPattern)
         {
-            _readerAsync.ReadAsync<T>(collectionName, fieldName, regexPattern);
+            return _readerTask.ReadAsync<T>(collectionName, fieldName, regexPattern);
         }
 
-        public void ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _readerAsync.ReadAsync<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _readerTask.ReadAsync<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
-            _readerAsync.ReadAsync<T>(collectionNames, fieldName, regexPattern);
+            return _readerTask.ReadAsync<T>(collectionNames, fieldName, regexPattern);
         }
 
-        public void ReadAsync<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _readerAsync.ReadAsync<T>(collectionNames, dateTimeFieldName, start, end);
+            return _readerTask.ReadAsync<T>(collectionNames, dateTimeFieldName, start, end);
         }
         #endregion Read
         #region Distinct T
-        public void DistinctAsync<T>(string collectionName, string fieldName)
+        public Task<IEnumerable<T>> DistinctAsync<T>(string collectionName, string fieldName)
         {
-            _readerAsync.DistinctAsync<T>(collectionName, fieldName);
+            return _readerTask.DistinctAsync<T>(collectionName, fieldName);
         }
-        public void DistinctAsync<T>(string collectionName, string fieldName, IMongoQuery query)
+        public Task<IEnumerable<T>> DistinctAsync<T>(string collectionName, string fieldName, IMongoQuery query)
         {
-            _readerAsync.DistinctAsync<T>(collectionName, fieldName, query);
+            return _readerTask.DistinctAsync<T>(collectionName, fieldName, query);
         }
-        public void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName)
+        public Task<IEnumerable<T>> DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName)
         {
-            _readerAsync.DistinctAsync<T>(collectionNames, fieldName);
+            return _readerTask.DistinctAsync<T>(collectionNames, fieldName);
         }
-        public void DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        public Task<IEnumerable<T>> DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
-            _readerAsync.DistinctAsync<T>(collectionNames, fieldName, query);
+            return _readerTask.DistinctAsync<T>(collectionNames, fieldName, query);
         }
         #endregion Distinct T
         #endregion Asynchronous
-
-        /// <summary>
-        /// NOTICE - the object returned must be cast to IEnumerable<T> in order to retrieve read results
-        /// </summary>
-        /// <param name="e"></param>
-        /// <param name="ex"></param>
-        void _mongoReaderAsync_ReadCompleted(object e, Exception ex)
-        {
-            if (AsyncReadCompleted != null)
-                AsyncReadCompleted(e, ex);
-        }
-
-        void _mongoReaderAsync_AsyncDistinctCompleted(object e, Exception ex)
-        {
-            if (AsyncDistinctCompleted != null)
-                AsyncDistinctCompleted(e, ex);
-        }
     }
 
     public class DatabaseReader<T> : IDatabaseReader<T> where T : class
     {
-        public event ReadCompletedEvent AsyncReadCompleted
-        {
-            add
-            {
-                lock (_databaseReader)
-                {
-                    _databaseReader.AsyncReadCompleted += value;
-                }
-            }
-            remove
-            {
-                lock (_databaseReader)
-                {
-                    _databaseReader.AsyncReadCompleted -= value;
-                }
-            }
-        }
-
-        public event DistinctCompletedEvent AsyncDistinctCompleted
-        {
-            add
-            {
-                lock (_databaseReader)
-                {
-                    _databaseReader.AsyncDistinctCompleted += value;
-                }
-            }
-            remove
-            {
-                lock (_databaseReader)
-                {
-                    _databaseReader.AsyncDistinctCompleted -= value;
-                }
-            }
-        }
-
         IDatabaseReader _databaseReader;
 
         public DatabaseReader(IDatabaseReader databaseReader)
@@ -253,55 +198,55 @@ namespace EasyMongo.Database
         #endregion Synchronous
         #region    Asynchronous
         #region    Read
-        public void ReadAsync(string collectionName, string fieldName, string regexPattern)
+        public Task<IEnumerable<T>> ReadAsync(string collectionName, string fieldName, string regexPattern)
         {
-            _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern);
+            return _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern);
         }
 
-        public void ReadAsync(string collectionName, string fieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync(string collectionName, string fieldName, DateTime start, DateTime end)
         {
-            _databaseReader.ReadAsync<T>(collectionName, fieldName, start, end);
+            return _databaseReader.ReadAsync<T>(collectionName, fieldName, start, end);
         }
 
-        public void ReadAsync(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        public Task<IEnumerable<T>> ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
-            _databaseReader.ReadAsync<T>(collectionNames, fieldName, regexPattern);
+            return _databaseReader.ReadAsync<T>(collectionNames, fieldName, regexPattern);
         }
 
-        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
         {
-            _databaseReader.ReadAsync<T>( collectionNames, fieldName, start, end);
+            return _databaseReader.ReadAsync<T>(collectionNames, fieldName, start, end);
         }
 
-        public void ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
+        public Task<IEnumerable<T>> ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            _databaseReader.ReadAsync<T>( collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _databaseReader.ReadAsync<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
         #endregion Read
         #region    Distinct
-        public void DistinctAsync<Y>(string collectionName, string fieldName)
+        public Task<IEnumerable<Y>> DistinctAsync<Y>(string collectionName, string fieldName)
         {
-            _databaseReader.DistinctAsync<Y>(collectionName, fieldName);
+            return _databaseReader.DistinctAsync<Y>(collectionName, fieldName);
         }
 
-        public void DistinctAsync<Y>(string collectionName, string fieldName, IMongoQuery query)
+        public Task<IEnumerable<Y>> DistinctAsync<Y>(string collectionName, string fieldName, IMongoQuery query)
         {
-            _databaseReader.DistinctAsync<Y>(collectionName, fieldName, query);
+            return _databaseReader.DistinctAsync<Y>(collectionName, fieldName, query);
         }
 
-        public void DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName)
+        public Task<IEnumerable<Y>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName)
         {
-            _databaseReader.DistinctAsync<Y>(collectionNames, fieldName);
+            return _databaseReader.DistinctAsync<Y>(collectionNames, fieldName);
         }
 
-        public void DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
+        public Task<IEnumerable<Y>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
-            _databaseReader.DistinctAsync<Y>(collectionNames, fieldName, query);
+            return _databaseReader.DistinctAsync<Y>(collectionNames, fieldName, query);
         }
         #endregion Distinct
         #endregion Asynchronous
