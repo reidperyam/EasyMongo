@@ -4,7 +4,7 @@ using EasyMongo.Contract.Deprecated;
 
 namespace EasyMongo.Contract
 {
-    public interface IDatabaseUpdater : IUpdater, IUpdaterAsync
+    public interface IDatabaseUpdater : IUpdater, IUpdaterTask
     {
     }
 }
