@@ -741,7 +741,6 @@ namespace EasyMongo.Database.Test
             Assert.IsTrue(result.Ok);
             Assert.IsNotNull(result.ModifiedDocument);
             Assert.IsNull(result.ErrorMessage);
-            Assert.IsNull(result.ErrorMessage);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(0, results.Count());/*we deleted the entry via FindAndRemove...*/

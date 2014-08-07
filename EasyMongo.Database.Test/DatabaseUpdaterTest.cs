@@ -441,6 +441,12 @@ namespace EasyMongo.Database.Test
             // RemoveFlags.None means every occurance matching searchQuery will be removed
             result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
 
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Ok);
+            Assert.IsFalse(result.HasLastErrorMessage);
+            Assert.AreEqual(2, result.DocumentsAffected);
+            Assert.IsFalse(result.UpdatedExisting);
+            Assert.IsNull(result.Upserted);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
@@ -533,6 +539,12 @@ namespace EasyMongo.Database.Test
             // RemoveFlags.None means every occurance matching searchQuery will be removed
             result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
 
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Ok);
+            Assert.IsFalse(result.HasLastErrorMessage);
+            Assert.AreEqual(2, result.DocumentsAffected);
+            Assert.IsFalse(result.UpdatedExisting);
+            Assert.IsNull(result.Upserted);
 
             results = new List<Entry>(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, results.Count());
