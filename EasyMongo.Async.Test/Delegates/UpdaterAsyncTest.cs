@@ -11,9 +11,9 @@ using System.Threading;
 using EasyMongo.Test.Base;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Async.Test.Deprecated
+namespace EasyMongo.Async.Delegates.Test
 {
-    [TestFixture, Ignore, Obsolete("These tests cover code and functionality that has been replaced")]
+    [TestFixture]
     public class UpdaterAsyncTest : IntegrationTestFixture
     {
         [Test]

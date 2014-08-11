@@ -65,10 +65,10 @@
     <Compile Include="ICollectionWriterT.cs" />
     <Compile Include="IDatabaseWriterT.cs" />
     <Compile Include="IDatabaseUpdaterT.cs" />
-    <Compile Include="Deprecated\IReaderAsync.cs">
+    <Compile Include="Delegates\IReaderAsync.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Deprecated\IReaderAsyncT.cs">
+    <Compile Include="Delegates\IReaderAsyncT.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IReaderTaskT.cs" />
@@ -76,15 +76,15 @@
     <Compile Include="IUpdaterTask.cs" />
     <Compile Include="IWriterTask.cs" />
     <Compile Include="IWriterTaskT.cs" />
-    <Compile Include="Deprecated\IWriterAsyncT.cs" />
-    <Compile Include="Deprecated\IUpdaterAsyncT.cs" />
+    <Compile Include="Delegates\IWriterAsyncT.cs" />
+    <Compile Include="Delegates\IUpdaterAsyncT.cs" />
     <Compile Include="IUpdaterT.cs" />
     <Compile Include="IWriterT.cs" />
     <Compile Include="IDatabaseReaderT.cs" />
     <Compile Include="IReaderT.cs" />
     <Compile Include="IDatabaseUpdater.cs" />
     <Compile Include="ICollectionUpdater.cs" />
-    <Compile Include="Deprecated\IUpdaterAsync.cs" />
+    <Compile Include="Delegates\IUpdaterAsync.cs" />
     <Compile Include="IUpdater.cs" />
     <Compile Include="ICollectionReader.cs" />
     <Compile Include="ICollectionWriter.cs" />
@@ -95,7 +95,7 @@
     <Compile Include="IReaderTask.cs" />
     <Compile Include="IServerConnection.cs" />
     <Compile Include="IWriter.cs" />
-    <Compile Include="Deprecated\IWriterAsync.cs" />
+    <Compile Include="Delegates\IWriterAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

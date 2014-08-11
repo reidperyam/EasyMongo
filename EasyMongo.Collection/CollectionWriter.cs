@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Deprecated;
+using EasyMongo.Contract.Delegates;
 using MongoDB.Driver;
 
 namespace EasyMongo.Collection

@@ -1,6 +1,6 @@
 ﻿using System;
 using MongoDB.Driver;
-using EasyMongo.Contract.Deprecated;
+using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Contract
 {

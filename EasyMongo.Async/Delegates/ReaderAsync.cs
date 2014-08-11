@@ -10,9 +10,9 @@ using System.Runtime.Remoting.Messaging;
 using System.Runtime.InteropServices;
 using Microsoft.CSharp.RuntimeBinder;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Deprecated;
+using EasyMongo.Contract.Delegates;
 
-namespace EasyMongo.Async.Deprecated
+namespace EasyMongo.Async.Delegates
 {
     [Obsolete("This class is obselete")]
     public class ReaderAsync : IReaderAsync

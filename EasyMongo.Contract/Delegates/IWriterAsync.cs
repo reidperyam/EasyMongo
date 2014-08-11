@@ -5,7 +5,7 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace EasyMongo.Contract.Deprecated
+namespace EasyMongo.Contract.Delegates
 {
     public delegate void WriteCompletedEvent(object sender);
 

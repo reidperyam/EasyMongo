@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Runtime.Remoting.Messaging;
 using EasyMongo.Contract;
 using MongoDB.Driver;
-using EasyMongo.Contract.Deprecated;
+using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Async
 {
@@ -26,16 +26,16 @@ namespace EasyMongo.Async
 
     public class WriterTask<T> : IWriterTask<T>
     {
-        IWriterAsync _writerAsync;
+        IWriterTask _writerTask;
 
-        public WriterTask(IWriterAsync writerAsync)
+        public WriterTask(IWriterTask writerTask)
         {
-            _writerAsync = writerAsync;
+            _writerTask = writerTask;
         }
 
         public void WriteAsync(string collectionName, T entry)
         {
-            Task.Run(() => { _writerAsync.WriteAsync<T>(collectionName, entry); });
+            Task.Run(() => { _writerTask.WriteAsync<T>(collectionName, entry); });
         }
     }
 }

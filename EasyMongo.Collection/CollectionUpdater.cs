@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EasyMongo.Contract;
 using MongoDB.Driver;
-using EasyMongo.Contract.Deprecated;
+using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Collection
 {

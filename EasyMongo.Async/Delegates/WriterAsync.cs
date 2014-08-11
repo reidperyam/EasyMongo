@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Remoting.Messaging;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Deprecated;
+using EasyMongo.Contract.Delegates;
 using MongoDB.Driver;
 
-namespace EasyMongo.Async.Deprecated
+namespace EasyMongo.Async.Delegates
 {
     [Obsolete("This class is obselete")]
     public class WriterAsync : IWriterAsync

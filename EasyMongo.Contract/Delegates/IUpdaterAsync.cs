@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Contract.Deprecated
+namespace EasyMongo.Contract.Delegates
 {
     public delegate void FindAndRemoveCompletedEvent(WriteConcernResult result);
     public delegate void FindAndModifyCompletedEvent(FindAndModifyResult result);

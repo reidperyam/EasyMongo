@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using EasyMongo.Contract.Deprecated;
 
 namespace EasyMongo.Contract
 {

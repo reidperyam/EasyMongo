@@ -7,14 +7,14 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Deprecated;
+using EasyMongo.Contract.Delegates;
 using EasyMongo.Async;
-using EasyMongo.Async.Deprecated;
+using EasyMongo.Async.Delegates;
 using EasyMongo.Test.Base;
 
-namespace EasyMongo.Async.Test.Deprecated
+namespace EasyMongo.Async.Delegates.Test
 {
-    [TestFixture, Ignore, Obsolete("These tests cover code and functionality that has been replaced")]
+    [TestFixture]
     public class DatabaseConnectionTest : IntegrationTestFixture
     {
         [Test]

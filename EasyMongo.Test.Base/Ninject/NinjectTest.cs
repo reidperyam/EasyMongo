@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using EasyMongo.Contract;
 using EasyMongo.Async;
-using EasyMongo.Async.Deprecated;
+using EasyMongo.Async.Delegates;
 using EasyMongo.Database;
 using EasyMongo.Collection;
 using Ninject;

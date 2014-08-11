@@ -62,11 +62,11 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReaderTask.cs" />
-    <Compile Include="Deprecated\ReaderAsync.cs" />
+    <Compile Include="Delegates\ReaderAsync.cs" />
     <Compile Include="UpdaterTask.cs" />
-    <Compile Include="Deprecated\UpdaterAsync.cs" />
+    <Compile Include="Delegates\UpdaterAsync.cs" />
     <Compile Include="WriterTask.cs" />
-    <Compile Include="Deprecated\WriterAsync.cs" />
+    <Compile Include="Delegates\WriterAsync.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
