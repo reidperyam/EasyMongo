@@ -13,10 +13,11 @@ namespace EasyMongo.Database.Test
     public class DatabaseWriterTTest : IntegrationTestFixture
     {
         [Test]
-        public void WriteAsyncTest()
+        public async void WriteAsyncTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryDatabaseAsyncT(entryMessage, MONGO_COLLECTION_1_NAME);
+            await AddMongoEntryDatabaseAsyncT(entryMessage, MONGO_COLLECTION_1_NAME);
+
             _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -24,7 +25,8 @@ namespace EasyMongo.Database.Test
             _results.Clear();
 
             string entryMessage2 = "This is a test as well";
-            AddMongoEntryDatabaseAsyncT(entryMessage2, MONGO_COLLECTION_1_NAME);
+            await AddMongoEntryDatabaseAsyncT(entryMessage2, MONGO_COLLECTION_1_NAME);
+
             _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
@@ -11,19 +12,15 @@ namespace EasyMongo.Database
 {
     public class DatabaseWriter : IDatabaseWriter
     {
-        public event WriteCompletedEvent AsyncWriteCompleted;
-
         protected IWriter _mongoWriter;
 
-        protected IWriterAsync _mongoWriterAsync;
+        protected IWriterTask _mongoWriterTask;
 
         public DatabaseWriter(IWriter      writer,
-                              IWriterAsync writerAsync)
+                              IWriterTask writerTask)
         {
             _mongoWriter = writer;
-            _mongoWriterAsync = writerAsync;
-
-            _mongoWriterAsync.AsyncWriteCompleted += new WriteCompletedEvent(_mongoWriterAsync_WriteCompleted);
+            _mongoWriterTask = writerTask;
         }
 
         public void Write<T>(string collectionName, T entry)
@@ -31,38 +28,14 @@ namespace EasyMongo.Database
             _mongoWriter.Write<T>(collectionName, entry);
         }
 
-        public void WriteAsync<T>(string collectionName, T entry)
+        public Task WriteAsync<T>(string collectionName, T entry)
         {
-            _mongoWriterAsync.WriteAsync<T>(collectionName, entry);
-        }
-
-        void _mongoWriterAsync_WriteCompleted(object sender)
-        {
-            if (AsyncWriteCompleted != null)
-                AsyncWriteCompleted(sender);
+            return _mongoWriterTask.WriteAsync<T>(collectionName, entry);
         }
     }
 
     public class DatabaseWriter<T> : IDatabaseWriter<T>
     {
-        public event WriteCompletedEvent AsyncWriteCompleted
-        {
-            add
-            {
-                lock (_databaseWriter)
-                {
-                    _databaseWriter.AsyncWriteCompleted += value;
-                }
-            }
-            remove
-            {
-                lock (_databaseWriter)
-                {
-                    _databaseWriter.AsyncWriteCompleted -= value;
-                }
-            }
-        }
-
         IDatabaseWriter _databaseWriter;
 
         public DatabaseWriter(IDatabaseWriter databaseWriter)
@@ -75,9 +48,9 @@ namespace EasyMongo.Database
             _databaseWriter.Write<T>(collectionName, entry);
         }
 
-        public void WriteAsync(string collectionName, T entry)
+        public Task WriteAsync(string collectionName, T entry)
         {
-            _databaseWriter.WriteAsync<T>(collectionName, entry);
+            return _databaseWriter.WriteAsync<T>(collectionName, entry);
         }
     }
 }

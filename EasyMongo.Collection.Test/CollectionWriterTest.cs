@@ -20,10 +20,11 @@ namespace EasyMongo.Collection.Test
         }
 
         [Test]
-        public void WriteAsyncTest()
+        public async void WriteAsyncTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryCollectionAsync(entryMessage, MONGO_COLLECTION_1_NAME);
+            await AddMongoEntryCollectionAsync(entryMessage, MONGO_COLLECTION_1_NAME);
+
             _results.AddRange(_collectionReader.Read<Entry>("TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -31,7 +32,8 @@ namespace EasyMongo.Collection.Test
             _results.Clear();
 
             string entryMessage2 = "This is a test as well";
-            AddMongoEntryCollectionAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+            await AddMongoEntryCollectionAsync(entryMessage2, MONGO_COLLECTION_1_NAME);
+
             _results.AddRange(_collectionReader.Read<Entry>("TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);

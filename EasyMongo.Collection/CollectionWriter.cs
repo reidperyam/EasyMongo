@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using EasyMongo.Contract;
 using EasyMongo.Contract.Delegates;
 using MongoDB.Driver;
@@ -10,8 +11,6 @@ namespace EasyMongo.Collection
 {
     public class CollectionWriter : ICollectionWriter
     {
-        public event WriteCompletedEvent AsyncWriteCompleted;
-
         IDatabaseWriter _databaseWriter;
         string _collectionName; 
 
@@ -19,8 +18,6 @@ namespace EasyMongo.Collection
         {
             _databaseWriter = databaseWriter;
             _collectionName = collectionName;
-
-            _databaseWriter.AsyncWriteCompleted += new WriteCompletedEvent(_mongoDBWriter_AsyncWriteCompleted);
         }
 
         #region    Synchronous
@@ -31,39 +28,15 @@ namespace EasyMongo.Collection
         #endregion Synchronous
 
         #region    Asynchronous
-        public void WriteAsync<T>(T entry)
+        public Task WriteAsync<T>(T entry)
         {
-            _databaseWriter.WriteAsync<T>(_collectionName, entry);
+            return _databaseWriter.WriteAsync<T>(_collectionName, entry);
         }
         #endregion Asynchronous
-
-        void _mongoDBWriter_AsyncWriteCompleted(object sender)
-        {
-            if (AsyncWriteCompleted != null)
-                AsyncWriteCompleted(sender);
-        }
     }
 
     public class CollectionWriter<T> : ICollectionWriter<T>
     {
-        public event WriteCompletedEvent AsyncWriteCompleted
-        {
-            add
-            {
-                lock (_collectionWriter)
-                {
-                    _collectionWriter.AsyncWriteCompleted += value;
-                }
-            }
-            remove
-            {
-                lock (_collectionWriter)
-                {
-                    _collectionWriter.AsyncWriteCompleted -= value;
-                }
-            }
-        }
-
         private ICollectionWriter _collectionWriter;
 
         public CollectionWriter(ICollectionWriter collectionWriter)
@@ -76,9 +49,9 @@ namespace EasyMongo.Collection
             _collectionWriter.Write<T>(entry);
         }
 
-        public void WriteAsync(T entry)
+        public Task WriteAsync(T entry)
         {
-            _collectionWriter.WriteAsync<T>(entry);
+            return _collectionWriter.WriteAsync<T>(entry);
         }
     }
 }

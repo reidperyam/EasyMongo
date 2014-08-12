@@ -4,7 +4,7 @@ using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Contract
 {
-    public interface IDatabaseWriter: IWriter, IWriterAsync
+    public interface IDatabaseWriter: IWriter, IWriterTask
     {
     }
 }

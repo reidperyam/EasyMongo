@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using System.Threading;
+using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
@@ -100,7 +101,6 @@ namespace EasyMongo.Test.Base
             _databaseReader = _kernel.TryGet<IDatabaseReader>();
 
             _databaseWriter = _kernel.TryGet<IDatabaseWriter>();
-            _databaseWriter.AsyncWriteCompleted += new WriteCompletedEvent(_databaseWriter_AsyncWriteCompleted);
 
             _databaseUpdater = _kernel.TryGet<IDatabaseUpdater>();
 
@@ -108,7 +108,6 @@ namespace EasyMongo.Test.Base
             _databaseReaderT = _kernel.TryGet<IDatabaseReader<Entry>>();
 
             _databaseWriterT = _kernel.TryGet<IDatabaseWriter<Entry>>();
-            _databaseWriterT.AsyncWriteCompleted += new WriteCompletedEvent(_databaseWriterT_AsyncWriteCompleted);
 
             _databaseUpdaterT = _kernel.TryGet<IDatabaseUpdater<Entry>>();
             #endregion EasyMongo.Database.Test
@@ -117,7 +116,6 @@ namespace EasyMongo.Test.Base
             _collectionReader = _kernel.TryGet<ICollectionReader>();
 
             _collectionWriter = _kernel.TryGet<ICollectionWriter>();
-            _collectionWriter.AsyncWriteCompleted += new WriteCompletedEvent(_collectionWriter_AsyncWriteCompleted);
 
             _collectionUpdater = _kernel.TryGet<ICollectionUpdater>();
 
@@ -125,7 +123,6 @@ namespace EasyMongo.Test.Base
             _collectionReaderT = _kernel.TryGet<ICollectionReader<Entry>>();
 
             _collectionWriterT = _kernel.TryGet<ICollectionWriter<Entry>>();
-            _collectionWriterT.AsyncWriteCompleted += new WriteCompletedEvent(_collectionWriterT_AsyncWriteCompleted);
 
             _collectionUpdaterT = _kernel.TryGet<ICollectionUpdater<Entry>>();
             #endregion EasyMongo.Collection.Test
@@ -311,13 +308,13 @@ namespace EasyMongo.Test.Base
         ///  Method useful for asynchronously adding a MongoTestEntry object to MongoDB using the TestFixture's MongoWriterTask class.
         /// </summary>
         /// <remarks>This asynchronous implementation utilizes System.Threading.Tasks</remarks>
-        protected void AddMongoEntryAsyncTask(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        protected Task AddMongoEntryAsyncTask(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
         {
             Entry mongoEntry = new Entry();
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _writerTask.WriteAsync<Entry>(collectionName, mongoEntry);
+            return _writerTask.WriteAsync<Entry>(collectionName, mongoEntry);
         }
 
         /// <summary>
@@ -352,14 +349,13 @@ namespace EasyMongo.Test.Base
         /// </summary>
         /// <param name="message"></param>
         /// <param name="collectionName"></param>
-        protected void AddMongoEntryDatabaseAsync(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        protected Task AddMongoEntryDatabaseAsync(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
         {
             Entry mongoEntry = new Entry();
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _databaseWriter.WriteAsync(collectionName, mongoEntry);
-            _writerAutoResetEvent.WaitOne();
+            return _databaseWriter.WriteAsync(collectionName, mongoEntry);
         }
 
         /// <summary>
@@ -381,14 +377,13 @@ namespace EasyMongo.Test.Base
         /// </summary>
         /// <param name="message"></param>
         /// <param name="collectionName"></param>
-        protected void AddMongoEntryDatabaseAsyncT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        protected Task AddMongoEntryDatabaseAsyncT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
         {
             Entry mongoEntry = new Entry();
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _databaseWriterT.WriteAsync(collectionName, mongoEntry);
-            _writerAutoResetEvent.WaitOne();
+            return _databaseWriterT.WriteAsync(collectionName, mongoEntry);
         }
 
         /// <summary>
@@ -410,14 +405,13 @@ namespace EasyMongo.Test.Base
         /// </summary>
         /// <param name="message"></param>
         /// <param name="collectionName"></param>
-        protected void AddMongoEntryCollectionAsync(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        protected Task AddMongoEntryCollectionAsync(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
         {
             Entry mongoEntry = new Entry();
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _collectionWriter.WriteAsync<Entry>(mongoEntry);
-            _writerAutoResetEvent.WaitOne();
+            return _collectionWriter.WriteAsync<Entry>(mongoEntry);
         }
 
         /// <summary>
@@ -439,14 +433,13 @@ namespace EasyMongo.Test.Base
         /// </summary>
         /// <param name="message"></param>
         /// <param name="collectionName"></param>
-        protected void AddMongoEntryCollectionAsyncT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
+        protected Task AddMongoEntryCollectionAsyncT(string message = "Hello World", string collectionName = MONGO_COLLECTION_1_NAME)
         {
             Entry mongoEntry = new Entry();
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _collectionWriterT.WriteAsync(mongoEntry);
-            _writerAutoResetEvent.WaitOne();
+            return _collectionWriterT.WriteAsync(mongoEntry);
         }
 
         /// <summary>
@@ -540,21 +533,6 @@ namespace EasyMongo.Test.Base
         #endregion EasyMongo.Async
 
         #region    EasyMongo.Database
-        protected void _databaseReader_AsyncReadCompleted(object e, Exception ex)
-        {
-            _asyncException = ex;
-            IEnumerable<Entry> results = (IEnumerable<Entry>)e;
-            _asyncReadResults.AddRange(results);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _databaseReader_AsyncDistinctCompleted(object e, Exception ex)
-        {
-            _asyncException = ex;
-            _asyncDistinctResults.AddRange((IEnumerable<string>)e);
-            _readerAutoResetEvent.Set();
-        }
-
         protected void _databaseWriter_AsyncWriteCompleted(object sender)
         {
             _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
@@ -571,24 +549,6 @@ namespace EasyMongo.Test.Base
             _findAndModifyResult = result;
             _updaterAutoResetEvent.Set();
         }
-        #region    Generics
-        protected void _databaseWriterT_AsyncWriteCompleted(object sender)
-        {
-            _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
-        }
-
-        protected void _databaseUpdaterT_AsyncFindAndRemoveCompleted(WriteConcernResult result)
-        {
-            _writeConcernResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-
-        protected void _databaseUpdaterT_AsyncFindAndModifyCompleted(FindAndModifyResult result)
-        {
-            _findAndModifyResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-        #endregion Generics
         #endregion EasyMongo.Database
 
         #region EasyMongo.Collection
@@ -625,39 +585,6 @@ namespace EasyMongo.Test.Base
             _updaterAutoResetEvent.Set();
         }
 
-        #region    Generics
-        protected void _collectionWriterT_AsyncWriteCompleted(object sender)
-        {
-            _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
-        }
-
-        protected void _collectionReaderT_AsyncReadCompleted(object e, Exception ex)
-        {
-            _asyncException = ex;
-            IEnumerable<Entry> results = (IEnumerable<Entry>)e;// HEY! Can this instead be IEnumerable<Entry>
-            _asyncReadResults.AddRange(results);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _collectionReaderT_AsyncDistinctCompleted(object e, Exception ex)
-        {
-            _asyncException = ex;
-            _asyncDistinctResults.AddRange((IEnumerable<string>)e);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _collectionUpdaterT_AsyncFindAndRemoveCompleted(WriteConcernResult result)
-        {
-            _writeConcernResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-
-        protected void _collectionUpdaterT_AsyncFindAndModifyCompleted(FindAndModifyResult result)
-        {
-            _findAndModifyResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-        #endregion Generics
         #endregion EasyMongo.Collection
 
         #endregion Helper Methods

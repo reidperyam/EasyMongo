@@ -19,11 +19,11 @@ namespace EasyMongo.Async.Test
         /// </summary>
         /// <remarks>Since there is no wait mechanism these inserts and verification queries execute as race conditions</remarks>
         [Test]
-        public void Simple_AddTest()
+        public async void Simple_AddTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryAsyncTask(entryMessage, MONGO_COLLECTION_1_NAME);
-            Thread.Sleep(100);
+            await AddMongoEntryAsyncTask(entryMessage, MONGO_COLLECTION_1_NAME);
+
             _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -35,11 +35,11 @@ namespace EasyMongo.Async.Test
         /// </summary>
         /// <remarks>Since there is no wait mechanism these inserts and verification queries execute as race conditions</remarks>
         [Test]
-        public void Add_TwoTest()
+        public async void Add_TwoTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryAsyncTask(entryMessage, MONGO_COLLECTION_1_NAME);
-            Thread.Sleep(100);
+            await AddMongoEntryAsyncTask(entryMessage, MONGO_COLLECTION_1_NAME);
+
             _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -47,8 +47,8 @@ namespace EasyMongo.Async.Test
             _results.Clear();
 
             string entryMessage2 = "This is a test as well";
-            AddMongoEntryAsyncTask(entryMessage2, MONGO_COLLECTION_1_NAME);
-            Thread.Sleep(100);
+            await AddMongoEntryAsyncTask(entryMessage2, MONGO_COLLECTION_1_NAME);
+
             _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);
