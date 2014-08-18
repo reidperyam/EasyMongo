@@ -7,7 +7,6 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 using EasyMongo.Async;
 using EasyMongo.Async.Delegates;
 using EasyMongo.Test.Base;
@@ -266,15 +265,15 @@ namespace EasyMongo.Async.Delegates.Test
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
 
             //_reader = new Reader(_mongoDatabaseConnection);
-            //_readerAsync = new ReaderAsync(_reader);
-            //_readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
+            //_asyncDelegateReader = new AsyncDelegateReader(_reader);
+            //_asyncDelegateReader.AsyncReadCompleted += new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
 
             // testBase class receives the connection call back after the asynch connection occurs
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
             _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
 
             // this call doesn't wait for asynchronous connection to complete
-            _readerAsync.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
+            _asyncDelegateReader.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
 
             _readerAutoResetEvent.WaitOne();// wait for async read to return
             Assert.AreEqual(1, _asyncReadResults.Count());

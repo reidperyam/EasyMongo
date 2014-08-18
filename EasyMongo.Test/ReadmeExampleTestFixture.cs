@@ -5,7 +5,6 @@ using System.Threading;
 using NUnit.Framework;
 using EasyMongo;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 using EasyMongo.Async;
 using EasyMongo.Async.Delegates;
 using EasyMongo.Database;
@@ -72,15 +71,15 @@ namespace EasyMongo.Readme.Example.Test
             IUpdaterTask updaterTask = new UpdaterTask(updater);
 
             // or delegate call backs
-            IReaderAsync readerAsync = new ReaderAsync(reader);
+            IAsyncDelegateReader readerAsync = new AsyncDelegateReader(reader);
             readerAsync.AsyncReadCompleted += new ReadCompletedEvent(readerCallBack);
             readerAsync.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
             _readerAutoResetEvent.WaitOne();
 
             Assert.AreEqual(1, _asyncReadResults.Count());
 
-            IWriterAsync writerAsync = new WriterAsync(writer);
-            IUpdaterAsync updaterAsync = new UpdaterAsync(updater);
+            IAsyncDelegateWriter writerAsync = new AsyncDelegateWriter(writer);
+            IAsyncDelegateUpdater updaterAsync = new AsyncDelegateUpdater(updater);
 
             /////////////////////////////
             // OPERATIONAL GRANULARITY //

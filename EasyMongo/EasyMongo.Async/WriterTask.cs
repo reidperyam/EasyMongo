@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Runtime.Remoting.Messaging;
 using EasyMongo.Contract;
 using MongoDB.Driver;
-using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Async
 {

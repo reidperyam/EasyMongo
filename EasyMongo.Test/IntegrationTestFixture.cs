@@ -8,8 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
+using EasyMongo.Contract; 
 using EasyMongo.Async;
 using Ninject;
 using EasyMongo.Test.Base.Ninject;
@@ -60,16 +59,16 @@ namespace EasyMongo.Test.Base
             #endregion EasyMongo.Test
 
             #region    EasyMongo.Async.Test
-            _readerAsync = _kernel.TryGet<IReaderAsync>();
-            _readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
-            _readerAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsync_AsyncDistinctCompleted);
+            _asyncDelegateReader = _kernel.TryGet<IAsyncDelegateReader>();
+            _asyncDelegateReader.AsyncReadCompleted += new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
+            _asyncDelegateReader.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsync_AsyncDistinctCompleted);
 
-            _writerAsync = _kernel.TryGet<IWriterAsync>();
-            _writerAsync.AsyncWriteCompleted += new WriteCompletedEvent(_writer_AsyncWriteCompleted);
+            _asyncDelegateWriter = _kernel.TryGet<IAsyncDelegateWriter>();
+            _asyncDelegateWriter.AsyncWriteCompleted += new WriteCompletedEvent(_writer_AsyncWriteCompleted);
 
-            _updaterAsync = _kernel.TryGet<IUpdaterAsync>();
-            _updaterAsync.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsync_AsyncFindAndModifyCompleted);
-            _updaterAsync.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsync_AsyncFindAndRemoveCompleted);
+            _asyncDelegateUpdater = _kernel.TryGet<IAsyncDelegateUpdater>();
+            _asyncDelegateUpdater.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsync_AsyncFindAndModifyCompleted);
+            _asyncDelegateUpdater.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsync_AsyncFindAndRemoveCompleted);
 
             _readerTask = _kernel.TryGet<IReaderTask>();
 
@@ -78,16 +77,16 @@ namespace EasyMongo.Test.Base
             _updaterTask = _kernel.TryGet<IUpdaterTask>();
 
             // generic classes
-            _readerAsyncT = _kernel.TryGet<IReaderAsync<Entry>>();
-            _readerAsyncT.AsyncReadCompleted += new ReadCompletedEvent(_readerAsyncT_AsyncReadCompleted);
-            _readerAsyncT.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsyncT_AsyncDistinctCompleted);
+            _asyncDelegateReaderT = _kernel.TryGet<IAsyncDelegateReader<Entry>>();
+            _asyncDelegateReaderT.AsyncReadCompleted += new ReadCompletedEvent(_readerAsyncT_AsyncReadCompleted);
+            _asyncDelegateReaderT.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsyncT_AsyncDistinctCompleted);
 
-            _writerAsyncT = _kernel.TryGet<IWriterAsync<Entry>>();
-            _writerAsyncT.AsyncWriteCompleted += new WriteCompletedEvent(_writerAsyncT_AsyncWriteCompleted);
+            _asyncDelegateWriterT = _kernel.TryGet<IAsyncDelegateWriter<Entry>>();
+            _asyncDelegateWriterT.AsyncWriteCompleted += new WriteCompletedEvent(_writerAsyncT_AsyncWriteCompleted);
 
-            _updaterAsyncT = _kernel.TryGet<IUpdaterAsync<Entry>>();
-            _updaterAsyncT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsyncT_AsyncFindAndModifyCompleted);
-            _updaterAsyncT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsyncT_AsyncFindAndRemoveCompleted);
+            _AsyncDelegateUpdaterT = _kernel.TryGet<IAsyncDelegateUpdater<Entry>>();
+            _AsyncDelegateUpdaterT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsyncT_AsyncFindAndModifyCompleted);
+            _AsyncDelegateUpdaterT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsyncT_AsyncFindAndRemoveCompleted);
 
             _readerTaskT = _kernel.TryGet<IReaderTask<Entry>>();
 
@@ -184,13 +183,13 @@ namespace EasyMongo.Test.Base
         protected IUpdater<Entry> _updaterT;
         protected IReader<Entry> _readerT;
 
-        protected IReaderAsync _readerAsync;
-        protected IWriterAsync _writerAsync;
-        protected IUpdaterAsync _updaterAsync;
+        protected IAsyncDelegateReader _asyncDelegateReader;
+        protected IAsyncDelegateWriter _asyncDelegateWriter;
+        protected IAsyncDelegateUpdater _asyncDelegateUpdater;
 
-        protected IReaderAsync<Entry> _readerAsyncT;
-        protected IWriterAsync<Entry> _writerAsyncT;
-        protected IUpdaterAsync<Entry> _updaterAsyncT;
+        protected IAsyncDelegateReader<Entry> _asyncDelegateReaderT;
+        protected IAsyncDelegateWriter<Entry> _asyncDelegateWriterT;
+        protected IAsyncDelegateUpdater<Entry> _AsyncDelegateUpdaterT;
 
         protected IReaderTask _readerTask;
         protected IWriterTask _writerTask;
@@ -300,7 +299,7 @@ namespace EasyMongo.Test.Base
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _writerAsync.WriteAsync<Entry>(collectionName, mongoEntry);
+            _asyncDelegateWriter.WriteAsync<Entry>(collectionName, mongoEntry);
             _writerAutoResetEvent.WaitOne();
         }
 
@@ -327,7 +326,7 @@ namespace EasyMongo.Test.Base
             mongoEntry.Message = message;
             mongoEntry.TimeStamp = DateTime.Now;
 
-            _writerAsyncT.WriteAsync(collectionName, mongoEntry);
+            _asyncDelegateWriterT.WriteAsync(collectionName, mongoEntry);
             _writerAutoResetEvent.WaitOne();
         }
 

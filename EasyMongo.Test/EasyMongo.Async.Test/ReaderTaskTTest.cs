@@ -134,7 +134,7 @@ namespace EasyMongo.Async.Test
         /// <summary>
         /// Fail a read operation and examine the resultant _asyncException that's handled by the async callback method
         /// </summary>
-        /// <remarks>Requires manual exception generation from within ReaderAsync<T>.Callback() in order to generate exception handling/></remarks>
+        /// <remarks>Requires manual exception generation from within AsyncDelegateReader<T>.Callback() in order to generate exception handling/></remarks>
         [Test, Ignore]
         public async void ReadTest7()
         {

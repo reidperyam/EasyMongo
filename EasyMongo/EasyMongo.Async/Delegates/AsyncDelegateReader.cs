@@ -10,16 +10,15 @@ using System.Runtime.Remoting.Messaging;
 using System.Runtime.InteropServices;
 using Microsoft.CSharp.RuntimeBinder;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Async.Delegates
 {
     [Obsolete("This class is obselete")]
-    public class ReaderAsync : IReaderAsync
+    public class AsyncDelegateReader : IAsyncDelegateReader
     {
         private IReader _mongoReader;
 
-        public ReaderAsync(IReader mongoReader)
+        public AsyncDelegateReader(IReader mongoReader)
         {
             _mongoReader = mongoReader;
         }
@@ -148,7 +147,7 @@ namespace EasyMongo.Async.Delegates
     }
 
     [Obsolete("This class is obselete")]
-    public class ReaderAsync<T> : IReaderAsync<T>
+    public class ReaderAsync<T> : IAsyncDelegateReader<T>
     {
         public event ReadCompletedEvent AsyncReadCompleted
         {
@@ -186,9 +185,9 @@ namespace EasyMongo.Async.Delegates
             }
         }
 
-        private IReaderAsync _reader;
+        private IAsyncDelegateReader _reader;
 
-        public ReaderAsync(IReaderAsync reader)
+        public ReaderAsync(IAsyncDelegateReader reader)
         {
             _reader = reader;
         }

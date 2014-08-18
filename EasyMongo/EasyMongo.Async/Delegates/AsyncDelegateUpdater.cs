@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Remoting.Messaging;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 using MongoDB.Driver;
 using System.Threading;
 using Microsoft.CSharp.RuntimeBinder;
@@ -11,14 +10,14 @@ using Microsoft.CSharp.RuntimeBinder;
 namespace EasyMongo.Async.Delegates
 {
     [Obsolete("This class is obselete")]
-    public class UpdaterAsync : IUpdaterAsync
+    public class AsyncDelegateUpdater : IAsyncDelegateUpdater
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         public event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;
 
         IUpdater _updater;
 
-        public UpdaterAsync(IUpdater updater)
+        public AsyncDelegateUpdater(IUpdater updater)
         {
             _updater = updater;
         }
@@ -123,7 +122,7 @@ namespace EasyMongo.Async.Delegates
     }
 
     [Obsolete("This class is obselete")]
-    public class UpdaterAsync<T> : IUpdaterAsync<T>
+    public class UpdaterAsync<T> : IAsyncDelegateUpdater<T>
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted
         {
@@ -161,9 +160,9 @@ namespace EasyMongo.Async.Delegates
             }
         }
 
-        IUpdaterAsync _mongoUpdater;
+        IAsyncDelegateUpdater _mongoUpdater;
 
-        public UpdaterAsync(IUpdaterAsync mongoUpdater)
+        public UpdaterAsync(IAsyncDelegateUpdater mongoUpdater)
         {
             _mongoUpdater = mongoUpdater;
         }

@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Remoting.Messaging;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 using MongoDB.Driver;
 
 namespace EasyMongo.Async.Delegates
 {
     [Obsolete("This class is obselete")]
-    public class WriterAsync : IWriterAsync
+    public class AsyncDelegateWriter : IAsyncDelegateWriter
     {
         public event WriteCompletedEvent AsyncWriteCompleted;
 
         IWriter _writer;
 
-        public WriterAsync(IWriter writer)
+        public AsyncDelegateWriter(IWriter writer)
         {
             _writer = writer;
         }
@@ -39,7 +38,7 @@ namespace EasyMongo.Async.Delegates
     }
 
     [Obsolete("This class is obselete")]
-    public class WriterAsync<T> : IWriterAsync<T>
+    public class WriterAsync<T> : IAsyncDelegateWriter<T>
     {
         public event WriteCompletedEvent AsyncWriteCompleted
         {
@@ -59,9 +58,9 @@ namespace EasyMongo.Async.Delegates
             }
         }
 
-        IWriterAsync _writerAsync;
+        IAsyncDelegateWriter _writerAsync;
 
-        public WriterAsync(IWriterAsync writerAsync)
+        public WriterAsync(IAsyncDelegateWriter writerAsync)
         {
             _writerAsync = writerAsync;
         }

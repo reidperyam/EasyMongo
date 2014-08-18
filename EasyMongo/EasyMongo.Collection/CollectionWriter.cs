@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 using MongoDB.Driver;
 
 namespace EasyMongo.Collection

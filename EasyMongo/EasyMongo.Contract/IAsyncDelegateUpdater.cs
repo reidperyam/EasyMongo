@@ -6,13 +6,13 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Contract.Delegates
+namespace EasyMongo.Contract
 {
     public delegate void FindAndRemoveCompletedEvent(WriteConcernResult result);
     public delegate void FindAndModifyCompletedEvent(FindAndModifyResult result);
 
     [Obsolete("This interface is obselete")]
-    public interface IUpdaterAsync
+    public interface IAsyncDelegateUpdater
     {
         event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
         event FindAndRemoveCompletedEvent AsyncFindAndRemoveCompleted;

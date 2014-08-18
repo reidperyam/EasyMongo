@@ -5,13 +5,13 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace EasyMongo.Contract.Delegates
+namespace EasyMongo.Contract
 {
     public delegate void ReadCompletedEvent(object e, Exception ex); // this will necessitate cast to IEnumerable<T> in the handler code in order to retrieve list of read items
     public delegate void DistinctCompletedEvent(object e, Exception ex);
 
     [Obsolete("This interface is obselete")]
-    public interface IReaderAsync
+    public interface IAsyncDelegateReader
     {
         event ReadCompletedEvent AsyncReadCompleted;
         event DistinctCompletedEvent AsyncDistinctCompleted;

@@ -6,7 +6,6 @@ using EasyMongo;
 using EasyMongo.Async;
 using EasyMongo.Async.Delegates;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 using EasyMongo.Database;
 using EasyMongo.Collection;
 using Ninject;
@@ -106,17 +105,17 @@ namespace Ninject.Extensions.EasyMongo
             Bind(typeof(IWriter<>)).To(typeof(Writer<>));
             Bind(typeof(IUpdater<>)).To(typeof(Updater<>));
 
-            Bind(typeof(IReaderAsync)).To(typeof(ReaderAsync));
-            Bind(typeof(IWriterAsync)).To(typeof(WriterAsync));
-            Bind(typeof(IUpdaterAsync)).To(typeof(UpdaterAsync));
+            Bind(typeof(IAsyncDelegateReader)).To(typeof(AsyncDelegateReader));
+            Bind(typeof(IAsyncDelegateWriter)).To(typeof(AsyncDelegateWriter));
+            Bind(typeof(IAsyncDelegateUpdater)).To(typeof(AsyncDelegateUpdater));
 
             Bind(typeof(IReaderTask)).To(typeof(ReaderTask));
             Bind(typeof(IWriterTask)).To(typeof(WriterTask));
             Bind(typeof(IUpdaterTask)).To(typeof(UpdaterTask));
 
-            Bind(typeof(IReaderAsync<>)).To(typeof(ReaderAsync<>));
-            Bind(typeof(IWriterAsync<>)).To(typeof(WriterAsync<>));
-            Bind(typeof(IUpdaterAsync<>)).To(typeof(UpdaterAsync<>));
+            Bind(typeof(IAsyncDelegateReader<>)).To(typeof(ReaderAsync<>));
+            Bind(typeof(IAsyncDelegateWriter<>)).To(typeof(WriterAsync<>));
+            Bind(typeof(IAsyncDelegateUpdater<>)).To(typeof(UpdaterAsync<>));
 
             Bind(typeof(IReaderTask<>)).To(typeof(ReaderTask<>));
             Bind(typeof(IWriterTask<>)).To(typeof(WriterTask<>));

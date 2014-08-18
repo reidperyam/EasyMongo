@@ -5,10 +5,10 @@ using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace EasyMongo.Contract.Delegates
+namespace EasyMongo.Contract
 {
     [Obsolete("This interface is obselete")]
-    public interface IReaderAsync<T>
+    public interface IAsyncDelegateReader<T>
     {
         event ReadCompletedEvent AsyncReadCompleted;
         event DistinctCompletedEvent AsyncDistinctCompleted;

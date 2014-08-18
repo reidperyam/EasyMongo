@@ -64,21 +64,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EasyMongo.Async\Delegates\ReaderAsync.cs" />
-    <Compile Include="EasyMongo.Async\Delegates\UpdaterAsync.cs" />
-    <Compile Include="EasyMongo.Async\Delegates\WriterAsync.cs" />
+    <Compile Include="EasyMongo.Async\Delegates\AsyncDelegateReader.cs" />
+    <Compile Include="EasyMongo.Async\Delegates\AsyncDelegateUpdater.cs" />
+    <Compile Include="EasyMongo.Async\Delegates\AsyncDelegateWriter.cs" />
     <Compile Include="EasyMongo.Async\ReaderTask.cs" />
     <Compile Include="EasyMongo.Async\UpdaterTask.cs" />
     <Compile Include="EasyMongo.Async\WriterTask.cs" />
     <Compile Include="EasyMongo.Collection\CollectionReader.cs" />
     <Compile Include="EasyMongo.Collection\CollectionUpdater.cs" />
     <Compile Include="EasyMongo.Collection\CollectionWriter.cs" />
-    <Compile Include="EasyMongo.Contract\Delegates\IReaderAsync.cs" />
-    <Compile Include="EasyMongo.Contract\Delegates\IReaderAsyncT.cs" />
-    <Compile Include="EasyMongo.Contract\Delegates\IUpdaterAsync.cs" />
-    <Compile Include="EasyMongo.Contract\Delegates\IUpdaterAsyncT.cs" />
-    <Compile Include="EasyMongo.Contract\Delegates\IWriterAsync.cs" />
-    <Compile Include="EasyMongo.Contract\Delegates\IWriterAsyncT.cs" />
+    <Compile Include="EasyMongo.Contract\IAsyncDelegateReader.cs" />
+    <Compile Include="EasyMongo.Contract\IAsyncDelegateReaderT.cs" />
+    <Compile Include="EasyMongo.Contract\IAsyncDelegateUpdater.cs" />
+    <Compile Include="EasyMongo.Contract\IAsyncDelegateUpdaterT.cs" />
+    <Compile Include="EasyMongo.Contract\IAsyncDelegateWriter.cs" />
+    <Compile Include="EasyMongo.Contract\IAsyncDelegateWriterT.cs" />
     <Compile Include="EasyMongo.Contract\ICollectionReader.cs" />
     <Compile Include="EasyMongo.Contract\ICollectionReaderT.cs" />
     <Compile Include="EasyMongo.Contract\ICollectionUpdater.cs" />

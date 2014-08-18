@@ -8,7 +8,6 @@ using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
 using EasyMongo.Contract;
-using EasyMongo.Contract.Delegates;
 using EasyMongo.Async;
 using EasyMongo.Async.Delegates;
 using EasyMongo.Test.Base;
