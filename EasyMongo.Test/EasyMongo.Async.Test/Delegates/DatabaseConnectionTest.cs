@@ -267,7 +267,7 @@ namespace EasyMongo.Async.Delegates.Test
 
             //_reader = new Reader(_mongoDatabaseConnection);
             //_readerAsync = new ReaderAsync(_reader);
-            //_readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_reader_AsyncReadCompleted);
+            //_readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
 
             // testBase class receives the connection call back after the asynch connection occurs
             _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);

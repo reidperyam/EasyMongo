@@ -8,6 +8,7 @@ using EasyMongo;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using EasyMongo.Test.Base;
+using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Async.Delegates.Test
 {
@@ -157,6 +158,21 @@ namespace EasyMongo.Async.Delegates.Test
             Assert.AreEqual(typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException), _asyncException.GetType());
         }
 
+        [Test]
+        public void ReadTest8()
+        {
+            _readerAsync.AsyncReadCompleted -= new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
+
+            string entryMessage = "Hello World";
+            AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
+            _readerAsync.ReadAsync<Entry>(_mongoDatabaseConnection.Db.GetCollectionNames(), "Message", "Hello", "TimeStamp", _beforeTest, DateTime.Now);
+            System.Threading.Thread.Sleep(2000);
+            Assert.AreEqual(0, _asyncReadResults.Count());
+            Assert.IsNull(_asyncException);
+
+            _asyncReadResults.Clear();
+        }
+
         #region    Disctinct
         [Test]
         public void DistinctTest1()
@@ -232,6 +248,26 @@ namespace EasyMongo.Async.Delegates.Test
             Assert.AreEqual(1, _asyncDistinctResults.Count());
             Assert.AreEqual("One", _asyncDistinctResults[0]);
             Assert.IsNull(_asyncException);
+        }
+
+        [Test]
+        public void DistinctTest5()
+        {
+            _readerAsync.AsyncDistinctCompleted -= new DistinctCompletedEvent(_readerAsync_AsyncDistinctCompleted);
+
+            // get distinct message values that are not "Two" or "Three"
+            var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
+
+            AddMongoEntry("One", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("One", MONGO_COLLECTION_2_NAME);
+            AddMongoEntry("Two", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Three", MONGO_COLLECTION_2_NAME);
+
+            List<string> collections = new List<string>() { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME };
+            _readerAsync.DistinctAsync<string>(collections, "Message", searchQuery);
+            System.Threading.Thread.Sleep(2000);
+
+            Assert.AreEqual(0, _asyncDistinctResults.Count());
         }
         #endregion Distinct
     }

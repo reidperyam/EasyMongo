@@ -10,6 +10,7 @@ using MongoDB.Driver.Builders;
 using System.Threading;
 using EasyMongo.Test.Base;
 using EasyMongo.Contract;
+using EasyMongo.Contract.Delegates;
 
 namespace EasyMongo.Async.Delegates.Test
 {
@@ -340,7 +341,43 @@ namespace EasyMongo.Async.Delegates.Test
         }
 
         [Test]
-        public void FindAndRemoveTest()
+        public void FindAndModifyTest5()
+        {
+            _updaterAsyncT.AsyncFindAndModifyCompleted -= new FindAndModifyCompletedEvent(_updaterAsyncT_AsyncFindAndModifyCompleted);
+
+            string entryMessage1 = "entry 1";
+            AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
+
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(entryMessage1, results[0].Message);
+
+            var searchQuery = Query.EQ("Message", entryMessage1);
+
+            var update = Update.Set("Message", MONGO_EDITED_TEXT);
+            var sortBy = SortBy.Descending("TimeStamp");
+            IMongoFields fields = Fields.Include("TimeStamp");
+
+            FindAndModifyArgs findAndModifyArgs = new FindAndModifyArgs();
+            findAndModifyArgs.Query = searchQuery;
+            findAndModifyArgs.SortBy = sortBy;
+            findAndModifyArgs.Update = update;
+            findAndModifyArgs.Fields = fields;
+            findAndModifyArgs.Upsert = true;
+            findAndModifyArgs.VersionReturned = FindAndModifyDocumentVersion.Modified;
+
+            _updaterAsyncT.FindAndModifyAsync(MONGO_COLLECTION_1_NAME, findAndModifyArgs);
+            Thread.Sleep(2000); // wait 2 seconds to show that event handler will not pick up callback
+
+            Assert.IsNull(_findAndModifyResult);
+
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(MONGO_EDITED_TEXT, results[0].Message);/*This field we modified via FindAndModify...*/
+        }
+
+        [Test]
+        public void FindAndRemoveTest1()
         {
             string entryMessage1 = "entry 1";
             AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
@@ -363,6 +400,35 @@ namespace EasyMongo.Async.Delegates.Test
             Assert.IsTrue(_findAndModifyResult.Ok, "FindAndModifyResult from FindAndModify not OK");
             Assert.IsNull(_findAndModifyResult.ErrorMessage);
             Assert.IsNotNull(_findAndModifyResult.ModifiedDocument);
+
+            results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            Assert.AreEqual(0, results.Count());/*we deleted the entry via FindAndRemove...*/
+        }
+
+        [Test]
+        public void FindAndRemoveTest2()
+        {
+            _updaterAsyncT.AsyncFindAndRemoveCompleted -= new FindAndRemoveCompletedEvent(_updaterAsyncT_AsyncFindAndRemoveCompleted);
+
+            string entryMessage1 = "entry 1";
+            AddMongoEntry(entryMessage1, MONGO_COLLECTION_1_NAME);
+
+            List<Entry> results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(entryMessage1, results[0].Message);
+
+            var searchQuery = Query.EQ("Message", entryMessage1);
+
+            var update = Update.Set("Message", MONGO_EDITED_TEXT);
+            var sortBy = SortBy.Descending("TimeStamp");
+            IMongoFields fields = Fields.Null;
+            FindAndRemoveArgs findAndRemoveArgs = new FindAndRemoveArgs();
+            findAndRemoveArgs.Query = searchQuery;
+            findAndRemoveArgs.SortBy = sortBy;
+            _updaterAsyncT.FindAndRemoveAsync(MONGO_COLLECTION_1_NAME, findAndRemoveArgs);
+            Thread.Sleep(2000); // wait 2 seconds to show that event handler will not pick up callback
+
+            Assert.IsNull(_writeConcernResult);
 
             results = new List<Entry>(_readerT.Read(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(0, results.Count());/*we deleted the entry via FindAndRemove...*/

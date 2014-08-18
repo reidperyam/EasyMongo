@@ -61,7 +61,7 @@ namespace EasyMongo.Test.Base
 
             #region    EasyMongo.Async.Test
             _readerAsync = _kernel.TryGet<IReaderAsync>();
-            _readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_reader_AsyncReadCompleted);
+            _readerAsync.AsyncReadCompleted += new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
             _readerAsync.AsyncDistinctCompleted += new DistinctCompletedEvent(_readerAsync_AsyncDistinctCompleted);
 
             _writerAsync = _kernel.TryGet<IWriterAsync>();
@@ -135,6 +135,9 @@ namespace EasyMongo.Test.Base
         [TearDown]
         public void TearDown()
         {
+            _mongoServerConnection   = _kernel.TryGet<IServerConnection>();
+            _mongoDatabaseConnection = _kernel.TryGet<IDatabaseConnection>();
+
             _mongoDatabaseConnection.Connect();
             _mongoDatabaseConnection.ClearAllCollections<Entry>();
             _mongoServerConnection.Connect();
@@ -476,7 +479,7 @@ namespace EasyMongo.Test.Base
             _writerAutoResetEvent.Set();
         }
 
-        protected void _reader_AsyncReadCompleted(object e, Exception ex)
+        protected void _readerAsync_AsyncReadCompleted(object e, Exception ex)
         {
             _asyncException = ex;
             IEnumerable<Entry> results = (IEnumerable<Entry>)e;
@@ -495,14 +498,14 @@ namespace EasyMongo.Test.Base
         }
 
         #region    Generics
-        void _readerAsyncT_AsyncReadCompleted(object e, Exception ex)
+        protected void _readerAsyncT_AsyncReadCompleted(object e, Exception ex)
         {
             _asyncException = ex;
             IEnumerable<Entry> results = (IEnumerable<Entry>)e;
             _asyncReadResults.AddRange(results);
             _readerAutoResetEvent.Set();
         }
-        void _readerAsyncT_AsyncDistinctCompleted(object e, Exception ex)
+        protected void _readerAsyncT_AsyncDistinctCompleted(object e, Exception ex)
         {
             _asyncException = ex;
 
@@ -511,17 +514,17 @@ namespace EasyMongo.Test.Base
 
             _readerAutoResetEvent.Set();
         }
-        void _updaterAsyncT_AsyncFindAndRemoveCompleted(WriteConcernResult result)
+        protected void _updaterAsyncT_AsyncFindAndRemoveCompleted(WriteConcernResult result)
         {
             _writeConcernResult = result;
             _updaterAutoResetEvent.Set();
         }
-        void _updaterAsyncT_AsyncFindAndModifyCompleted(FindAndModifyResult result)
+        protected void _updaterAsyncT_AsyncFindAndModifyCompleted(FindAndModifyResult result)
         {
             _findAndModifyResult = result;
             _updaterAutoResetEvent.Set();
         }
-        void _writerAsyncT_AsyncWriteCompleted(object sender)
+        protected void _writerAsyncT_AsyncWriteCompleted(object sender)
         {
             _writerAutoResetEvent.Set();
         }
