@@ -64,33 +64,70 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entry.cs" />
-    <Compile Include="Updater.cs" />
-    <Compile Include="Exceptions\MongoServerConnectionException.cs" />
-    <Compile Include="Exceptions\MongoDatabaseConnectionException.cs" />
-    <Compile Include="Exceptions\MongoWriteException.cs" />
-    <Compile Include="Exceptions\InvalidSearchException.cs" />
-    <Compile Include="ServerConnection.cs" />
-    <Compile Include="Exceptions\MongoDisabledException.cs" />
-    <Compile Include="DatabaseConnection.cs" />
-    <Compile Include="Reader.cs" />
-    <Compile Include="Writer.cs" />
+    <Compile Include="EasyMongo.Async\Delegates\ReaderAsync.cs" />
+    <Compile Include="EasyMongo.Async\Delegates\UpdaterAsync.cs" />
+    <Compile Include="EasyMongo.Async\Delegates\WriterAsync.cs" />
+    <Compile Include="EasyMongo.Async\ReaderTask.cs" />
+    <Compile Include="EasyMongo.Async\UpdaterTask.cs" />
+    <Compile Include="EasyMongo.Async\WriterTask.cs" />
+    <Compile Include="EasyMongo.Collection\CollectionReader.cs" />
+    <Compile Include="EasyMongo.Collection\CollectionUpdater.cs" />
+    <Compile Include="EasyMongo.Collection\CollectionWriter.cs" />
+    <Compile Include="EasyMongo.Contract\Delegates\IReaderAsync.cs" />
+    <Compile Include="EasyMongo.Contract\Delegates\IReaderAsyncT.cs" />
+    <Compile Include="EasyMongo.Contract\Delegates\IUpdaterAsync.cs" />
+    <Compile Include="EasyMongo.Contract\Delegates\IUpdaterAsyncT.cs" />
+    <Compile Include="EasyMongo.Contract\Delegates\IWriterAsync.cs" />
+    <Compile Include="EasyMongo.Contract\Delegates\IWriterAsyncT.cs" />
+    <Compile Include="EasyMongo.Contract\ICollectionReader.cs" />
+    <Compile Include="EasyMongo.Contract\ICollectionReaderT.cs" />
+    <Compile Include="EasyMongo.Contract\ICollectionUpdater.cs" />
+    <Compile Include="EasyMongo.Contract\ICollectionUpdaterT.cs" />
+    <Compile Include="EasyMongo.Contract\ICollectionWriter.cs" />
+    <Compile Include="EasyMongo.Contract\ICollectionWriterT.cs" />
+    <Compile Include="EasyMongo.Contract\IDatabaseConnection.cs" />
+    <Compile Include="EasyMongo.Contract\IDatabaseReader.cs" />
+    <Compile Include="EasyMongo.Contract\IDatabaseReaderT.cs" />
+    <Compile Include="EasyMongo.Contract\IDatabaseUpdater.cs" />
+    <Compile Include="EasyMongo.Contract\IDatabaseUpdaterT.cs" />
+    <Compile Include="EasyMongo.Contract\IDatabaseWriter.cs" />
+    <Compile Include="EasyMongo.Contract\IDatabaseWriterT.cs" />
+    <Compile Include="EasyMongo.Contract\IReader.cs" />
+    <Compile Include="EasyMongo.Contract\IReaderT.cs" />
+    <Compile Include="EasyMongo.Contract\IReaderTask.cs" />
+    <Compile Include="EasyMongo.Contract\IReaderTaskT.cs" />
+    <Compile Include="EasyMongo.Contract\IServerConnection.cs" />
+    <Compile Include="EasyMongo.Contract\IUpdater.cs" />
+    <Compile Include="EasyMongo.Contract\IUpdaterT.cs" />
+    <Compile Include="EasyMongo.Contract\IUpdaterTask.cs" />
+    <Compile Include="EasyMongo.Contract\IUpdaterTaskT.cs" />
+    <Compile Include="EasyMongo.Contract\IWriter.cs" />
+    <Compile Include="EasyMongo.Contract\IWriterT.cs" />
+    <Compile Include="EasyMongo.Contract\IWriterTask.cs" />
+    <Compile Include="EasyMongo.Contract\IWriterTaskT.cs" />
+    <Compile Include="EasyMongo.Database\DatabaseReader.cs" />
+    <Compile Include="EasyMongo.Database\DatabaseUpdater.cs" />
+    <Compile Include="EasyMongo.Database\DatabaseWriter.cs" />
+    <Compile Include="EasyMongo\Entry.cs" />
+    <Compile Include="EasyMongo\Updater.cs" />
+    <Compile Include="EasyMongo\Exceptions\MongoServerConnectionException.cs" />
+    <Compile Include="EasyMongo\Exceptions\MongoDatabaseConnectionException.cs" />
+    <Compile Include="EasyMongo\Exceptions\MongoWriteException.cs" />
+    <Compile Include="EasyMongo\Exceptions\InvalidSearchException.cs" />
+    <Compile Include="EasyMongo\ServerConnection.cs" />
+    <Compile Include="EasyMongo\Exceptions\MongoDisabledException.cs" />
+    <Compile Include="EasyMongo\DatabaseConnection.cs" />
+    <Compile Include="EasyMongo\Reader.cs" />
+    <Compile Include="EasyMongo\Writer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyMongo.Contract\EasyMongo.Contract.csproj">
-      <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>
-      <Name>EasyMongo.Contract</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)..\..\..\BuildOutput\$(TargetName)$(TargetExt)"</PostBuildEvent>
   </PropertyGroup>

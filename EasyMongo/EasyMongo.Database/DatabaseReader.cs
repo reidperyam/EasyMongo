@@ -12,9 +12,6 @@ namespace EasyMongo.Database
 {
     public class DatabaseReader : IDatabaseReader
     {
-        public event ReadCompletedEvent AsyncReadCompleted;
-        public event DistinctCompletedEvent AsyncDistinctCompleted;
-
         protected IReader _reader;
 
         protected IReaderTask _readerTask;

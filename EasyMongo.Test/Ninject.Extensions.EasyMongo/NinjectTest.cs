@@ -134,11 +134,5 @@ namespace EasyMongo.Test.Base.Ninject
             #endregion Generics
             #endregion EasyMongo.Collection
         }
-
-        [Test]
-        public void NextTest()
-        {
-            // write Ninject nunit test proving using singletons to create all of our integration testing classes results in async testing problems
-        }
     }
 }

@@ -44,6 +44,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -57,32 +61,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UpdaterTTest.cs" />
-    <Compile Include="ReaderTTest.cs" />
-    <Compile Include="DatabaseConnectionTest.cs">
+    <Compile Include="EasyMongo.Async.Test\DatabaseConnectionTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\DatabaseConnectionTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\ReaderAsyncTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\ReaderAsyncTTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\ServerConnectionTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\UpdaterAsyncTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\UpdaterAsyncTTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\WriterAsyncTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\Delegates\WriterAsyncTTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\ReaderTaskTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\ReaderTaskTTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\ServerConnectionTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\UpdaterTaskTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\UpdaterTaskTTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\WriterTaskTest.cs" />
+    <Compile Include="EasyMongo.Async.Test\WriterTaskTTest.cs" />
+    <Compile Include="EasyMongo.Collection.Test\CollectionReaderTest.cs" />
+    <Compile Include="EasyMongo.Collection.Test\CollectionReaderTTest.cs" />
+    <Compile Include="EasyMongo.Collection.Test\CollectionUpdaterTest.cs" />
+    <Compile Include="EasyMongo.Collection.Test\CollectionUpdaterTTest.cs" />
+    <Compile Include="EasyMongo.Collection.Test\CollectionWriterTest.cs" />
+    <Compile Include="EasyMongo.Collection.Test\CollectionWriterTTest.cs" />
+    <Compile Include="EasyMongo.Database.Test\DatabaseReaderTest.cs" />
+    <Compile Include="EasyMongo.Database.Test\DatabaseReaderTTest.cs" />
+    <Compile Include="EasyMongo.Database.Test\DatabaseUpdaterTest.cs" />
+    <Compile Include="EasyMongo.Database.Test\DatabaseUpdaterTTest.cs" />
+    <Compile Include="EasyMongo.Database.Test\DatabaseWriterTest.cs" />
+    <Compile Include="EasyMongo.Database.Test\DatabaseWriterTTest.cs" />
+    <Compile Include="EasyMongo.Test\UpdaterTTest.cs" />
+    <Compile Include="EasyMongo.Test\ReaderTTest.cs" />
+    <Compile Include="EasyMongo.Test\DatabaseConnectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ServerConnectionTest.cs">
+    <Compile Include="EasyMongo.Test\ServerConnectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UpdaterTest.cs" />
-    <Compile Include="WriterTest.cs" />
-    <Compile Include="ReaderTest.cs" />
+    <Compile Include="EasyMongo.Test\UpdaterTest.cs" />
+    <Compile Include="EasyMongo.Test\WriterTest.cs" />
+    <Compile Include="EasyMongo.Test\ReaderTest.cs" />
+    <Compile Include="IntegrationTestFixture.cs" />
+    <Compile Include="Ninject.Extensions.EasyMongo\NinjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RANDOM_AD_HOC_TESTS.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyMongo.Async\EasyMongo.Async.csproj">
-      <Project>{96F8E3FA-F867-4863-840B-C27B99012A6E}</Project>
-      <Name>EasyMongo.Async</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EasyMongo.Contract\EasyMongo.Contract.csproj">
-      <Project>{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}</Project>
-      <Name>EasyMongo.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EasyMongo.Test.Base\EasyMongo.Test.Base.csproj">
-      <Project>{A8010916-62A5-4563-9250-D40C00F466E7}</Project>
-      <Name>EasyMongo.Test.Base</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EasyMongo\EasyMongo.csproj">
       <Project>{3719B940-D317-4AAD-BDC0-5996B4A9289F}</Project>
       <Name>EasyMongo</Name>
@@ -103,6 +126,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetPath)" "$(TargetDir)..\..\..\BuildOutput\$(TargetName)$(TargetExt)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

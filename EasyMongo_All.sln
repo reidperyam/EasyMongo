@@ -1,36 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo", "EasyMongo\EasyMongo.csproj", "{3719B940-D317-4AAD-BDC0-5996B4A9289F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Test", "EasyMongo.Test\EasyMongo.Test.csproj", "{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Contract", "EasyMongo.Contract\EasyMongo.Contract.csproj", "{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Database", "EasyMongo.Database\EasyMongo.Database.csproj", "{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Database.Test", "EasyMongo.Database.Test\EasyMongo.Database.Test.csproj", "{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Collection", "EasyMongo.Collection\EasyMongo.Collection.csproj", "{52C5EE32-B556-433F-AC6C-47CA8D377DD4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Collection.Test", "EasyMongo.Collection.Test\EasyMongo.Collection.Test.csproj", "{7BE4117F-EB45-45F9-9701-D62E64A274CA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Async", "EasyMongo.Async\EasyMongo.Async.csproj", "{96F8E3FA-F867-4863-840B-C27B99012A6E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Async.Test", "EasyMongo.Async.Test\EasyMongo.Async.Test.csproj", "{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ninject.Extensions.EasyMongo", "Ninject.Extensions.EasyMongo\Ninject.Extensions.EasyMongo.csproj", "{691A8A30-D0D6-405A-A317-C370AD2CC8C6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyMongo.Test.Base", "EasyMongo.Test.Base\EasyMongo.Test.Base.csproj", "{A8010916-62A5-4563-9250-D40C00F466E7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2D938A01-B15E-4DA1-A911-B5AC2158C1A0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2A9EDCA0-928C-4343-BFB1-68DDBF6C4A6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,51 +23,12 @@ Global
 		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DB9FFC9-ABB3-4FA2-832F-C1DDF6650E4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D614957F-BF44-4EAD-906C-A8CD0E2C6B33}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52C5EE32-B556-433F-AC6C-47CA8D377DD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BE4117F-EB45-45F9-9701-D62E64A274CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96F8E3FA-F867-4863-840B-C27B99012A6E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{691A8A30-D0D6-405A-A317-C370AD2CC8C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{691A8A30-D0D6-405A-A317-C370AD2CC8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{691A8A30-D0D6-405A-A317-C370AD2CC8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{691A8A30-D0D6-405A-A317-C370AD2CC8C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8010916-62A5-4563-9250-D40C00F466E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8010916-62A5-4563-9250-D40C00F466E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8010916-62A5-4563-9250-D40C00F466E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8010916-62A5-4563-9250-D40C00F466E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{FC74C5B7-2CCB-45D8-9DA7-0F19AF5C588A} = {2A9EDCA0-928C-4343-BFB1-68DDBF6C4A6B}
-		{7BE4117F-EB45-45F9-9701-D62E64A274CA} = {2A9EDCA0-928C-4343-BFB1-68DDBF6C4A6B}
-		{A32F0615-3575-40FD-8DEE-2FA6F0F9EA9F} = {2A9EDCA0-928C-4343-BFB1-68DDBF6C4A6B}
-		{62D2FA6B-C846-4030-A9BE-1BAD9A2ED375} = {2A9EDCA0-928C-4343-BFB1-68DDBF6C4A6B}
-		{A8010916-62A5-4563-9250-D40C00F466E7} = {2A9EDCA0-928C-4343-BFB1-68DDBF6C4A6B}
 	EndGlobalSection
 EndGlobal
