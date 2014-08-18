@@ -47,7 +47,6 @@ Examples
 		using NUnit.Framework;
 		using EasyMongo;
 		using EasyMongo.Contract;
-		using EasyMongo.Contract.Delegates;
 		using EasyMongo.Async;
 		using EasyMongo.Async.Delegates;
 		using EasyMongo.Database;
@@ -106,36 +105,36 @@ Examples
 					/////////////////////////////
 
 					// read, write and update asynchronously using System.Threading.Task
-					IReaderTask readerTask = new ReaderTask(reader);
-					readEntrys = await readerTask.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
+					IAsyncReader asyncReader = new AsyncReader(reader);
+					readEntrys = await asyncReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
 					Assert.AreEqual(1, readEntrys.Count());
 
-					IWriterTask writerTask = new WriterTask(writer);
-					IUpdaterTask updaterTask = new UpdaterTask(updater);
+					IAsyncWriter asyncWriter = new AsyncWriter(writer);
+					IAsyncUpdater asyncUpdater = new AsyncUpdater(updater);
 
 					// or delegate call backs
-					IReaderAsync readerAsync = new ReaderAsync(reader);
-					readerAsync.AsyncReadCompleted += new ReadCompletedEvent(readerCallBack);
-					readerAsync.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
+					IAsyncDelegateReader asyncDelegateReader = new AsyncDelegateReader(reader);
+					asyncDelegateReader.AsyncReadCompleted += new ReadCompletedEvent(readerCallBack);
+					asyncDelegateReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
 					_readerAutoResetEvent.WaitOne();
 
 					Assert.AreEqual(1, _asyncReadResults.Count());
 
-					IWriterAsync writerAsync = new WriterAsync(writer);
-					IUpdaterAsync updaterAsync = new UpdaterAsync(updater);
+					IAsyncDelegateWriter asyncDelegateWriter = new AsyncDelegateWriter(writer);
+					IAsyncDelegateUpdater asyncDelegateUpdater = new AsyncDelegateUpdater(updater);
 
 					/////////////////////////////
 					// OPERATIONAL GRANULARITY //
 					/////////////////////////////
 
 					// get a little higher level with the EasyMongo.Database namespace to reference a database
-					IDatabaseReader databaseReader = new DatabaseReader(reader, readerTask);
+					IDatabaseReader databaseReader = new DatabaseReader(reader, asyncReader);
 					databaseReader.Read<Entry>("MyFirstCollection", "Message", "Hello");
 					readEntrys = await databaseReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
 					Assert.AreEqual(1, readEntrys.Count());
 
-					IDatabaseWriter databaseWriter = new DatabaseWriter(writer, writerTask);
-					IDatabaseUpdater databaseUpdater = new DatabaseUpdater(updater, updaterTask);
+					IDatabaseWriter databaseWriter = new DatabaseWriter(writer, asyncWriter);
+					IDatabaseUpdater databaseUpdater = new DatabaseUpdater(updater, asyncUpdater);
 
 					/////////////////////
 					// GENERIC CLASSES //
@@ -169,7 +168,7 @@ Examples
 					// the alternative to this:
 					IServerConnection serverConn = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
 					IDatabaseConnection databaseConnn = new DatabaseConnection(serverConn, "MyFirstDatabase");
-					IDatabaseUpdater databaseUpdatr = new DatabaseUpdater(updater, updaterTask);
+					IDatabaseUpdater databaseUpdatr = new DatabaseUpdater(updater, asyncUpdater);
 					ICollectionUpdater collectionUpdaterTheHardWay = new CollectionUpdater(databaseUpdater, "MySecondCollection");
 
 					serverConnection.DropAllDatabases();
