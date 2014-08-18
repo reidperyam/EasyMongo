@@ -20,7 +20,7 @@ Succinctly you might say that EasyMongo:
 
 Implementation
 ==============
-- .Net 4.0
+- .Net 4.5
 - Built on top of MongoDB C# driver 1.9.2 (current EasyMongo release)
 
 Tests
