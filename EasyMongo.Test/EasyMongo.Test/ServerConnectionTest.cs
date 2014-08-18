@@ -82,7 +82,7 @@ namespace EasyMongo.Test
         }
 
         [Test]
-        public void DropDatabaseTest()
+        public void DropDatabase1Test()
         {
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
             _mongoDatabaseConnection.Connect();
@@ -133,6 +133,25 @@ namespace EasyMongo.Test
             // see comments above
             mongoDatabase = _mongoServerConnection.GetDatabase(MONGO_DATABASE_2_NAME, _writeConcern);
             Assert.IsNotNull(mongoDatabase);
+        }
+
+        [Test]
+        public void DropDatabase2Test()
+        {
+            MongoDatabase mongoDatabase = _mongoServerConnection[MONGO_DATABASE_1_NAME];
+
+            Assert.IsNotNull(mongoDatabase);
+
+            AddMongoEntry();
+
+            Assert.AreEqual(1, _mongoServerConnection.GetDbNamesForConnection().Count());
+            CommandResult commandResult = _mongoServerConnection.DropDatabase(mongoDatabase);
+
+            Assert.IsNotNull(commandResult);
+            Assert.IsTrue(commandResult.Ok);
+            Assert.IsNullOrEmpty(commandResult.ErrorMessage);
+
+            Assert.AreEqual(0, _mongoServerConnection.GetDbNamesForConnection().Count());
         }
 
         [Test]
@@ -309,7 +328,7 @@ namespace EasyMongo.Test
         [Test]
         public void IndexerTest()
         {
-            AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);//write to the database in order to prove that the fetched database is as expected
+            AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
             MongoDatabase mongoDatabase = _mongoServerConnection[MONGO_DATABASE_1_NAME];
 
             Assert.IsNotNull(mongoDatabase);
@@ -317,6 +336,24 @@ namespace EasyMongo.Test
             Assert.AreEqual(2, collectionNames.Count());
             Assert.AreEqual(MONGO_COLLECTION_1_NAME, collectionNames[0]);
             Assert.AreEqual("system.indexes", collectionNames[1]);
+        }
+
+        [Test]
+        public void GetLastErrorTest()
+        {
+            MongoDatabase mongoDatabase = _mongoServerConnection[MONGO_DATABASE_1_NAME];
+            _mongoServerConnection.RequestStart(mongoDatabase);
+
+            AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
+
+            GetLastErrorResult getLastErrorResult = _mongoServerConnection.GetLastError();
+
+            Assert.IsNotNull(getLastErrorResult);
+            Assert.IsTrue(getLastErrorResult.Ok);
+            Assert.IsNullOrEmpty(getLastErrorResult.LastErrorMessage);
+            Assert.IsFalse(getLastErrorResult.HasLastErrorMessage);
+
+            _mongoServerConnection.RequestDone();
         }
         #endregion Synchronous
     }
