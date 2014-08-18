@@ -11,7 +11,7 @@ using System.Threading;
 namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class WriterTaskTTest : IntegrationTestFixture
+    public class AsyncDelegateWriterTest : IntegrationTestFixture
     {
         /// <summary>
         /// Asynchronously writes a MongoTestEntry to a MongoDB and verifies that it was retrieved 
@@ -21,9 +21,8 @@ namespace EasyMongo.Async.Test
         public void Simple_AddTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryAsyncTaskT(entryMessage, MONGO_COLLECTION_1_NAME);
-            Thread.Sleep(100);
-            _results.AddRange(_readerT.Read(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
+            AddMongoEntryAsyncDelegate(entryMessage, MONGO_COLLECTION_1_NAME);
+            _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
         }
@@ -36,8 +35,7 @@ namespace EasyMongo.Async.Test
         public void Add_TwoTest()
         {
             string entryMessage = "This is a test";
-            AddMongoEntryAsyncTaskT(entryMessage, MONGO_COLLECTION_1_NAME);
-            Thread.Sleep(100);
+            AddMongoEntryAsyncDelegate(entryMessage, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual(entryMessage, _results[0].Message);
@@ -45,8 +43,7 @@ namespace EasyMongo.Async.Test
             _results.Clear();
 
             string entryMessage2 = "This is a test as well";
-            AddMongoEntryAsyncTaskT(entryMessage2, MONGO_COLLECTION_1_NAME);
-            Thread.Sleep(100);
+            AddMongoEntryAsyncDelegate(entryMessage2, MONGO_COLLECTION_1_NAME);
             _results.AddRange(_reader.Read<Entry>(MONGO_COLLECTION_1_NAME, "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(2, _results.Count());
             Assert.AreEqual(entryMessage2, _results[1].Message);

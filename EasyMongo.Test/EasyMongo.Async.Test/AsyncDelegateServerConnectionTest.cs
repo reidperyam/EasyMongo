@@ -9,10 +9,10 @@ using MongoDB.Driver;
 using EasyMongo.Contract;
 using EasyMongo.Test.Base;
 
-namespace EasyMongo.Async.Delegates.Test
+namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class ServerConnectionTest : IntegrationTestFixture
+    public class AsyncDelegateServerConnectionTest : IntegrationTestFixture
     {
         #region Asynchronous
 

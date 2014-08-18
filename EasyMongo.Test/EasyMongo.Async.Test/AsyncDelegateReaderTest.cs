@@ -10,10 +10,10 @@ using MongoDB.Bson;
 using EasyMongo.Test.Base;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Async.Delegates.Test
+namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class ReaderAsyncTest : IntegrationTestFixture
+    public class AsyncDelegateReaderTest : IntegrationTestFixture
     {
         /// <summary>
         /// Writes a MongoTestEntry to a MongoDB and verifies that it was asynchronously retrieved using

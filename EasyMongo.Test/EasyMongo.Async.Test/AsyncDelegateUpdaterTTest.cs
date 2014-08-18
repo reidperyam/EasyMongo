@@ -11,10 +11,10 @@ using System.Threading;
 using EasyMongo.Test.Base;
 using EasyMongo.Contract;
 
-namespace EasyMongo.Async.Delegates.Test
+namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class UpdaterAsyncTTest : IntegrationTestFixture
+    public class AsyncDelegateUpdaterTTest : IntegrationTestFixture
     {
         [Test]
         public void RemoveTest1()

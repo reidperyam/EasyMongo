@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Threading;
 using NUnit.Framework;
 using EasyMongo;
 using MongoDB.Driver;
@@ -11,47 +12,24 @@ using EasyMongo.Async;
 using EasyMongo.Async.Delegates;
 using EasyMongo.Test.Base;
 
-namespace EasyMongo.Async.Delegates.Test
+namespace EasyMongo.Async.Test
 {
     [TestFixture]
-    public class DatabaseConnectionTest : IntegrationTestFixture
+    public class AsyncDatabaseConnectionTest : IntegrationTestFixture
     {
-        [Test]
-        public void BadConnectionStringAsync()
-        {
-            //System.Diagnostics.Debugger.Launch();
-            _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);
-
-            _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
-            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
-
-            _databaseConnectionAutoResetEvent.WaitOne(); // wait for the async operation to complete to verify it's results
-
-            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);/**/
-            Assert.AreEqual(ConnectionResult.Failure, _databaseConnectionResult);/**/
-            Assert.IsNotNull(_serverConnectionReturnMessage);
-        }
-
         // connect to a database asynchronously using an asynchronous server connection
         [Test]
         public void AsynchronousTest1()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
-            Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
+            Assert.AreEqual(_mongoServerConnection.State, MongoServerState.Disconnected);
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
             Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Disconnected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
-            Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);// wait for the async operation to complete so that we can compare the connection state
 
-            _databaseConnectionAutoResetEvent.WaitOne();// wait for the async operation to complete so that we can compare the connection state
-
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Connected);/**/
-            Assert.AreEqual(_databaseConnectionResult, ConnectionResult.Success);/**/
-            Assert.IsNotNull(_serverConnectionReturnMessage);
-            Assert.IsNotNull(_databaseConnectionReturnMessage);
+            Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
         }
 
         // test an unconnected asynch serverConn injected into an unconnected asynch DatabaseConnection
@@ -63,26 +41,21 @@ namespace EasyMongo.Async.Delegates.Test
             Assert.AreEqual(_mongoServerConnection.State, MongoServerState.Disconnected);
 
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            Assert.AreEqual(MongoServerState.Disconnected,_mongoDatabaseConnection.State);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
             Assert.AreEqual(MongoServerState.Disconnected, _mongoDatabaseConnection.State);
+            _mongoDatabaseConnection.ConnectAsyncTask();           
+            Thread.Sleep(100);// wait for the async operation to complete so that we can compare the connection state
 
-            _databaseConnectionAutoResetEvent.WaitOne();// wait for the async operation to complete so that we can compare the connection state
-
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Connected);/**/
-            Assert.AreEqual(_databaseConnectionResult, ConnectionResult.Success);/**/
-            Assert.IsNotNull(_serverConnectionReturnMessage);
-            Assert.IsNotNull(_databaseConnectionReturnMessage);
+            Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
         }
 
         // test a connected asynch serverConn injected into an unconnected asynch DatabaseConnection
         // that is then leveraged by direct usage
-        [Test, ExpectedException(typeof(MongoConnectionException), ExpectedMessage = "ServerConnection is not connected")]
+        [Test, ExpectedException(typeof(MongoConnectionException), ExpectedMessage = "DatabaseConnection is not connected")]
         public void AsynchronousTest3()
         {
             // testBase class receives the connection call back after the asynch connection occurs
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-
+            _mongoServerConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
 
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
@@ -94,32 +67,27 @@ namespace EasyMongo.Async.Delegates.Test
         [Test]
         public void AsynchronousTest4()
         {
-            //System.Diagnostics.Debugger.Launch();
             // create our asynchronous server connection
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
 
-            // testBase class receives the connection call back after the asynch connection occurs
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
+            _mongoServerConnection.ConnectAsyncTask();
+            _mongoDatabaseConnection.ConnectAsyncTask();
 
-            _databaseConnectionAutoResetEvent.WaitOne();
+            Thread.Sleep(100);
 
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoServerConnection.State);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
-            Assert.IsNotNull(_serverConnectionReturnMessage);
-            Assert.IsNotNull(_databaseConnectionReturnMessage);
             Assert.AreEqual(0, collection.Count());
         }
 
         [Test]
         public void AsynchronousTest5()
         {
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
-            _databaseConnectionAutoResetEvent.WaitOne();
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
-            //Assert.AreEqual(ConnectionResult.Success, _databaseConnectionResult);/**/
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
         }
 
@@ -129,8 +97,8 @@ namespace EasyMongo.Async.Delegates.Test
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);/**/
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
             // testBase class receives the connection call back after the asynch connection occurs
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
+            _mongoServerConnection.ConnectAsyncTask();
+            _mongoDatabaseConnection.ConnectAsyncTask();
 
             // once the async operation completes, because the connection string is bad, there is no connection
             // -- attempting to use the connection results in a MongoConnectionException
@@ -140,23 +108,23 @@ namespace EasyMongo.Async.Delegates.Test
         [Test]
         public void AsynchronousTest7()
         {
-            //System.Diagnostics.Debugger.Launch();
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            // testBase class receives the connection call back after the asynch connection occurs
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
 
-            _databaseConnectionAutoResetEvent.WaitOne();
+            _mongoServerConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
+            
 
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
             Assert.AreEqual(0, collection.Count());
 
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
-
-            _databaseConnectionAutoResetEvent.WaitOne();
+            _mongoServerConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
 
             collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
@@ -169,11 +137,11 @@ namespace EasyMongo.Async.Delegates.Test
             //System.Diagnostics.Debugger.Launch();
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            // testBase class receives the connection call back after the asynch connection occurs
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
 
-            _databaseConnectionAutoResetEvent.WaitOne();
+            _mongoServerConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
 
             MongoCollection<Entry> collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
@@ -188,14 +156,16 @@ namespace EasyMongo.Async.Delegates.Test
 
             _mongoServerConnection.Connect();
             _mongoDatabaseConnection.Connect();
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
+            _mongoServerConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
             _mongoServerConnection.Connect();
             _mongoDatabaseConnection.Connect();
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
-
-            _databaseConnectionAutoResetEvent.WaitOne();
+            _mongoServerConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
 
             collection = _mongoDatabaseConnection.GetCollection<Entry>(MONGO_COLLECTION_1_NAME);
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
@@ -209,14 +179,11 @@ namespace EasyMongo.Async.Delegates.Test
             string entryMessage = "Hello World";
             AddMongoEntry(message: entryMessage);
 
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);// asynchronous connection 
+            _mongoDatabaseConnection.ConnectAsyncTask();// asynchronous connection 
 
-            _databaseConnectionAutoResetEvent.WaitOne(); // pause here until the asyncConnection completes to allow for linear testability
+            Thread.Sleep(100);
 
-            Assert.AreEqual(_databaseConnectionResult, ConnectionResult.Success);/**/
-            Assert.AreEqual(_mongoDatabaseConnection.State, MongoServerState.Connected);
-            Assert.IsNotNull(_serverConnectionReturnMessage);
-            Assert.IsNotNull(_databaseConnectionReturnMessage);
+            Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
             _reader = new Reader(_mongoDatabaseConnection);
             
             // this call doesn't wait for asynchronous connection to finish
@@ -235,15 +202,12 @@ namespace EasyMongo.Async.Delegates.Test
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
             // testBase class receives the connection call back after the asynch connection occurs
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
+            _mongoServerConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
+            _mongoDatabaseConnection.ConnectAsyncTask();
+            Thread.Sleep(100);
 
-            _databaseConnectionAutoResetEvent.WaitOne();// pause here until the asyncConnection completes to allow for linear testability
-
-            Assert.AreEqual(ConnectionResult.Success, _databaseConnectionResult);/**/
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
-            Assert.IsNotNull(_serverConnectionReturnMessage);
-            Assert.IsNotNull(_databaseConnectionReturnMessage);
 
             _reader = new Reader(_mongoDatabaseConnection);
 
@@ -264,20 +228,15 @@ namespace EasyMongo.Async.Delegates.Test
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
 
-            //_reader = new Reader(_mongoDatabaseConnection);
-            //_asyncDelegateReader = new AsyncDelegateReader(_reader);
-            //_asyncDelegateReader.AsyncReadCompleted += new ReadCompletedEvent(_readerAsync_AsyncReadCompleted);
-
             // testBase class receives the connection call back after the asynch connection occurs
-            _mongoServerConnection.ConnectAsyncDelegate(_mongoServerConnection_Connected);
-            _mongoDatabaseConnection.ConnectAsyncDelegate(_mongoDatabaseConnection_Connected);
+            _mongoServerConnection.ConnectAsyncTask();
+            _mongoDatabaseConnection.ConnectAsyncTask();
 
             // this call doesn't wait for asynchronous connection to complete
-            _asyncDelegateReader.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage);
+            IEnumerable<Entry> results = _readerTask.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage).Result;
 
-            _readerAutoResetEvent.WaitOne();// wait for async read to return
-            Assert.AreEqual(1, _asyncReadResults.Count());
-            Assert.AreEqual(entryMessage, _asyncReadResults[0].Message);
+            Assert.AreEqual(1, results.Count());
+            Assert.AreEqual(entryMessage, results.ElementAt(0).Message);
         }
     }
 }
