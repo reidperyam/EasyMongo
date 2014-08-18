@@ -7,7 +7,6 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    [Obsolete("This interface is obselete")]
     public interface IAsyncDelegateReader<T>
     {
         event ReadCompletedEvent AsyncReadCompleted;

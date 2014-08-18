@@ -113,9 +113,9 @@ namespace Ninject.Extensions.EasyMongo
             Bind(typeof(IAsyncWriter)).To(typeof(AsyncWriter));
             Bind(typeof(IAsyncUpdater)).To(typeof(AsyncUpdater));
 
-            Bind(typeof(IAsyncDelegateReader<>)).To(typeof(ReaderAsync<>));
-            Bind(typeof(IAsyncDelegateWriter<>)).To(typeof(WriterAsync<>));
-            Bind(typeof(IAsyncDelegateUpdater<>)).To(typeof(UpdaterAsync<>));
+            Bind(typeof(IAsyncDelegateReader<>)).To(typeof(AsyncDelegateReader<>));
+            Bind(typeof(IAsyncDelegateWriter<>)).To(typeof(AsyncDelegateWriter<>));
+            Bind(typeof(IAsyncDelegateUpdater<>)).To(typeof(AsyncDelegateUpdater<>));
 
             Bind(typeof(IAsyncReader<>)).To(typeof(ReaderTask<>));
             Bind(typeof(IAsyncWriter<>)).To(typeof(WriterTask<>));

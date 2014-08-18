@@ -13,7 +13,6 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Async.Delegates
 {
-    [Obsolete("This class is obselete")]
     public class AsyncDelegateReader : IAsyncDelegateReader
     {
         private IReader _mongoReader;
@@ -146,8 +145,7 @@ namespace EasyMongo.Async.Delegates
         #endregion Callback methods
     }
 
-    [Obsolete("This class is obselete")]
-    public class ReaderAsync<T> : IAsyncDelegateReader<T>
+    public class AsyncDelegateReader<T> : IAsyncDelegateReader<T>
     {
         public event ReadCompletedEvent AsyncReadCompleted
         {
@@ -187,7 +185,7 @@ namespace EasyMongo.Async.Delegates
 
         private IAsyncDelegateReader _reader;
 
-        public ReaderAsync(IAsyncDelegateReader reader)
+        public AsyncDelegateReader(IAsyncDelegateReader reader)
         {
             _reader = reader;
         }

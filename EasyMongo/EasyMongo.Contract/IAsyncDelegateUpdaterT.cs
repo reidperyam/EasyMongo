@@ -8,7 +8,6 @@ using EasyMongo.Contract;
 
 namespace EasyMongo.Contract
 {
-    [Obsolete("This interface is obselete")]
     public interface IAsyncDelegateUpdater<T>
     {
         event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;

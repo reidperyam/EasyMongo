@@ -9,7 +9,6 @@ namespace EasyMongo.Contract
 {
     public delegate void WriteCompletedEvent(object sender);
 
-    [Obsolete("This interface is obselete")]
     public interface IAsyncDelegateWriter
     {
         event WriteCompletedEvent AsyncWriteCompleted;

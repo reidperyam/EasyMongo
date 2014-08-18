@@ -9,7 +9,6 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace EasyMongo.Async.Delegates
 {
-    [Obsolete("This class is obselete")]
     public class AsyncDelegateUpdater : IAsyncDelegateUpdater
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted;
@@ -121,8 +120,7 @@ namespace EasyMongo.Async.Delegates
         }
     }
 
-    [Obsolete("This class is obselete")]
-    public class UpdaterAsync<T> : IAsyncDelegateUpdater<T>
+    public class AsyncDelegateUpdater<T> : IAsyncDelegateUpdater<T>
     {
         public event FindAndModifyCompletedEvent AsyncFindAndModifyCompleted
         {
@@ -162,7 +160,7 @@ namespace EasyMongo.Async.Delegates
 
         IAsyncDelegateUpdater _mongoUpdater;
 
-        public UpdaterAsync(IAsyncDelegateUpdater mongoUpdater)
+        public AsyncDelegateUpdater(IAsyncDelegateUpdater mongoUpdater)
         {
             _mongoUpdater = mongoUpdater;
         }
