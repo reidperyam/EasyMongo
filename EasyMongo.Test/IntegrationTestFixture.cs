@@ -532,61 +532,6 @@ namespace EasyMongo.Test.Base
 
         #endregion EasyMongo.Async
 
-        #region    EasyMongo.Database
-        protected void _databaseWriter_AsyncWriteCompleted(object sender)
-        {
-            _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
-        }
-
-        protected void _databaseUpdater_AsyncFindAndRemoveCompleted(WriteConcernResult result)
-        {
-            _writeConcernResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-
-        protected void _databaseUpdater_AsyncFindAndModifyCompleted(FindAndModifyResult result)
-        {
-            _findAndModifyResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-        #endregion EasyMongo.Database
-
-        #region EasyMongo.Collection
-        protected void _collectionWriter_AsyncWriteCompleted(object sender)
-        {
-            _writerAutoResetEvent.Set();// allow the thread in AddMongoEntryAsync to continue
-        }
-
-        // TODO - Refactor the cast to not define impl class...
-        protected void _collectionReader_AsyncReadCompleted(object e, Exception ex)
-        {
-            _asyncException = ex;
-            IEnumerable<Entry> results = (IEnumerable<Entry>)e;// HEY! Can this instead be IEnumerable<Entry>
-            _asyncReadResults.AddRange(results);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _collectionReader_AsyncDistinctCompleted(object e, Exception ex)
-        {
-            _asyncException = ex;
-            _asyncDistinctResults.AddRange((IEnumerable<string>)e);
-            _readerAutoResetEvent.Set();
-        }
-
-        protected void _collectionUpdater_AsyncFindAndRemoveCompleted(WriteConcernResult result)
-        {
-            _writeConcernResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-
-        protected void _collectionUpdater_AsyncFindAndModifyCompleted(FindAndModifyResult result)
-        {
-            _findAndModifyResult = result;
-            _updaterAutoResetEvent.Set();
-        }
-
-        #endregion EasyMongo.Collection
-
         #endregion Helper Methods
     }
 }
