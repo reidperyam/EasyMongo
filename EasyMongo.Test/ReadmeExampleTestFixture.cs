@@ -1,40 +1,4 @@
-EasyMongo Overview
-==================
-
-  MongoDB is great but its operations aren't driven by interfaces, making dependency injection and Inversion of
-  Control for object composition harder than it should be. 
-  
-  EasyMongo is just a facade to the official 10gen Mongo DB C# driver that splits the operations into separate, 
-  interface-driven operations. Additionally granular operational scoping allows you use operational contracts 
-  against the Database or Collection level, (instead of globbing everything together) to support the principle of
-  least responsibility/LoD.
-
-Succinctly you might say that EasyMongo:
-  - Is a C# facade to the official 10gen MongoDB C# driver providing interface-driven composition and operational granularity.
-  - Supplies asynchronous implementations of CRUD operations in two flavors:
-		- asynchronous delegate callbacks
-		- Tasks
-  - Interface-driven object model simplifies testing and supports DI/IoC.
-  - Available Ninject.Extensions.EasyMongo nuget package supporting DI/IoC with Ninject automagically.
-  - Abstracts some operations of the underlying 10gen driver for simplistic consumption. 
-
-Implementation
-==============
-- .Net 4.0
-- Built on top of MongoDB C# driver 1.9.2 (current EasyMongo release)
-
-Tests
-=====
-- 350+ end-to-end NUnit integration tests written to execute against a locally-deployed mongoDB server translating to 93.2% code coverage)
-
-QuickStart
-==============
-
-  Install the latest nuget package via Visual Studio's Package Manager Console:
- - Install-Package EasyMongo -Pre
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -48,13 +12,13 @@ using EasyMongo.Database;
 using EasyMongo.Collection;
 using Ninject;
 
-namespace JunkyProject
+namespace EasyMongo.Readme.Example.Test
 {
     /// <summary>
     /// A flexible TestFixture useful for verifying user functionality of the EasyMongo nuget package
     /// </summary>
     [TestFixture]
-    public class TestFixture
+    public class ReadmeExampleTestFixture
     {
         readonly string LOCAL_MONGO_SERVER_CONNECTION_STRING = "mongodb://localhost";
         AutoResetEvent _readerAutoResetEvent = new AutoResetEvent(false);
@@ -177,5 +141,3 @@ namespace JunkyProject
         }
     }
 }
-
-
