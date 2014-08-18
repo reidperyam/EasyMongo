@@ -233,7 +233,7 @@ namespace EasyMongo.Async.Test
             _mongoDatabaseConnection.ConnectAsyncTask();
 
             // this call doesn't wait for asynchronous connection to complete
-            IEnumerable<Entry> results = _readerTask.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage).Result;
+            IEnumerable<Entry> results = _asyncReader.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME, "Message", entryMessage).Result;
 
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(entryMessage, results.ElementAt(0).Message);

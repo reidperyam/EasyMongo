@@ -59,14 +59,14 @@ namespace EasyMongo.Test.Base.Ninject
             Assert.IsInstanceOf<AsyncDelegateUpdater>(_asyncDelegateUpdater);
 
 
-            Assert.IsNotNull(_readerTask, string.Format(nullErrorFormatString, "IReaderTask"));
-            Assert.IsInstanceOf<AsyncReader>(_readerTask);
+            Assert.IsNotNull(_asyncReader, string.Format(nullErrorFormatString, "IReaderTask"));
+            Assert.IsInstanceOf<AsyncReader>(_asyncReader);
 
-            Assert.IsNotNull(_writerTask, string.Format(nullErrorFormatString, "IWriterTask"));
-            Assert.IsInstanceOf<AsyncWriter>(_writerTask);
+            Assert.IsNotNull(_asyncWriter, string.Format(nullErrorFormatString, "IWriterTask"));
+            Assert.IsInstanceOf<AsyncWriter>(_asyncWriter);
 
-            Assert.IsNotNull(_updaterTask, string.Format(nullErrorFormatString, "IUpdaterTask"));
-            Assert.IsInstanceOf<AsyncUpdater>(_updaterTask);
+            Assert.IsNotNull(_asyncUpdater, string.Format(nullErrorFormatString, "IUpdaterTask"));
+            Assert.IsInstanceOf<AsyncUpdater>(_asyncUpdater);
 
             #region    Generics
             Assert.IsNotNull(_asyncDelegateReaderT, string.Format(nullErrorFormatString, "IReaderAsync<T>"));
@@ -79,14 +79,14 @@ namespace EasyMongo.Test.Base.Ninject
             Assert.IsInstanceOf<UpdaterAsync<Entry>>(_AsyncDelegateUpdaterT);
 
 
-            Assert.IsNotNull(_readerTaskT, string.Format(nullErrorFormatString, "IReaderTask<T>"));
-            Assert.IsInstanceOf<ReaderTask<Entry>>(_readerTaskT);
+            Assert.IsNotNull(_asyncReaderT, string.Format(nullErrorFormatString, "IReaderTask<T>"));
+            Assert.IsInstanceOf<ReaderTask<Entry>>(_asyncReaderT);
 
-            Assert.IsNotNull(_writerTaskT, string.Format(nullErrorFormatString, "IWriterTask<T>"));
-            Assert.IsInstanceOf<WriterTask<Entry>>(_writerTaskT);
+            Assert.IsNotNull(_asyncWriterT, string.Format(nullErrorFormatString, "IWriterTask<T>"));
+            Assert.IsInstanceOf<WriterTask<Entry>>(_asyncWriterT);
 
-            Assert.IsNotNull(_updaterTaskT, string.Format(nullErrorFormatString, "IUpdaterTask<T>"));
-            Assert.IsInstanceOf<UpdaterTask<Entry>>(_updaterTaskT);
+            Assert.IsNotNull(_asyncUpdaterT, string.Format(nullErrorFormatString, "IUpdaterTask<T>"));
+            Assert.IsInstanceOf<UpdaterTask<Entry>>(_asyncUpdaterT);
             #endregion Generics
             #endregion EasyMongo.Async
 
