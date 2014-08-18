@@ -70,11 +70,11 @@ namespace EasyMongo.Test.Base
             _asyncDelegateUpdater.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsync_AsyncFindAndModifyCompleted);
             _asyncDelegateUpdater.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsync_AsyncFindAndRemoveCompleted);
 
-            _readerTask = _kernel.TryGet<IReaderTask>();
+            _readerTask = _kernel.TryGet<IAsyncReader>();
 
-            _writerTask = _kernel.TryGet<IWriterTask>();
+            _writerTask = _kernel.TryGet<IAsyncWriter>();
 
-            _updaterTask = _kernel.TryGet<IUpdaterTask>();
+            _updaterTask = _kernel.TryGet<IAsyncUpdater>();
 
             // generic classes
             _asyncDelegateReaderT = _kernel.TryGet<IAsyncDelegateReader<Entry>>();
@@ -88,11 +88,11 @@ namespace EasyMongo.Test.Base
             _AsyncDelegateUpdaterT.AsyncFindAndModifyCompleted += new FindAndModifyCompletedEvent(_updaterAsyncT_AsyncFindAndModifyCompleted);
             _AsyncDelegateUpdaterT.AsyncFindAndRemoveCompleted += new FindAndRemoveCompletedEvent(_updaterAsyncT_AsyncFindAndRemoveCompleted);
 
-            _readerTaskT = _kernel.TryGet<IReaderTask<Entry>>();
+            _readerTaskT = _kernel.TryGet<IAsyncReader<Entry>>();
 
-            _writerTaskT = _kernel.TryGet<IWriterTask<Entry>>();
+            _writerTaskT = _kernel.TryGet<IAsyncWriter<Entry>>();
 
-            _updaterTaskT = _kernel.TryGet<IUpdaterTask<Entry>>();
+            _updaterTaskT = _kernel.TryGet<IAsyncUpdater<Entry>>();
 
             #endregion EasyMongo.Async.Test
 
@@ -191,13 +191,13 @@ namespace EasyMongo.Test.Base
         protected IAsyncDelegateWriter<Entry> _asyncDelegateWriterT;
         protected IAsyncDelegateUpdater<Entry> _AsyncDelegateUpdaterT;
 
-        protected IReaderTask _readerTask;
-        protected IWriterTask _writerTask;
-        protected IUpdaterTask _updaterTask;
+        protected IAsyncReader _readerTask;
+        protected IAsyncWriter _writerTask;
+        protected IAsyncUpdater _updaterTask;
 
-        protected IReaderTask<Entry> _readerTaskT;
-        protected IWriterTask<Entry> _writerTaskT;
-        protected IUpdaterTask<Entry> _updaterTaskT;
+        protected IAsyncReader<Entry> _readerTaskT;
+        protected IAsyncWriter<Entry> _writerTaskT;
+        protected IAsyncUpdater<Entry> _updaterTaskT;
 
         protected IDatabaseReader _databaseReader;
         protected IDatabaseWriter _databaseWriter;

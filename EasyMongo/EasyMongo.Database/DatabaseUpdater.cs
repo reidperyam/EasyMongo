@@ -13,13 +13,13 @@ namespace EasyMongo.Database
     {
         protected IUpdater _updater;
 
-        protected IUpdaterTask _updaterTask;
+        protected IAsyncUpdater _asyncUpdater;
 
         public DatabaseUpdater(IUpdater     updater,
-                               IUpdaterTask updaterTask)
+                               IAsyncUpdater asyncUpdater)
         {
             _updater = updater;
-            _updaterTask = updaterTask;
+            _asyncUpdater = asyncUpdater;
         }
 
         public WriteConcernResult Remove<T>(string collectionName, IMongoQuery query)
@@ -40,19 +40,19 @@ namespace EasyMongo.Database
         }
         public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query)
         {
-            return _updaterTask.RemoveAsync<T>(collectionName, query);
+            return _asyncUpdater.RemoveAsync<T>(collectionName, query);
         }
         public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags)
         {
-            return _updaterTask.RemoveAsync<T>(collectionName, query, removeFlags);
+            return _asyncUpdater.RemoveAsync<T>(collectionName, query, removeFlags);
         }
         public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, WriteConcern writeConcern)
         {
-            return _updaterTask.RemoveAsync<T>(collectionName, query, writeConcern);
+            return _asyncUpdater.RemoveAsync<T>(collectionName, query, writeConcern);
         }
         public Task<WriteConcernResult> RemoveAsync<T>(string collectionName, IMongoQuery query, RemoveFlags removeFlags, WriteConcern writeConcern)
         {
-            return _updaterTask.RemoveAsync<T>(collectionName, query, removeFlags, writeConcern);
+            return _asyncUpdater.RemoveAsync<T>(collectionName, query, removeFlags, writeConcern);
         }
 
         public FindAndModifyResult FindAndModify<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)
@@ -66,11 +66,11 @@ namespace EasyMongo.Database
 
         public Task<FindAndModifyResult> FindAndModifyAsync<T>(string collectionName, FindAndModifyArgs findAndModifyArgs)
         {
-            return _updaterTask.FindAndModifyAsync<T>(collectionName, findAndModifyArgs);
+            return _asyncUpdater.FindAndModifyAsync<T>(collectionName, findAndModifyArgs);
         }
         public Task<FindAndModifyResult> FindAndRemoveAsync<T>(string collectionName, FindAndRemoveArgs findAndRemoveArgs)
         {
-            return _updaterTask.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs);
+            return _asyncUpdater.FindAndRemoveAsync<T>(collectionName, findAndRemoveArgs);
         }
     }
 

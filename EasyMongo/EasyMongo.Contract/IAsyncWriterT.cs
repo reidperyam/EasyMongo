@@ -8,8 +8,8 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IWriterTask
+    public interface IAsyncWriter<T>
     {
-        Task WriteAsync<T>(string collectionName, T entry);
+        Task WriteAsync(string collectionName, T entry);
     }
 }

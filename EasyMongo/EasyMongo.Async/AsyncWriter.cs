@@ -8,11 +8,11 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Async
 {
-    public class WriterTask : IWriterTask
+    public class AsyncWriter : IAsyncWriter
     {
         IWriter _writer;
 
-        public WriterTask(IWriter writer)
+        public AsyncWriter(IWriter writer)
         {
             _writer = writer;
         }
@@ -23,11 +23,11 @@ namespace EasyMongo.Async
         }
     }
 
-    public class WriterTask<T> : IWriterTask<T>
+    public class WriterTask<T> : IAsyncWriter<T>
     {
-        IWriterTask _writerTask;
+        IAsyncWriter _writerTask;
 
-        public WriterTask(IWriterTask writerTask)
+        public WriterTask(IAsyncWriter writerTask)
         {
             _writerTask = writerTask;
         }

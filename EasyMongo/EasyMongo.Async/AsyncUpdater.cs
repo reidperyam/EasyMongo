@@ -10,11 +10,11 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace EasyMongo.Async
 {
-    public class UpdaterTask : IUpdaterTask
+    public class AsyncUpdater : IAsyncUpdater
     {
         IUpdater _updater;
 
-        public UpdaterTask(IUpdater updater)
+        public AsyncUpdater(IUpdater updater)
         {
             _updater = updater;
         }
@@ -50,11 +50,11 @@ namespace EasyMongo.Async
         }
     }
 
-    public class UpdaterTask<T> : IUpdaterTask<T>
+    public class UpdaterTask<T> : IAsyncUpdater<T>
     {
-        IUpdaterTask _updater;
+        IAsyncUpdater _updater;
 
-        public UpdaterTask(IUpdaterTask updater)
+        public UpdaterTask(IAsyncUpdater updater)
         {
             _updater = updater;
         }

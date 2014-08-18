@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IDatabaseReader<T> : IReader<T>, IReaderTask<T> where T : class
+    public interface IDatabaseReader<T> : IReader<T>, IAsyncReader<T>
     {
     }
 }

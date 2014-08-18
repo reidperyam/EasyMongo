@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IDatabaseWriter: IWriter, IWriterTask
+    public interface IDatabaseWriter: IWriter, IAsyncWriter
     {
     }
 }

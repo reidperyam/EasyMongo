@@ -63,12 +63,12 @@ namespace EasyMongo.Readme.Example.Test
             /////////////////////////////
 
             // read, write and update asynchronously using System.Threading.Task
-            IReaderTask readerTask = new ReaderTask(reader);
+            IAsyncReader readerTask = new AsyncReader(reader);
             readEntrys = await readerTask.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
             Assert.AreEqual(1, readEntrys.Count());
 
-            IWriterTask writerTask = new WriterTask(writer);
-            IUpdaterTask updaterTask = new UpdaterTask(updater);
+            IAsyncWriter writerTask = new AsyncWriter(writer);
+            IAsyncUpdater updaterTask = new AsyncUpdater(updater);
 
             // or delegate call backs
             IAsyncDelegateReader readerAsync = new AsyncDelegateReader(reader);

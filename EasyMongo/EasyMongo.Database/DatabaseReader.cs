@@ -13,15 +13,15 @@ namespace EasyMongo.Database
     {
         protected IReader _reader;
 
-        protected IReaderTask _readerTask;
+        protected IAsyncReader _asyncReader;
 
         protected MongoCollection _mongoCollection;
 
-        public DatabaseReader(IReader     reader, 
-                              IReaderTask readerTask)
+        public DatabaseReader(IReader      reader, 
+                              IAsyncReader asyncReader)
         {
             _reader = reader;
-            _readerTask = readerTask;
+            _asyncReader = asyncReader;
         }
 
         #region    Synchronous
@@ -80,56 +80,56 @@ namespace EasyMongo.Database
         #region Read
         public Task<IEnumerable<T>> ReadAsync<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            return _readerTask.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _asyncReader.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
         public Task<IEnumerable<T>> ReadAsync<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            return _readerTask.ReadAsync<T>(collectionName, dateTimeFieldName, start, end);
+            return _asyncReader.ReadAsync<T>(collectionName, dateTimeFieldName, start, end);
         }
 
         public Task<IEnumerable<T>> ReadAsync<T>(string collectionName, string fieldName, string regexPattern)
         {
-            return _readerTask.ReadAsync<T>(collectionName, fieldName, regexPattern);
+            return _asyncReader.ReadAsync<T>(collectionName, fieldName, regexPattern);
         }
 
         public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            return _readerTask.ReadAsync<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
+            return _asyncReader.ReadAsync<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
         public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
-            return _readerTask.ReadAsync<T>(collectionNames, fieldName, regexPattern);
+            return _asyncReader.ReadAsync<T>(collectionNames, fieldName, regexPattern);
         }
 
         public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
         {
-            return _readerTask.ReadAsync<T>(collectionNames, dateTimeFieldName, start, end);
+            return _asyncReader.ReadAsync<T>(collectionNames, dateTimeFieldName, start, end);
         }
         #endregion Read
         #region Distinct T
         public Task<IEnumerable<T>> DistinctAsync<T>(string collectionName, string fieldName)
         {
-            return _readerTask.DistinctAsync<T>(collectionName, fieldName);
+            return _asyncReader.DistinctAsync<T>(collectionName, fieldName);
         }
         public Task<IEnumerable<T>> DistinctAsync<T>(string collectionName, string fieldName, IMongoQuery query)
         {
-            return _readerTask.DistinctAsync<T>(collectionName, fieldName, query);
+            return _asyncReader.DistinctAsync<T>(collectionName, fieldName, query);
         }
         public Task<IEnumerable<T>> DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName)
         {
-            return _readerTask.DistinctAsync<T>(collectionNames, fieldName);
+            return _asyncReader.DistinctAsync<T>(collectionNames, fieldName);
         }
         public Task<IEnumerable<T>> DistinctAsync<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
-            return _readerTask.DistinctAsync<T>(collectionNames, fieldName, query);
+            return _asyncReader.DistinctAsync<T>(collectionNames, fieldName, query);
         }
         #endregion Distinct T
         #endregion Asynchronous
     }
 
-    public class DatabaseReader<T> : IDatabaseReader<T> where T : class
+    public class DatabaseReader<T> : IDatabaseReader<T>
     {
         IDatabaseReader _databaseReader;
 

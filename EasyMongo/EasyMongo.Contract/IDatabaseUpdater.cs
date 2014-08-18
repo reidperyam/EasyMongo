@@ -3,7 +3,7 @@ using MongoDB.Driver;
 
 namespace EasyMongo.Contract
 {
-    public interface IDatabaseUpdater : IUpdater, IUpdaterTask
+    public interface IDatabaseUpdater : IUpdater, IAsyncUpdater
     {
     }
 }

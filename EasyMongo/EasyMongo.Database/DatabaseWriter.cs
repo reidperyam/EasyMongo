@@ -13,13 +13,13 @@ namespace EasyMongo.Database
     {
         protected IWriter _mongoWriter;
 
-        protected IWriterTask _mongoWriterTask;
+        protected IAsyncWriter _asyncWriter;
 
         public DatabaseWriter(IWriter      writer,
-                              IWriterTask writerTask)
+                              IAsyncWriter asyncWriter)
         {
             _mongoWriter = writer;
-            _mongoWriterTask = writerTask;
+            _asyncWriter = asyncWriter;
         }
 
         public void Write<T>(string collectionName, T entry)
@@ -29,7 +29,7 @@ namespace EasyMongo.Database
 
         public Task WriteAsync<T>(string collectionName, T entry)
         {
-            return _mongoWriterTask.WriteAsync<T>(collectionName, entry);
+            return _asyncWriter.WriteAsync<T>(collectionName, entry);
         }
     }
 
