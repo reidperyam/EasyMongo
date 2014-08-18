@@ -33,7 +33,12 @@ QuickStart
   Install the latest nuget package via Visual Studio's Package Manager Console:
  - Install-Package EasyMongo -Pre
 
-
+Examples
+==============
+   1. Startup a localhost MongoDB server.
+   2. Step through the following [TestFixture] located at EasyMongo.Test.ReadmeExampleTestFixture.cs to see execution paths.
+	  The free MongoDB visualization tool, MongoVue may be useful for following CRUD operations against the MongoDB.
+     
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,13 +53,14 @@ using EasyMongo.Database;
 using EasyMongo.Collection;
 using Ninject;
 
-namespace JunkyProject
+namespace EasyMongo.Readme.Example.Test
 {
     /// <summary>
-    /// A flexible TestFixture useful for verifying user functionality of the EasyMongo nuget package
+    /// A cute overview of how EasyMongo functions
     /// </summary>
+    /// <remarks>Requires localhost MongoDB server running at execution time!</remarks>
     [TestFixture]
-    public class TestFixture
+    public class ReadmeExampleTestFixture
     {
         readonly string LOCAL_MONGO_SERVER_CONNECTION_STRING = "mongodb://localhost";
         AutoResetEvent _readerAutoResetEvent = new AutoResetEvent(false);

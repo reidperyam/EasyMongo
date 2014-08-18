@@ -15,8 +15,9 @@ using Ninject;
 namespace EasyMongo.Readme.Example.Test
 {
     /// <summary>
-    /// A flexible TestFixture useful for verifying user functionality of the EasyMongo nuget package
+    /// A cute overview of how EasyMongo functions
     /// </summary>
+    /// <remarks>Requires localhost MongoDB server running at execution time!</remarks>
     [TestFixture]
     public class ReadmeExampleTestFixture
     {
