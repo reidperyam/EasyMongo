@@ -25,7 +25,8 @@ Implementation
 
 Tests
 =====
-- 350+ end-to-end NUnit integration tests written to execute against a locally-deployed mongoDB server translating to 93.2% code coverage)
+- 350+ end-to-end NUnit integration tests written to execute against a localhost mongoDB server 
+- 93.2% code coverage)
 
 QuickStart
 ==============
