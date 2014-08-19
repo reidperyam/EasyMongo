@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using NUnit.Framework;
-using EasyMongo;
-using EasyMongo.Contract;
-using EasyMongo.Async;
-using EasyMongo.Async.Delegates;
-using EasyMongo.Database;
-using EasyMongo.Collection;
-using Ninject;
-
-namespace EasyMongo.Readme.Example.Test
+﻿namespace EasyMongo.Readme.Example.Test
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using EasyMongo.Async;
+    using EasyMongo.Async.Delegates;
+    using EasyMongo.Collection;
+    using EasyMongo.Contract;
+    using EasyMongo.Database;
+    using Ninject;
+    using NUnit.Framework;
+
     /// <summary>
     /// A cute overview of how EasyMongo functions
     /// </summary>
@@ -101,7 +100,7 @@ namespace EasyMongo.Readme.Example.Test
             // Instead of defining generic type arguments at the method level,
             // you can do it once at the class declaration
             IWriter<Entry> writerT = new Writer<Entry>(writer);
-            writerT.Write("MySecondCollection", new Entry() { Message = "Goodbye World (Generically)" });// cp writerT.Write<Entry>(...)
+            writerT.Write("MySecondCollection", new Entry() { Message = "Goodbye World (Generically)" });
 
             //////////////////////////////////
             // REDUCE CLIENT RESPONSIBILITY //
@@ -116,20 +115,20 @@ namespace EasyMongo.Readme.Example.Test
             // SIMPLIFY CREATION VIA NINJECT IoC //
             ///////////////////////////////////////
 
-            // because EasyMongo is a componentized framework built with blocks of functionality, creating an
-            // object build from many others isn't so easy... That's why EasyMongo provides the Ninject.Extensions.EasyMongo
-            // nuget package to automatically provide dependency injection/IoC type bindings so that creating instances of
-            // otherwise onerous compositions is as easy as the following:
+            // because EasyMongo is a componentized framework built with blocks of functionality, EasyMongo
+            // works great with DI containers and Inversion of Control. 
+            // here's an example of using the nuget Ninject extension to load EasyMongo mappings and a conn 
+            // string from configuration
             Ninject.IKernel kernel = new Ninject.StandardKernel();
             ICollectionUpdater collectionUpdater = kernel.TryGet<ICollectionUpdater>();
 
-            // the alternative to this:
+            // the alternative to this would be:
             IServerConnection serverConn = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
             IDatabaseConnection databaseConnn = new DatabaseConnection(serverConn, "MyFirstDatabase");
             IDatabaseUpdater databaseUpdatr = new DatabaseUpdater(updater, asyncUpdater);
             ICollectionUpdater collectionUpdaterTheHardWay = new CollectionUpdater(databaseUpdater, "MySecondCollection");
 
-            serverConnection.DropAllDatabases();
+            serverConnection.DropAllDatabases();// remove test entrys
         }
 
         void readerCallBack(object e, Exception ex)

@@ -126,148 +126,147 @@ Examples
    2. Step through the following [TestFixture] located at EasyMongo.Test.ReadmeExampleTestFixture.cs to see execution paths.
 	  The free MongoDB visualization tool, MongoVue may be useful for following CRUD operations against the MongoDB.
      
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Threading;
-	using NUnit.Framework;
-	using EasyMongo;
-	using EasyMongo.Contract;
-	using EasyMongo.Async;
-	using EasyMongo.Async.Delegates;
-	using EasyMongo.Database;
-	using EasyMongo.Collection;
-	using Ninject;
-
-	namespace EasyMongo.Readme.Example.Test
-	{
-		/// <summary>
-		/// A cute overview of how EasyMongo functions
-		/// </summary>
-		/// <remarks>Requires localhost MongoDB server running at execution time!</remarks>
-		[TestFixture]
-		public class ReadmeExampleTestFixture
+		namespace EasyMongo.Readme.Example.Test
 		{
-			readonly string LOCAL_MONGO_SERVER_CONNECTION_STRING = "mongodb://localhost";
-			AutoResetEvent _readerAutoResetEvent = new AutoResetEvent(false);
-			protected Exception _asyncException = null;
-			protected List<Entry> _asyncReadResults = new List<Entry>();
+			using System;
+			using System.Collections.Generic;
+			using System.Linq;
+			using System.Threading;
+			using EasyMongo.Async;
+			using EasyMongo.Async.Delegates;
+			using EasyMongo.Collection;
+			using EasyMongo.Contract;
+			using EasyMongo.Database;
+			using Ninject;
+			using NUnit.Framework;
 
-			[Test]
-			public async void Test()
+			/// <summary>
+			/// A cute overview of how EasyMongo functions
+			/// </summary>
+			/// <remarks>Requires localhost MongoDB server running at execution time!</remarks>
+			[TestFixture]
+			public class ReadmeExampleTestFixture
 			{
-				// initialize a server connection to a locally-running MongoDB server
-				IServerConnection serverConnection = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
-				// connect to the existing db on the server (or create it if it does not already exist)
-				IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection, "MyFirstDatabase");
+				readonly string LOCAL_MONGO_SERVER_CONNECTION_STRING = "mongodb://localhost";
+				AutoResetEvent _readerAutoResetEvent = new AutoResetEvent(false);
+				protected Exception _asyncException = null;
+				protected List<Entry> _asyncReadResults = new List<Entry>();
 
-				databaseConnection.Connect();
+				[Test]
+				public async void Test()
+				{
+					// initialize a server connection to a locally-running MongoDB server
+					IServerConnection serverConnection = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
+					// connect to the existing db on the server (or create it if it does not already exist)
+					IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection, "MyFirstDatabase");
 
-				//////////////////////
-				// CONTEXTUAL SCOPE //
-				//////////////////////
+					databaseConnection.Connect();
 
-				// create a Writer to write to the database
-				IWriter writer = new Writer(databaseConnection);
-				// create a Reader to read from the database
-				IReader reader = new Reader(databaseConnection);
-				// create an Updater to update the database
-				IUpdater updater = new Updater(databaseConnection);
+					//////////////////////
+					// CONTEXTUAL SCOPE //
+					//////////////////////
 
-				Entry exampleMongoDBEntry = new Entry();
-				exampleMongoDBEntry.Message = "Hello";
+					// create a Writer to write to the database
+					IWriter writer = new Writer(databaseConnection);
+					// create a Reader to read from the database
+					IReader reader = new Reader(databaseConnection);
+					// create an Updater to update the database
+					IUpdater updater = new Updater(databaseConnection);
 
-				// write the object to the "MyFirstCollection" Collection that exists within the 
-				// previously referenced "MyFirstDatabase" that was used to create the "writer" object
-				writer.Write<Entry>("MyFirstCollection", exampleMongoDBEntry);
+					Entry exampleMongoDBEntry = new Entry();
+					exampleMongoDBEntry.Message = "Hello";
 
-				IEnumerable<Entry> readEntrys = reader.Read<Entry>("MyFirstCollection", // within this collection...
-																   "Message",// for the object field "Description"
-																   "Hello");// return matches for 'Hello'
-				Assert.AreEqual(1, readEntrys.Count());
+					// write the object to the "MyFirstCollection" Collection that exists within the 
+					// previously referenced "MyFirstDatabase" that was used to create the "writer" object
+					writer.Write<Entry>("MyFirstCollection", exampleMongoDBEntry);
 
-				/////////////////////////////
-				// ASYNCHRONOUS OPERATIONS //
-				/////////////////////////////
+					IEnumerable<Entry> readEntrys = reader.Read<Entry>("MyFirstCollection", // within this collection...
+																	   "Message",// for the object field "Description"
+																	   "Hello");// return matches for 'Hello'
+					Assert.AreEqual(1, readEntrys.Count());
 
-				// read, write and update asynchronously using System.Threading.Task
-				IAsyncReader asyncReader = new AsyncReader(reader);
-				readEntrys = await asyncReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
-				Assert.AreEqual(1, readEntrys.Count());
+					/////////////////////////////
+					// ASYNCHRONOUS OPERATIONS //
+					/////////////////////////////
 
-				IAsyncWriter asyncWriter = new AsyncWriter(writer);
-				IAsyncUpdater asyncUpdater = new AsyncUpdater(updater);
+					// read, write and update asynchronously using System.Threading.Task
+					IAsyncReader asyncReader = new AsyncReader(reader);
+					readEntrys = await asyncReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
+					Assert.AreEqual(1, readEntrys.Count());
 
-				// or delegate call backs
-				IAsyncDelegateReader asyncDelegateReader = new AsyncDelegateReader(reader);
-				asyncDelegateReader.AsyncReadCompleted += new ReadCompletedEvent(readerCallBack);
-				asyncDelegateReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
-				_readerAutoResetEvent.WaitOne();
+					IAsyncWriter asyncWriter = new AsyncWriter(writer);
+					IAsyncUpdater asyncUpdater = new AsyncUpdater(updater);
 
-				Assert.AreEqual(1, _asyncReadResults.Count());
+					// or delegate call backs
+					IAsyncDelegateReader asyncDelegateReader = new AsyncDelegateReader(reader);
+					asyncDelegateReader.AsyncReadCompleted += new ReadCompletedEvent(readerCallBack);
+					asyncDelegateReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
+					_readerAutoResetEvent.WaitOne();
 
-				IAsyncDelegateWriter asyncDelegateWriter = new AsyncDelegateWriter(writer);
-				IAsyncDelegateUpdater asyncDelegateUpdater = new AsyncDelegateUpdater(updater);
+					Assert.AreEqual(1, _asyncReadResults.Count());
 
-				/////////////////////////////
-				// OPERATIONAL GRANULARITY //
-				/////////////////////////////
+					IAsyncDelegateWriter asyncDelegateWriter = new AsyncDelegateWriter(writer);
+					IAsyncDelegateUpdater asyncDelegateUpdater = new AsyncDelegateUpdater(updater);
 
-				// get a little higher level with the EasyMongo.Database namespace to reference a database
-				IDatabaseReader databaseReader = new DatabaseReader(reader, asyncReader);
-				databaseReader.Read<Entry>("MyFirstCollection", "Message", "Hello");
-				readEntrys = await databaseReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
-				Assert.AreEqual(1, readEntrys.Count());
+					/////////////////////////////
+					// OPERATIONAL GRANULARITY //
+					/////////////////////////////
 
-				IDatabaseWriter databaseWriter = new DatabaseWriter(writer, asyncWriter);
-				IDatabaseUpdater databaseUpdater = new DatabaseUpdater(updater, asyncUpdater);
+					// get a little higher level with the EasyMongo.Database namespace to reference a database
+					IDatabaseReader databaseReader = new DatabaseReader(reader, asyncReader);
+					databaseReader.Read<Entry>("MyFirstCollection", "Message", "Hello");
+					readEntrys = await databaseReader.ReadAsync<Entry>("MyFirstCollection", "Message", "Hello");
+					Assert.AreEqual(1, readEntrys.Count());
 
-				/////////////////////
-				// GENERIC CLASSES //
-				/////////////////////
+					IDatabaseWriter databaseWriter = new DatabaseWriter(writer, asyncWriter);
+					IDatabaseUpdater databaseUpdater = new DatabaseUpdater(updater, asyncUpdater);
 
-				// Instead of defining generic type arguments at the method level,
-				// you can do it once at the class declaration
-				IWriter<Entry> writerT = new Writer<Entry>(writer);
-				writerT.Write("MySecondCollection", new Entry() { Message = "Goodbye World (Generically)" });// cp writerT.Write<Entry>(...)
+					/////////////////////
+					// GENERIC CLASSES //
+					/////////////////////
 
-				//////////////////////////////////
-				// REDUCE CLIENT RESPONSIBILITY //
-				//////////////////////////////////
+					// Instead of defining generic type arguments at the method level,
+					// you can do it once at the class declaration
+					IWriter<Entry> writerT = new Writer<Entry>(writer);
+					writerT.Write("MySecondCollection", new Entry() { Message = "Goodbye World (Generically)" });
 
-				// operate only against "MyFirstDatabase"'s "MySecondCollection"
-				ICollectionReader collectionReader = new CollectionReader(databaseReader, "MySecondCollection");
-				readEntrys = collectionReader.Read<Entry>("Message", "Goodbye");
-				Assert.AreEqual(1, readEntrys.Count());
+					//////////////////////////////////
+					// REDUCE CLIENT RESPONSIBILITY //
+					//////////////////////////////////
 
-				///////////////////////////////////////
-				// SIMPLIFY CREATION VIA NINJECT IoC //
-				///////////////////////////////////////
+					// operate only against "MyFirstDatabase"'s "MySecondCollection"
+					ICollectionReader collectionReader = new CollectionReader(databaseReader, "MySecondCollection");
+					readEntrys = collectionReader.Read<Entry>("Message", "Goodbye");
+					Assert.AreEqual(1, readEntrys.Count());
 
-				// because EasyMongo is a componentized framework built with blocks of functionality, creating an
-				// object build from many others isn't so easy... That's why EasyMongo provides the Ninject.Extensions.EasyMongo
-				// nuget package to automatically provide dependency injection/IoC type bindings so that creating instances of
-				// otherwise onerous compositions is as easy as the following:
-				Ninject.IKernel kernel = new Ninject.StandardKernel();
-				ICollectionUpdater collectionUpdater = kernel.TryGet<ICollectionUpdater>();
+					///////////////////////////////////////
+					// SIMPLIFY CREATION VIA NINJECT IoC //
+					///////////////////////////////////////
 
-				// the alternative to this:
-				IServerConnection serverConn = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
-				IDatabaseConnection databaseConnn = new DatabaseConnection(serverConn, "MyFirstDatabase");
-				IDatabaseUpdater databaseUpdatr = new DatabaseUpdater(updater, asyncUpdater);
-				ICollectionUpdater collectionUpdaterTheHardWay = new CollectionUpdater(databaseUpdater, "MySecondCollection");
+					// because EasyMongo is a componentized framework built with blocks of functionality, EasyMongo
+					// works great with DI containers and Inversion of Control. 
+					// here's an example of using the nuget Ninject extension to load EasyMongo mappings and a conn 
+					// string from configuration
+					Ninject.IKernel kernel = new Ninject.StandardKernel();
+					ICollectionUpdater collectionUpdater = kernel.TryGet<ICollectionUpdater>();
 
-				serverConnection.DropAllDatabases();
-			}
+					// the alternative to this would be:
+					IServerConnection serverConn = new ServerConnection(LOCAL_MONGO_SERVER_CONNECTION_STRING);
+					IDatabaseConnection databaseConnn = new DatabaseConnection(serverConn, "MyFirstDatabase");
+					IDatabaseUpdater databaseUpdatr = new DatabaseUpdater(updater, asyncUpdater);
+					ICollectionUpdater collectionUpdaterTheHardWay = new CollectionUpdater(databaseUpdater, "MySecondCollection");
 
-			void readerCallBack(object e, Exception ex)
-			{
-				_asyncException = ex;
-				IEnumerable<Entry> results = (IEnumerable<Entry>)e;
-				_asyncReadResults.AddRange(results);
-				_readerAutoResetEvent.Set();
+					serverConnection.DropAllDatabases();// remove test entrys
+				}
+
+				void readerCallBack(object e, Exception ex)
+				{
+					_asyncException = ex;
+					IEnumerable<Entry> results = (IEnumerable<Entry>)e;
+					_asyncReadResults.AddRange(results);
+					_readerAutoResetEvent.Set();
+				}
 			}
 		}
-	}
 
 
