@@ -39,85 +39,85 @@ QuickStart
 Introduction
 ==============
 
-	When using EasyMongo you will be referencing components using the interfaces within the EasyMongo.Contract namespace:
+When using EasyMongo you will be referencing components using the interfaces within the EasyMongo.Contract namespace:
+
+	IAsyncDelegateReader   - granual asynch CRUD operations with delegate callback
+	IAsyncDelegateReaderT (generic impl)
+	IAsyncDelegateUpdater
+	IAsyncDelegateUpdaterT
+	IAsyncDelegateWriter
+	IAsyncDelegateWriterT
+	IAsyncReader           - granular asynch CRUD operations with System.Threading.Tasks
+	IAsyncReaderT
+	IAsyncUpdater
+	IAsyncUpdaterT
+	IAsyncWriter
+	IAsyncWriterT
+	ICollectionReader      - synchronous and asynchronous operations for a single collection
+	ICollectionReaderT
+	ICollectionUpdater
+	ICollectionUpdaterT
+	ICollectionWriter
+	ICollectionWriterT
+	IDatabaseConnection   - connection operations for a database
+	IDatabaseReader       - synchronous and asynchronous operations for a single database
+	IDatabaseReaderT
+	IDatabaseUpdater
+	IDatabaseUpdaterT
+	IDatabaseWriter
+	IDatabaseWriterT
+	IReader              - granual CRUD operations
+	IReaderT
+	IServerConnection    - connection operations for a server/
+	IUpdater
+	IUpdaterT
+	IWriter
+	IWriterT	
 	
-		IAsyncDelegateReader   - granual asynch CRUD operations with delegate callback
-		IAsyncDelegateReaderT (generic impl)
-		IAsyncDelegateUpdater
-		IAsyncDelegateUpdaterT
-		IAsyncDelegateWriter
-		IAsyncDelegateWriterT
-		IAsyncReader           - granular asynch CRUD operations with System.Threading.Tasks
-		IAsyncReaderT
-		IAsyncUpdater
-		IAsyncUpdaterT
-		IAsyncWriter
-		IAsyncWriterT
-		ICollectionReader      - synchronous and asynchronous operations for a single collection
-		ICollectionReaderT
-		ICollectionUpdater
-		ICollectionUpdaterT
-		ICollectionWriter
-		ICollectionWriterT
-		IDatabaseConnection   - connection operations for a database
-		IDatabaseReader       - synchronous and asynchronous operations for a single database
-		IDatabaseReaderT
-		IDatabaseUpdater
-		IDatabaseUpdaterT
-		IDatabaseWriter
-		IDatabaseWriterT
-		IReader              - granual CRUD operations
-		IReaderT
-		IServerConnection    - connection operations for a server/
-		IUpdater
-		IUpdaterT
-		IWriter
-		IWriterT	
-		
-	These interfaces are implemented by the following classes:
+These interfaces are implemented by the following classes:
+
+	EasyMongo.Async.Delegates.AsyncDelegateReader   
+	EasyMongo.Async.Delegates.AsyncDelegateReaderT
+	EasyMongo.Async.Delegates.AsyncDelegateUpdater
+	EasyMongo.Async.Delegates.AsyncDelegateUpdaterT
+	EasyMongo.Async.Delegates.AsyncDelegateWriter
+	EasyMongo.Async.Delegates.AsyncDelegateWriterT
+	EasyMongo.Async.AsyncReader           
+	EasyMongo.Async.IAsyncReaderT
+	EasyMongo.Async.AsyncUpdater
+	EasyMongo.Async.AsyncUpdaterT
+	EasyMongo.Async.AsyncWriter
+	EasyMongo.Async.AsyncWriterT
+	EasyMongo.Collection.CollectionReader      
+	EasyMongo.Collection.CollectionReaderT
+	EasyMongo.Collection.CollectionUpdater
+	EasyMongo.Collection.CollectionUpdaterT
+	EasyMongo.Collection.CollectionWriter
+	EasyMongo.Collection.CollectionWriterT
+	EasyMongo.DatabaseConnection   
+	EasyMongo.Database.DatabaseReader       
+	EasyMongo.Database.DatabaseReaderT
+	EasyMongo.Database.DatabaseUpdater
+	EasyMongo.Database.DatabaseUpdaterT
+	EasyMongo.Database.DatabaseWriter
+	EasyMongo.Database.DatabaseWriterT
+	EasyMongo.Reader              
+	EasyMongo.ReaderT
+	EasyMongo.ServerConnection    
+	EasyMongo.Updater
+	EasyMongo.UpdaterT
+	EasyMongo.Writer
+	EasyMongo.WriterT	
 	
-		EasyMongo.Async.Delegates.AsyncDelegateReader   
-		EasyMongo.Async.Delegates.AsyncDelegateReaderT
-		EasyMongo.Async.Delegates.AsyncDelegateUpdater
-		EasyMongo.Async.Delegates.AsyncDelegateUpdaterT
-		EasyMongo.Async.Delegates.AsyncDelegateWriter
-		EasyMongo.Async.Delegates.AsyncDelegateWriterT
-		EasyMongo.Async.AsyncReader           
-		EasyMongo.Async.IAsyncReaderT
-		EasyMongo.Async.AsyncUpdater
-		EasyMongo.Async.AsyncUpdaterT
-		EasyMongo.Async.AsyncWriter
-		EasyMongo.Async.AsyncWriterT
-		EasyMongo.Collection.CollectionReader      
-		EasyMongo.Collection.CollectionReaderT
-		EasyMongo.Collection.CollectionUpdater
-		EasyMongo.Collection.CollectionUpdaterT
-		EasyMongo.Collection.CollectionWriter
-		EasyMongo.Collection.CollectionWriterT
-		EasyMongo.DatabaseConnection   
-		EasyMongo.Database.DatabaseReader       
-		EasyMongo.Database.DatabaseReaderT
-		EasyMongo.Database.DatabaseUpdater
-		EasyMongo.Database.DatabaseUpdaterT
-		EasyMongo.Database.DatabaseWriter
-		EasyMongo.Database.DatabaseWriterT
-		EasyMongo.Reader              
-		EasyMongo.ReaderT
-		EasyMongo.ServerConnection    
-		EasyMongo.Updater
-		EasyMongo.UpdaterT
-		EasyMongo.Writer
-		EasyMongo.WriterT	
-		
-	You can manually wire them up like so:
+You can manually wire them up like so:
+
+	IServerConnection serverConnection = new ServerConnection("mongodb://localhost");
+	IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection);
+	IReader reader = new Reader(databaseConnection);
 	
-		IServerConnection serverConnection = new ServerConnection("mongodb://localhost");
-		IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection);
-		IReader reader = new Reader(databaseConnection);
-		
-	...but it's really designed to integrate into your favorite dependency injection framework. The registrations are simplistic 
-	and intuitive so integrating the parts of EasyMongo you need (and nothing else!) is meant to be easy.
-	If you use Ninject there's a nuget extension package available: Ninject.Extensions.EasyMongo.
+...but it's really designed to integrate into your favorite dependency injection framework. The registrations are simplistic 
+and intuitive so integrating the parts of EasyMongo you need (and nothing else!) is meant to be easy.
+If you use Ninject there's a nuget extension package available: Ninject.Extensions.EasyMongo.
 		
 Examples
 ==============
