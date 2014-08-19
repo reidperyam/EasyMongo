@@ -4,16 +4,15 @@ EasyMongo Overview
   MongoDB is great but its operations aren't driven by interfaces, making dependency injection and Inversion of
   Control for object composition harder than it should be. 
   
-  EasyMongo is just a facade to the official 10gen Mongo DB C# driver that splits the operations into separate, 
-  interface-driven operations. Additionally granular operational scoping allows you use operational contracts 
-  against the Database or Collection level, (instead of globbing everything together) to support the principle of
-  least responsibility/LoD.
+  EasyMongo a facade to the official 10gen Mongo DB C# driver that componentizes database and collection Read, Write Update 
+  and connection operations. Granular operational scoping supports the principle of least responsibility/LoD and is helpful in
+  developing reusable and maintanable software and applications.
 
 Succinctly you might say that EasyMongo:
   - Is a C# facade to the official 10gen MongoDB C# driver providing interface-driven composition and operational granularity.
-  - Supplies asynchronous implementations of CRUD operations in two flavors:
+  - Supplies additional asynchronous functionality in two flavors:
 		- asynchronous delegate callbacks
-		- Tasks
+		- System.Threading.Tasks
   - Interface-driven object model simplifies testing and supports DI/IoC.
   - Available Ninject.Extensions.EasyMongo nuget package supporting DI/IoC with Ninject automagically.
   - Abstracts some operations of the underlying 10gen driver for simplistic consumption. 
@@ -21,19 +20,105 @@ Succinctly you might say that EasyMongo:
 Implementation
 ==============
 - .Net 4.5
-- Built on top of MongoDB C# driver 1.9.2 (current EasyMongo release)
+- Built on top of MongoDB C# driver 1.9.2
 
 Tests
 =====
 - 350+ end-to-end NUnit integration tests written to execute against a localhost mongoDB server 
-- 93.2% code coverage)
+- 93.2% code coverage
+- Execute in 5 minutes
+- Useful as documentation of functionality
 
 QuickStart
 ==============
 
   Install the latest nuget package via Visual Studio's Package Manager Console:
- - Install-Package EasyMongo -Pre
 
+	Install-Package EasyMongo -Pre 
+	
+Introduction
+==============
+
+	When using EasyMongo you will be referencing components using the interfaces within the EasyMongo.Contract namespace:
+	
+		IAsyncDelegateReader   - granual asynch CRUD operations with delegate callback
+		IAsyncDelegateReaderT (generic impl)
+		IAsyncDelegateUpdater
+		IAsyncDelegateUpdaterT
+		IAsyncDelegateWriter
+		IAsyncDelegateWriterT
+		IAsyncReader           - granular asynch CRUD operations with System.Threading.Tasks
+		IAsyncReaderT
+		IAsyncUpdater
+		IAsyncUpdaterT
+		IAsyncWriter
+		IAsyncWriterT
+		ICollectionReader      - synchronous and asynchronous operations for a single collection
+		ICollectionReaderT
+		ICollectionUpdater
+		ICollectionUpdaterT
+		ICollectionWriter
+		ICollectionWriterT
+		IDatabaseConnection   - connection operations for a database
+		IDatabaseReader       - synchronous and asynchronous operations for a single database
+		IDatabaseReaderT
+		IDatabaseUpdater
+		IDatabaseUpdaterT
+		IDatabaseWriter
+		IDatabaseWriterT
+		IReader              - granual CRUD operations
+		IReaderT
+		IServerConnection    - connection operations for a server/
+		IUpdater
+		IUpdaterT
+		IWriter
+		IWriterT	
+		
+	These interfaces are implemented by the following classes:
+	
+		EasyMongo.Async.Delegates.AsyncDelegateReader   
+		EasyMongo.Async.Delegates.AsyncDelegateReaderT
+		EasyMongo.Async.Delegates.AsyncDelegateUpdater
+		EasyMongo.Async.Delegates.AsyncDelegateUpdaterT
+		EasyMongo.Async.Delegates.AsyncDelegateWriter
+		EasyMongo.Async.Delegates.AsyncDelegateWriterT
+		EasyMongo.Async.AsyncReader           
+		EasyMongo.Async.IAsyncReaderT
+		EasyMongo.Async.AsyncUpdater
+		EasyMongo.Async.AsyncUpdaterT
+		EasyMongo.Async.AsyncWriter
+		EasyMongo.Async.AsyncWriterT
+		EasyMongo.Collection.CollectionReader      
+		EasyMongo.Collection.CollectionReaderT
+		EasyMongo.Collection.CollectionUpdater
+		EasyMongo.Collection.CollectionUpdaterT
+		EasyMongo.Collection.CollectionWriter
+		EasyMongo.Collection.CollectionWriterT
+		EasyMongo.DatabaseConnection   
+		EasyMongo.Database.DatabaseReader       
+		EasyMongo.Database.DatabaseReaderT
+		EasyMongo.Database.DatabaseUpdater
+		EasyMongo.Database.DatabaseUpdaterT
+		EasyMongo.Database.DatabaseWriter
+		EasyMongo.Database.DatabaseWriterT
+		EasyMongo.Reader              
+		EasyMongo.ReaderT
+		EasyMongo.ServerConnection    
+		EasyMongo.Updater
+		EasyMongo.UpdaterT
+		EasyMongo.Writer
+		EasyMongo.WriterT	
+		
+	You can manually wire them up like so:
+	
+		IServerConnection serverConnection = new ServerConnection("mongodb://localhost");
+		IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection);
+		IReader reader = new Reader(databaseConnection);
+		
+	...but it's really designed to integrate into your favorite dependency injection framework. The registrations are simplistic 
+	and intuitive so integrating the parts of EasyMongo you need (and nothing else!) is meant to be easy.
+	If you use Ninject there's a nuget extension package available: Ninject.Extensions.EasyMongo.
+		
 Examples
 ==============
    1. Startup a localhost MongoDB server.
