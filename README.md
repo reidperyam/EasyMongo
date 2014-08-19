@@ -35,7 +35,7 @@ QuickStart
 
 Install the latest nuget package via Visual Studio's Package Manager Console:
 
-	Install-Package EasyMongo -Pre 
+	Install-Package EasyMongo -Version 0.0.1-alpha -Pre
 	
 Introduction
 ==============
@@ -113,7 +113,7 @@ These interfaces are implemented by the following classes:
 You can manually wire them up like so:
 
 	IServerConnection serverConnection = new ServerConnection("mongodb://localhost");
-	IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection);
+	IDatabaseConnection databaseConnection = new DatabaseConnection(serverConnection, "MyMongoDatabase");
 	IReader reader = new Reader(databaseConnection);
 	
 ...but it's really designed to integrate into your favorite dependency injection framework. The registrations are simplistic 

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
+    using EasyMongo;
     using EasyMongo.Async;
     using EasyMongo.Async.Delegates;
     using EasyMongo.Collection;
