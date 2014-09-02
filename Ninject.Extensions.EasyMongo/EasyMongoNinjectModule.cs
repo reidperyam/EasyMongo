@@ -117,9 +117,9 @@ namespace Ninject.Extensions.EasyMongo
             Bind(typeof(IAsyncDelegateWriter<>)).To(typeof(AsyncDelegateWriter<>));
             Bind(typeof(IAsyncDelegateUpdater<>)).To(typeof(AsyncDelegateUpdater<>));
 
-            Bind(typeof(IAsyncReader<>)).To(typeof(ReaderTask<>));
-            Bind(typeof(IAsyncWriter<>)).To(typeof(WriterTask<>));
-            Bind(typeof(IAsyncUpdater<>)).To(typeof(UpdaterTask<>));
+            Bind(typeof(IAsyncReader<>)).To(typeof(AsyncReader<>));
+            Bind(typeof(IAsyncWriter<>)).To(typeof(AsyncWriter<>));
+            Bind(typeof(IAsyncUpdater<>)).To(typeof(AsyncUpdater<>));
 
             // bind our database r/w/u to an implementation pointing to our test server and database
             Bind(typeof(IDatabaseReader)).To(typeof(DatabaseReader));

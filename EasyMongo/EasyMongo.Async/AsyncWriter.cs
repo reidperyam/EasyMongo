@@ -23,11 +23,11 @@ namespace EasyMongo.Async
         }
     }
 
-    public class WriterTask<T> : IAsyncWriter<T>
+    public class AsyncWriter<T> : IAsyncWriter<T>
     {
         IAsyncWriter _writerTask;
 
-        public WriterTask(IAsyncWriter writerTask)
+        public AsyncWriter(IAsyncWriter writerTask)
         {
             _writerTask = writerTask;
         }

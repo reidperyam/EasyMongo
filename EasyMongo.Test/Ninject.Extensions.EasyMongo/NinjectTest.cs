@@ -80,13 +80,13 @@ namespace EasyMongo.Test.Base.Ninject
 
 
             Assert.IsNotNull(_asyncReaderT, string.Format(nullErrorFormatString, "IReaderTask<T>"));
-            Assert.IsInstanceOf<ReaderTask<Entry>>(_asyncReaderT);
+            Assert.IsInstanceOf<AsyncReader<Entry>>(_asyncReaderT);
 
             Assert.IsNotNull(_asyncWriterT, string.Format(nullErrorFormatString, "IWriterTask<T>"));
-            Assert.IsInstanceOf<WriterTask<Entry>>(_asyncWriterT);
+            Assert.IsInstanceOf<AsyncWriter<Entry>>(_asyncWriterT);
 
             Assert.IsNotNull(_asyncUpdaterT, string.Format(nullErrorFormatString, "IUpdaterTask<T>"));
-            Assert.IsInstanceOf<UpdaterTask<Entry>>(_asyncUpdaterT);
+            Assert.IsInstanceOf<AsyncUpdater<Entry>>(_asyncUpdaterT);
             #endregion Generics
             #endregion EasyMongo.Async
 

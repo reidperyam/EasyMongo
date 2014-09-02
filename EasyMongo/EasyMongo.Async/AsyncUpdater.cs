@@ -50,11 +50,11 @@ namespace EasyMongo.Async
         }
     }
 
-    public class UpdaterTask<T> : IAsyncUpdater<T>
+    public class AsyncUpdater<T> : IAsyncUpdater<T>
     {
         IAsyncUpdater _updater;
 
-        public UpdaterTask(IAsyncUpdater updater)
+        public AsyncUpdater(IAsyncUpdater updater)
         {
             _updater = updater;
         }

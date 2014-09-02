@@ -74,11 +74,11 @@ namespace EasyMongo.Async
         }
     }
 
-    public class ReaderTask<T> : IAsyncReader<T>
+    public class AsyncReader<T> : IAsyncReader<T>
     {
         private IAsyncReader _reader;
 
-        public ReaderTask(IAsyncReader reader)
+        public AsyncReader(IAsyncReader reader)
         {
             _reader = reader;
         }
