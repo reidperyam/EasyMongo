@@ -10,7 +10,6 @@ namespace EasyMongo.Contract
 
     public interface IServerConnection
     {
-        //bool CanConnect();
         List<string> GetDbNamesForConnection();
 
         string ConnectionString

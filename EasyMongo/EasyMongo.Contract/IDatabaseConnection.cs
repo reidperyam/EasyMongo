@@ -45,8 +45,6 @@ namespace  EasyMongo.Contract
 
         void DropAllCollections<T>();
 
-       // bool CanConnect();
-
         IDisposable RequestStart(MongoServerInstance mongoServerInstance);
 
         IDisposable RequestStart(ReadPreference readPreference);
