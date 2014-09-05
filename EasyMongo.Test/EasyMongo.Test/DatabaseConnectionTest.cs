@@ -22,15 +22,11 @@ namespace EasyMongo.Test
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
             Assert.IsNull(_mongoDatabaseConnection.Db);
 
-            Assert.IsTrue(_mongoDatabaseConnection.CanConnect());
-
             _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
             _mongoDatabaseConnection.Connect();
 
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
             Assert.IsNotNull(_mongoDatabaseConnection.Db);
-
-            Assert.IsTrue(_mongoDatabaseConnection.CanConnect());
         }
 
         [Test]
@@ -199,16 +195,6 @@ namespace EasyMongo.Test
 
             Assert.AreEqual(0, collection1.Count());
             Assert.AreEqual(0, collection2.Count());
-        }
-
-        [Test]
-        public void CanConnectTest()
-        {
-            _mongoDatabaseConnection = new DatabaseConnection(_mongoServerConnection, MONGO_DATABASE_1_NAME);
-            Assert.IsTrue(_mongoDatabaseConnection.CanConnect(), "Cannot connect to " + MONGO_CONNECTION_STRING);
-
-            _mongoDatabaseConnection.Connect();
-            Assert.IsTrue(_mongoDatabaseConnection.CanConnect(), "Cannot connect to " + MONGO_CONNECTION_STRING);
         }
 
         [Test]

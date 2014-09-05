@@ -28,18 +28,6 @@ namespace EasyMongo.Test.Base
             Assert.IsNotNull(date);
         }
 
-        [Test, Ignore]
-        public void ServerConnectionAsyncCtorTest()
-        {
-            Debugger.Launch();
-
-            ServerConnection serverConnection = new ServerConnection("mongodb://localhost");
-
-            int i;
-            for ( i = 0; !serverConnection.CanConnect(); ++i)
-            ;
-        }
-
         // this test was used to demonstrate generic type inferrence on classes with arguments
         // showing how it isn't required to specify the templated, generic class argument with
         // some method calls

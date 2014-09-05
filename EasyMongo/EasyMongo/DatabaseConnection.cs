@@ -55,6 +55,7 @@ namespace EasyMongo
             catch (Exception ex)
             {
                 // TODO: add ex handling!
+                throw ex;
             }
         }
 
@@ -197,70 +198,107 @@ namespace EasyMongo
 
         public MongoCollection<T> GetCollection<T>(string collectionName)
         {
-            VerifyConnected();
-            return Db.GetCollection<T>(collectionName);
+            try
+            {
+                return Db.GetCollection<T>(collectionName);
+            }
+            catch(NullReferenceException ex)
+            {
+                throw new MongoConnectionException("DatabaseConnection not connected",ex);
+            }
         }
 
         public List<MongoCollection<T>> GetCollections<T>()
         {
-            VerifyConnected();
-            List<MongoCollection<T>> toReturn = new List<MongoCollection<T>>();
-
-            foreach (string collectionName in GetCollectionNames())
+            try
             {
-                toReturn.Add(GetCollection<T>(collectionName));
-            }
+                List<MongoCollection<T>> toReturn = new List<MongoCollection<T>>();
 
-            return toReturn;
+                foreach (string collectionName in GetCollectionNames())
+                {
+                    toReturn.Add(GetCollection<T>(collectionName));
+                }
+
+                return toReturn;
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+            }
         }
 
         public List<string> GetCollectionNames()
         {
-            VerifyConnected();
-            List<string> toReturn;
-            toReturn = new List<string>( Db.GetCollectionNames());
-            return toReturn;
+            try
+            {
+                List<string> toReturn;
+                toReturn = new List<string>( Db.GetCollectionNames());
+                return toReturn;
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+            }
         }
 
         public void ClearCollection<T>(string collectionName)
         {
-            VerifyConnected();
-            var collection = GetCollection<T>(collectionName);
-            WriteConcernResult result = collection.RemoveAll(WriteConcern.Acknowledged);
+            try
+            {
+                var collection = GetCollection<T>(collectionName);
+                WriteConcernResult result = collection.RemoveAll(WriteConcern.Acknowledged);
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+            }
         }
 
         public void ClearAllCollections<T>()
         {
-            VerifyConnected();
-            List<string> connectionNames = GetCollectionNames();
-            connectionNames.ForEach(delegate(string collectionName)
+            try
             {
-                if (collectionName != "system.indexes")
-                    ClearCollection<T>(collectionName);
-            });
+                List<string> connectionNames = GetCollectionNames();
+                connectionNames.ForEach(delegate(string collectionName)
+                {
+                    if (collectionName != "system.indexes")
+                        ClearCollection<T>(collectionName);
+                });
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+            }
         }
 
         public void DropCollection<T>(string collectionName)
         {
-            VerifyConnected();
-            var collection = GetCollection<T>(collectionName);
-            collection.Drop();
+            try
+            {
+                var collection = GetCollection<T>(collectionName);
+                collection.Drop();
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+            }
         }
 
         public void DropAllCollections<T>()
         {
-            VerifyConnected();
-            List<string> connectionNames = GetCollectionNames();
-            connectionNames.ForEach(delegate(string collectionName)
+            try
             {
-                if(collectionName != "system.indexes")
-                    DropCollection<T>(collectionName);
-            });
-        }
-
-        public bool CanConnect()
-        {
-            return MongoServerConnection.CanConnect();
+                List<string> connectionNames = GetCollectionNames();
+                connectionNames.ForEach(delegate(string collectionName)
+                {
+                    if(collectionName != "system.indexes")
+                        DropCollection<T>(collectionName);
+                });
+            }
+            catch (NullReferenceException ex)
+            {
+                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+            }
         }
 
         public IDisposable RequestStart(MongoServerInstance mongoServerInstance)
@@ -293,25 +331,6 @@ namespace EasyMongo
                 // the corresponding collection from the internal array. 
                 return MongoServerConnection.GetDatabase(Db.Name,WriteConcern.Acknowledged).GetCollection(collectionName);
             }
-        }
-
-        private void VerifyConnected()
-        {
-            do
-            {
-                switch (State)
-                {
-                    case MongoServerState.Connected: 
-                        if(Db == null)
-                            throw new MongoConnectionException("DatabaseConnection is not connected");
-                        break;
-                    case MongoServerState.Connecting: _databaseConnectionResetEvent.WaitOne(); // wait for the DatabaseConnection to connect
-                        break;
-                    case MongoServerState.Disconnected: /*Connect();*/ //break;
-                         throw new MongoConnectionException("ServerConnection is not connected");
-                }
-            }
-            while (State != MongoServerState.Connected);
         }
     }
 }

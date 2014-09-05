@@ -34,10 +34,7 @@ namespace EasyMongo
         /// Synchronous connection. This method or <see cref="ConnectAsyncDelegate"/> must be called prior to utilizing the ServerConnection.
         /// </summary>
         public void Connect()
-        {
-            if (!CanConnect())
-                throw new MongoConnectionException(string.Format("Cannot connect to {0}", ConnectionString));
-           
+        {          
             _mongoServer = null;
             MongoClient client = new MongoClient(ConnectionString);
             _mongoServer = client.GetServer();
@@ -57,9 +54,6 @@ namespace EasyMongo
 
         public async void ConnectAsyncTask()
         {
-            if (!CanConnect())
-                throw new MongoConnectionException(string.Format("Cannot connect to {0}", ConnectionString));
-
             _mongoServer = null;
             MongoClient client = new MongoClient(ConnectionString);
             _mongoServer = await Task.Run(() => client.GetServer());
@@ -72,9 +66,6 @@ namespace EasyMongo
         /// <returns>MongoServer from ConnectionString</returns>
         private MongoServer ConnectMongoServerAsync()
         {
-            if (!CanConnect())
-                throw new MongoConnectionException(string.Format("Cannot connect to {0}", ConnectionString));
-
             MongoClient client = new MongoClient(ConnectionString);
             return client.GetServer();
         }
@@ -138,53 +129,6 @@ namespace EasyMongo
         {
             get;
             set;
-        }
-
-        /// <summary>
-        /// TODO - This method needs to be reworked to efficiently check ability to connect; be able to configure
-        /// the timeout check to a couple of seconds. Will probably need MongoDB support to figure out how.
-        /// </summary>
-        /// <returns></returns>
-        public bool CanConnect()
-        {
-            bool canConnect;
-
-            try
-            {
-                #region   TODO
-                TimeSpan oneSecond = new TimeSpan(0,0,1);
-
-                MongoInternalIdentity identity = new MongoInternalIdentity(string.Empty, string.Empty);
-                PasswordEvidence passwordEvidence = new PasswordEvidence(string.Empty);
-
-                MongoCredential credential = new MongoCredential(ConnectionString, identity, passwordEvidence);
-                List<MongoCredential> credentials = new List<MongoCredential>();
-                credentials.Add(credential);
-
-                //TODO extend with MongoClientSettings to override default timeout
-                MongoClientSettings clientSettings = new MongoClientSettings()
-                {              
-                    ConnectTimeout = oneSecond,
-                    SocketTimeout = oneSecond,
-                    WaitQueueTimeout = oneSecond,
-                    MaxConnectionIdleTime = oneSecond,
-                    MaxConnectionLifeTime = oneSecond,
-                    Credentials = credentials,
-                    ConnectionMode = MongoDB.Driver.ConnectionMode.Automatic
-                };
-                #endregion TODO
-
-                MongoClient mongoClient = new MongoClient(ConnectionString);
-                MongoServer testServer = mongoClient.GetServer();
-                testServer.Connect(oneSecond);
-                canConnect = true;
-            }
-            catch (Exception ex)
-            {   // for debugging step-throughs
-                string message = ex.Message;
-                canConnect = false;
-            }
-            return canConnect;
         }
 
         public List<string> GetDbNamesForConnection()

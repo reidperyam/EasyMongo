@@ -19,8 +19,7 @@ namespace EasyMongo.Test
         public void ConstructorBadConnStringTest()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);
-            Assert.IsFalse(_mongoServerConnection.CanConnect());
-            _mongoServerConnection = null;
+            _mongoServerConnection.Connect();
         }
 
         [Test]
@@ -28,14 +27,11 @@ namespace EasyMongo.Test
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             Assert.AreEqual(MongoServerState.Disconnected, _mongoServerConnection.State);
-            Assert.IsTrue(_mongoServerConnection.CanConnect());
 
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING);
             _mongoServerConnection.Connect();
 
             Assert.AreEqual(MongoServerState.Connected, _mongoServerConnection.State);
-
-            Assert.IsTrue(_mongoServerConnection.CanConnect());
         }
 
         [Test]
@@ -313,17 +309,6 @@ namespace EasyMongo.Test
             Assert.IsTrue(results.Contains(MONGO_DATABASE_2_NAME));
             Assert.IsFalse(results.Contains(MONGO_DATABASE_3_NAME));
         } 
-
-        [Test]
-        public void CanConnectTest()
-        {
-            Assert.IsTrue(_mongoServerConnection.CanConnect(), "Cannot connect to " + MONGO_CONNECTION_STRING);
-
-              // try connecting to a random ip address
-            _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);
-
-            Assert.IsFalse(_mongoServerConnection.CanConnect(), "Cannot connect to " + MONGO_CONNECTION_STRING);
-        }
 
         [Test]
         public void IndexerTest()
