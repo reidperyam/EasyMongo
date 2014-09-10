@@ -13,7 +13,16 @@ namespace EasyMongo.Contract
         /// <summary>
         /// Synchronously searches against a MongoDB collection
         /// </summary>
-        /// <remarks>Proxy method to private implementation method CollectionDateRangeRead</remarks>
+        /// <typeparam name="T">The type of the record that will be returned</typeparam>
+        /// <param name="collectionName">>The MongoDB Collection to be read from</param>
+        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
+        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
+        /// <returns>IEnumerable of read results from the MongoDB</returns>
+        IEnumerable<T> Read<T>(string collectionName, string fieldName, string regexPattern);
+        /// <summary>
+        /// Synchronously searches against a MongoDB collection
+        /// </summary>
+        /// <typeparam name="T">The type of the record that will be returned</typeparam>
         /// <param name="collectionName">The MongoDB Collection to be read from</param>
         /// <param name="dateTimeFieldName">The name of the field (property) of the persisted object associated with a DateTime object</param>
         /// <param name="start">The time at which search should begin</param>
@@ -23,7 +32,7 @@ namespace EasyMongo.Contract
         /// <summary>
         /// Synchronously searches against a MongoDB collection
         /// </summary>
-        /// <remarks>Proxy method to private implementation method CollectionDateRangePropertyRead</remarks>
+        /// <typeparam name="T">The type of the record that will be returned</typeparam>
         /// <param name="collectionName">The MongoDB Collection to be read from</param>
         /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
         /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
@@ -32,30 +41,30 @@ namespace EasyMongo.Contract
         /// <param name="end">The time at which search should end</param>
         /// <returns>IEnumerable of read results from the MongoDB</returns>
         IEnumerable<T> Read<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
-        /// <summary>
-        /// Synchronously searches against a MongoDB collection
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method CollectionPropertyRead</remarks>
-        /// <param name="collectionName">>The MongoDB Collection to be read from</param>
-        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
-        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
-        /// <returns>IEnumerable of read results from the MongoDB</returns>
-        IEnumerable<T> Read<T>(string collectionName, string fieldName, string regexPattern);
 
         /// <summary>
         /// Synchronously searches against multiple MongoDB collections
         /// </summary>
-        /// <remarks>Proxy method to private implementation method DateRangeRead</remarks>
-        /// <param name="collectionName">The MongoDB Collection to be read from</param>
+        /// <typeparam name="T">The type of the record that will be returned</typeparam>
+        /// <param name="collectionNames">The MongoDB Collections to be read from</param>
+        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
+        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
+        /// <returns>IEnumerable of read results from the MongoDB</returns>
+        IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
+        /// <summary>
+        /// Synchronously searches against multiple MongoDB collections
+        /// </summary>
+        /// <typeparam name="T">The type of the record that will be returned</typeparam>
+        /// <param name="collectionNames">The MongoDB Collections to be read from</param>
         /// <param name="dateTimeFieldName">The name of the field (property) of the persisted object associated with a DateTime object</param>
         /// <param name="start">The time at which search should begin</param>
         /// <param name="end">The time at which search should end</param>
         /// <returns>IEnumerable of read results from the MongoDB</returns>
-        IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end);
+        IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end);
         /// <summary>
         /// Synchronously searches against multiple MongoDB collections
         /// </summary>
-        /// <remarks>Proxy method to private implementation method DateRangePropertyRead</remarks>
+        /// <typeparam name="T">The type of the record that will be returned</typeparam>
         /// <param name="collectionName">The MongoDB Collection to be read from</param>
         /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
         /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
@@ -64,19 +73,40 @@ namespace EasyMongo.Contract
         /// <param name="end">The time at which search should end</param>
         /// <returns>IEnumerable of read results from the MongoDB</returns>
         IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end);
-        /// <summary>
-        /// Synchronously searches against multiple MongoDB collections
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method PropertyRead</remarks>
-        /// <param name="collectionName">>The MongoDB Collection to be read from</param>
-        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
-        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
-        /// <returns>IEnumerable of read results from the MongoDB</returns>
-        IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern);
 
+        /// <summary>
+        /// Synchronously searches against a collection and returns distinct set of argument fieldName values
+        /// </summary>
+        /// <typeparam name="T">The type of the record (corresponding to argument fieldName) that will be returned</typeparam>
+        /// <param name="collectionName">The MongoDB Collection to be read from</param>
+        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
+        /// <returns>IEnumerable of destinct values for the argument fieldName</returns>
         IEnumerable<T> Distinct<T>(string collectionName, string fieldName);
+        /// <summary>
+        /// Synchronously searches against a collection and returns distinct set of argument fieldName values for the corresponding query
+        /// </summary>
+        /// <typeparam name="T">The type of the record (corresponding to argument fieldName) that will be returned</typeparam>
+        /// <param name="collectionName">The MongoDB Collection to be read from</param>
+        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
+        /// <param name="query">The MongoDB query to be used against the argument field (see QueryDocument and QueryBuilder)</param>
+        /// <returns>IEnumerable of destinct values for the argument fieldName and query</returns>
         IEnumerable<T> Distinct<T>(string collectionName, string fieldName, IMongoQuery query);
+        /// <summary>
+        /// Synchronously searches against multiple collections and returns distinct set of argument fieldName values
+        /// </summary>
+        /// <typeparam name="T">The type of the record (corresponding to argument fieldName) that will be returned</typeparam>
+        /// <param name="collectionNames">The MongoDB Collections to be read from</param>
+        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
+        /// <returns>IEnumerable of destinct values for the argument fieldName</returns>
         IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName);
+        /// <summary>
+        /// Synchronously searches against multiple collections and returns distinct set of argument fieldName values for the corresponding query
+        /// </summary>
+        /// <typeparam name="T">The type of the record (corresponding to argument fieldName) that will be returned</typeparam>
+        /// <param name="collectionNames">The MongoDB Collections to be read from</param>
+        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
+        /// <param name="query">The MongoDB query to be used against the argument field (see QueryDocument and QueryBuilder)</param>
+        /// <returns>IEnumerable of destinct values for the argument fieldName and query</returns>
         IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
     }
 }
