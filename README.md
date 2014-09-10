@@ -1,7 +1,7 @@
 Latest Release
 ==================
 
-	Install-Package EasyMongo -Version 0.0.4-alpha -Pre
+	Install-Package EasyMongo -Version 0.0.6-alpha -Pre
 
 EasyMongo Overview
 ==================
@@ -40,7 +40,7 @@ QuickStart
 
 Install the latest nuget package via Visual Studio's Package Manager Console:
 
-	Install-Package EasyMongo -Version 0.0.4-alpha -Pre
+	Install-Package EasyMongo -Version 0.0.6-alpha -Pre
 	
 Introduction
 ==============
