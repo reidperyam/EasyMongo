@@ -35,6 +35,10 @@ namespace EasyMongo.Collection
         {
             return _databaseReader.Read<T>(_collectionName, fieldName, regexPattern);
         }
+        public IEnumerable<T> Read<T>()
+        {
+            return _databaseReader.Read<T>(_collectionName);
+        }
         #region Distinct T
         public IEnumerable<T> Distinct<T>(string fieldName)
         {
@@ -62,6 +66,10 @@ namespace EasyMongo.Collection
         {
             return _databaseReader.ReadAsync<T>(_collectionName, fieldName, regexPattern);
         }
+        public Task<IEnumerable<T>> ReadAsync<T>()
+        {
+            return _databaseReader.ReadAsync<T>(_collectionName);
+        }
         #region Distinct T
         public Task<IEnumerable<T>> DistinctAsync<T>(string fieldName)
         {
@@ -84,6 +92,11 @@ namespace EasyMongo.Collection
             _collectionReader = collectionReader;
         }
 
+        public IEnumerable<T> Read()
+        {
+            return _collectionReader.Read<T>();
+        }
+
         public IEnumerable<T> Read(string fieldName, string regexPattern)
         {
             return _collectionReader.Read<T>(fieldName, regexPattern);
@@ -97,6 +110,11 @@ namespace EasyMongo.Collection
         public IEnumerable<T> Read(string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
             return _collectionReader.Read<T>(fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public Task<IEnumerable<T>> ReadAsync()
+        {
+            return _collectionReader.ReadAsync<T>();
         }
 
         public Task<IEnumerable<T>> ReadAsync(string fieldName, string regexPattern)

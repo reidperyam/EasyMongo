@@ -25,46 +25,24 @@ namespace EasyMongo
 
         #region    Methods
         #region   Read Against a Collection
-        /// <summary>
-        /// Synchronously searches against a MongoDB collection
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method CollectionDateRangeRead</remarks>
-        /// <param name="collectionName">The MongoDB Collection to be read from</param>
-        /// <param name="dateTimeFieldName">The name of the field (property) of the persisted object associated with a DateTime object</param>
-        /// <param name="start">The time at which search should begin</param>
-        /// <param name="end">The time at which search should end</param>
-        /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
+        public IEnumerable<T> Read<T>(string collectionName)
+        {
+            List<T> results;
+            Find(collectionName, out results);
+            return results;
+        }
         public IEnumerable<T> Read<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
         {
             List<T> results;
             Find(collectionName, dateTimeFieldName, start, end, out results);
             return results;
         }
-        /// <summary>
-        /// Synchronously searches against a MongoDB collection
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method CollectionDateRangePropertyRead</remarks>
-        /// <param name="collectionName">The MongoDB Collection to be read from</param>
-        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
-        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
-        /// <param name="dateTimeFieldName">The name of the field (property) of the persisted object associated with a DateTime object</param>
-        /// <param name="start">The time at which search should begin</param>
-        /// <param name="end">The time at which search should end</param>
-        /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
         public IEnumerable<T> Read<T>(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
             List<T> results;
             Find(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end, out results);
             return results;
         }
-        /// <summary>
-        /// Synchronously searches against a MongoDB collection
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method CollectionPropertyRead</remarks>
-        /// <param name="collectionName">>The MongoDB Collection to be read from</param>
-        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
-        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
-        /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
         public IEnumerable<T> Read<T>(string collectionName, string fieldName, string regexPattern)
         {
             List<T> results;
@@ -73,46 +51,24 @@ namespace EasyMongo
         }
         #endregion Read Against a Collection
         #region   Read Against Multiple Collections
-        /// <summary>
-        /// Synchronously searches against multiple MongoDB collections
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method DateRangeRead</remarks>
-        /// <param name="collectionName">The MongoDB Collection to be read from</param>
-        /// <param name="dateTimeFieldName">The name of the field (property) of the persisted object associated with a DateTime object</param>
-        /// <param name="start">The time at which search should begin</param>
-        /// <param name="end">The time at which search should end</param>
-        /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
+        public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames)
+        {
+            List<T> results;
+            Find(collectionNames, out results);
+            return results;
+        }
         public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
         {
             List<T> results;
             Find(collectionNames, dateTimeFieldName, start, end, out results);
             return results;
         }
-        /// <summary>
-        /// Synchronously searches against multiple MongoDB collections
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method DateRangePropertyRead</remarks>
-        /// <param name="collectionName">The MongoDB Collection to be read from</param>
-        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
-        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
-        /// <param name="dateTimeFieldName">The name of the field (property) of the persisted object associated with a DateTime object</param>
-        /// <param name="start">The time at which search should begin</param>
-        /// <param name="end">The time at which search should end</param>
-        /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
         public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
             List<T> results;
             Find(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end, out results);
             return results;
         }
-        /// <summary>
-        /// Synchronously searches against multiple MongoDB collections
-        /// </summary>
-        /// <remarks>Proxy method to private implementation method PropertyRead</remarks>
-        /// <param name="collectionName">>The MongoDB Collection to be read from</param>
-        /// <param name="fieldName">The name of the field (property) of the persisted object that will be searched for a matching regexPattern</param>
-        /// <param name="regexPattern">A string representing text to search a fieldName for. An objected with an associated match will be returned as a result</param>
-        /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
         public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
             List<T> results;
@@ -121,6 +77,19 @@ namespace EasyMongo
         }
         #endregion Read Against Multiple Collections
         #region Read Implementation methods
+        private void Find<T>(string collectionName, out List<T> results)
+        {
+            results = new List<T>();
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.FindAll());
+        }
+        private void Find<T>(string collectionName, string fieldName, string regexPattern, out List<T> results)
+        {
+            results = new List<T>();
+            var searchQuery = Query.Matches(fieldName, new BsonRegularExpression(regexPattern));
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Find(searchQuery));
+        }
         private void Find<T>(string collectionName, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
         {
             results = new List<T>();
@@ -135,12 +104,29 @@ namespace EasyMongo
             var collection = _databaseConnection.GetCollection<T>(collectionName);
             results.AddRange(collection.Find(searchQuery));
         }
-        private void Find<T>(string collectionName, string fieldName, string regexPattern, out List<T> results)
+        private void Find<T>(IEnumerable<string> collectionNames, out List<T> results)
         {
             results = new List<T>();
-            var searchQuery = Query.Matches(fieldName, new BsonRegularExpression(regexPattern));
-            var collection = _databaseConnection.GetCollection<T>(collectionName);
-            results.AddRange(collection.Find(searchQuery));
+            List<T> resultsForCollection;
+
+            foreach (string collectionName in collectionNames)
+            {
+                Find(collectionName, out resultsForCollection);
+                results.AddRange(resultsForCollection);
+                resultsForCollection.Clear();
+            }
+        }
+        private void Find<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, out List<T> results)
+        {
+            results = new List<T>();
+            List<T> resultsForCollection;
+
+            foreach (string collectionName in collectionNames)
+            {
+                Find(collectionName, fieldName, regexPattern, out resultsForCollection);
+                results.AddRange(resultsForCollection);
+                resultsForCollection.Clear();
+            }
         }
         private void Find<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end, out List<T> results)
         {
@@ -162,18 +148,6 @@ namespace EasyMongo
             foreach (string collectionName in collectionNames)
             {
                 Find(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end, out resultsForCollection);
-                results.AddRange(resultsForCollection);
-                resultsForCollection.Clear();
-            }
-        }
-        private void Find<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, out List<T> results)
-        {
-            results = new List<T>();
-            List<T> resultsForCollection;
-
-            foreach (string collectionName in collectionNames)
-            {
-                Find(collectionName, fieldName, regexPattern, out resultsForCollection);
                 results.AddRange(resultsForCollection);
                 resultsForCollection.Clear();
             }
@@ -275,6 +249,16 @@ namespace EasyMongo
             _reader = reader;
         }
 
+        public IEnumerable<T> Read(string collectionName)
+        {
+            return _reader.Read<T>(collectionName);
+        }
+
+        public IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern)
+        {
+            return _reader.Read<T>(collectionName, fieldName, regexPattern);
+        }
+
         public IEnumerable<T> Read(string collectionName, string dateTimeFieldName, DateTime start, DateTime end)
         {
             return _reader.Read<T>(collectionName, dateTimeFieldName, start, end);
@@ -285,9 +269,14 @@ namespace EasyMongo
             return _reader.Read<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
         }
 
-        public IEnumerable<T> Read(string collectionName, string fieldName, string regexPattern)
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames)
         {
-            return _reader.Read<T>(collectionName, fieldName, regexPattern);
+            return _reader.Read<T>(collectionNames);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
+        {
+            return _reader.Read<T>(collectionNames, fieldName, regexPattern);
         }
 
         public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
@@ -298,11 +287,6 @@ namespace EasyMongo
         public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
             return _reader.Read<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
-        }
-
-        public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
-        {
-            return _reader.Read<T>(collectionNames, fieldName, regexPattern);
         }
 
         public IEnumerable<Y> Distinct<Y>(string collectionName, string fieldName)

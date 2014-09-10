@@ -116,6 +116,30 @@ namespace EasyMongo.Database.Test
         }
 
         [Test]
+        public async void ReadAsyncTest7()
+        {
+            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 2", MONGO_COLLECTION_2_NAME);
+
+            IEnumerable<Entry> results = await _databaseReaderT.ReadAsync(new string[] { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME });
+            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual("Hello World 1", results.ElementAt(0).Message);
+            Assert.AreEqual("Hello World 2", results.ElementAt(1).Message);
+        }
+
+        [Test]
+        public async void ReadAsyncTest8()
+        {
+            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 2", MONGO_COLLECTION_1_NAME);
+
+            IEnumerable<Entry> results = await _databaseReaderT.ReadAsync(MONGO_COLLECTION_1_NAME);
+            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual("Hello World 1", results.ElementAt(0).Message);
+            Assert.AreEqual("Hello World 2", results.ElementAt(1).Message);
+        }
+
+        [Test]
         public void ReadTest1()
         {
             AddMongoEntry();
@@ -167,6 +191,18 @@ namespace EasyMongo.Database.Test
 
             _results.AddRange(_databaseReaderT.Read(_mongoDatabaseConnection.GetCollectionNames(), "TimeStamp", _beforeTest, DateTime.Now));
             Assert.AreEqual(1, _results.Count());
+        }
+
+        [Test]
+        public void ReadTest7()
+        {
+            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 2", MONGO_COLLECTION_2_NAME);
+
+            _results.AddRange(_databaseReaderT.Read(new string[] { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME }));
+            Assert.AreEqual(2, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+            Assert.AreEqual("Hello World 2", _results[1].Message);
         }
 
         #region    Distinct

@@ -66,8 +66,17 @@ namespace EasyMongo
         /// <returns>MongoServer from ConnectionString</returns>
         private MongoServer ConnectMongoServerAsync()
         {
-            MongoClient client = new MongoClient(ConnectionString);
-            return client.GetServer();
+            try
+            {
+                MongoClient client = new MongoClient(ConnectionString);
+                MongoServer server = client.GetServer();
+                server.Connect();
+                return server;
+            }
+            catch (MongoConnectionException ex)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -90,10 +99,12 @@ namespace EasyMongo
 
                 if (_mongoServer == null)
                 {
-                    throw new MongoServerConnectionException("Asynchronous server connection failed");
+                    returnMessage = "Failure";
                 }
-
-                returnMessage = "Successful connection";
+                else
+                {
+                    returnMessage = "Successful";
+                }
             }
             catch (MongoDatabaseConnectionException mdcx)
             {
@@ -107,20 +118,15 @@ namespace EasyMongo
             {
                 _serverConnectionResetEvent.Set(); // allow dependent process that are waiting via VerifyConnected() to proceed
 
-                if (_mongoServer == null || _mongoServer.State == MongoServerState.Disconnected)
+                if (_mongoServer == null)
                 {
                     if (ConnectAsyncCompleted != null)
                         ConnectAsyncCompleted(ConnectionResult.Failure, returnMessage);
-                }
-                else if (_mongoServer.State == MongoServerState.Connected)
-                {
-                    if (ConnectAsyncCompleted != null)
-                        ConnectAsyncCompleted(ConnectionResult.Success, returnMessage);
                 }
                 else
                 {
                     if (ConnectAsyncCompleted != null)
-                        ConnectAsyncCompleted(ConnectionResult.Failure, returnMessage);
+                        ConnectAsyncCompleted(ConnectionResult.Success, returnMessage);
                 }
             }
         }
@@ -208,7 +214,7 @@ namespace EasyMongo
                 if (_mongoServer == null)
                     return MongoServerState.Disconnected;
                 else
-                return _mongoServer.State;
+                    return _mongoServer.State;
             }
         }
 

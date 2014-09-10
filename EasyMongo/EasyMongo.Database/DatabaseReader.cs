@@ -41,6 +41,11 @@ namespace EasyMongo.Database
             return _reader.Read<T>(collectionName, fieldName, regexPattern);
         }
 
+        public IEnumerable<T> Read<T>(string collectionName)
+        {
+            return _reader.Read<T>(collectionName);
+        }
+
         public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
             return _reader.Read<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
@@ -49,6 +54,11 @@ namespace EasyMongo.Database
         public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
             return _reader.Read<T>(collectionNames, fieldName, regexPattern);
+        }
+
+        public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames)
+        {
+            return _reader.Read<T>(collectionNames);
         }
 
         public IEnumerable<T> Read<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
@@ -93,6 +103,11 @@ namespace EasyMongo.Database
             return _asyncReader.ReadAsync<T>(collectionName, fieldName, regexPattern);
         }
 
+        public Task<IEnumerable<T>> ReadAsync<T>(string collectionName)
+        {
+            return _asyncReader.ReadAsync<T>(collectionName);
+        }
+
         public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
             return _asyncReader.ReadAsync<T>(collectionNames, fieldName, regexPattern, dateTimeFieldName, start, end);
@@ -101,6 +116,11 @@ namespace EasyMongo.Database
         public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
             return _asyncReader.ReadAsync<T>(collectionNames, fieldName, regexPattern);
+        }
+
+        public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames)
+        {
+            return _asyncReader.ReadAsync<T>(collectionNames);
         }
 
         public Task<IEnumerable<T>> ReadAsync<T>(IEnumerable<string> collectionNames, string dateTimeFieldName, DateTime start, DateTime end)
@@ -155,6 +175,11 @@ namespace EasyMongo.Database
             return _databaseReader.Read<T>(collectionName, fieldName, regexPattern);
         }
 
+        public IEnumerable<T> Read(string collectionName)
+        {
+            return _databaseReader.Read<T>(collectionName);
+        }
+
         public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, DateTime start, DateTime end)
         {
             return _databaseReader.Read<T>(collectionNames, fieldName, start, end);
@@ -168,6 +193,11 @@ namespace EasyMongo.Database
         public IEnumerable<T> Read(IEnumerable<string> collectionNames, string fieldName, string regexPattern)
         {
             return _databaseReader.Read<T>(collectionNames, fieldName, regexPattern);
+        }
+
+        public IEnumerable<T> Read(IEnumerable<string> collectionNames)
+        {
+            return _databaseReader.Read<T>(collectionNames);
         }
         #endregion Read
         #region    Distinct
@@ -194,6 +224,11 @@ namespace EasyMongo.Database
         #endregion Synchronous
         #region    Asynchronous
         #region    Read
+        public Task<IEnumerable<T>> ReadAsync(string collectionName)
+        {
+            return _databaseReader.ReadAsync<T>(collectionName);
+        }
+
         public Task<IEnumerable<T>> ReadAsync(string collectionName, string fieldName, string regexPattern)
         {
             return _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern);
@@ -207,6 +242,11 @@ namespace EasyMongo.Database
         public Task<IEnumerable<T>> ReadAsync(string collectionName, string fieldName, string regexPattern, string dateTimeFieldName, DateTime start, DateTime end)
         {
             return _databaseReader.ReadAsync<T>(collectionName, fieldName, regexPattern, dateTimeFieldName, start, end);
+        }
+
+        public Task<IEnumerable<T>> ReadAsync(IEnumerable<string> collectionNames)
+        {
+            return _databaseReader.ReadAsync<T>(collectionNames);
         }
 
         public Task<IEnumerable<T>> ReadAsync(IEnumerable<string> collectionNames, string fieldName, string regexPattern)

@@ -111,6 +111,22 @@ namespace EasyMongo.Test
             Assert.AreEqual(2, _results.Count());
         }
 
+        /// <summary>
+        /// Writes a MongoTestEntry within two collections and verifies both retrieved using
+        /// Read method to retrieve all records within multiple collections
+        /// </summary>
+        [Test]
+        public void ReadTest7()
+        {
+            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 2", MONGO_COLLECTION_2_NAME);
+
+            _results.AddRange(_readerT.Read(new string[] { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME }));
+            Assert.AreEqual(2, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+            Assert.AreEqual("Hello World 2", _results[1].Message);
+        }
+
         #region    Distinct 
         [Test]
         public void DistinctTest1()

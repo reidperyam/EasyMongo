@@ -151,6 +151,38 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException), _asyncException.GetType());
         }
 
+        /// <summary>
+        /// Writes a MongoTestEntry within two collections and verifies both retrieved using
+        /// Read method to retrieve all records within multiple collections
+        /// </summary>
+        [Test]
+        public async void ReadTest8()
+        {
+            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 2", MONGO_COLLECTION_2_NAME);
+
+            IEnumerable<Entry> results = await _asyncReader.ReadAsync<Entry>(new string[] { MONGO_COLLECTION_1_NAME, MONGO_COLLECTION_2_NAME });
+            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual("Hello World 1", results.ElementAt(0).Message);
+            Assert.AreEqual("Hello World 2", results.ElementAt(1).Message);
+        }
+
+        /// <summary>
+        /// Writes MongoTestEntrys within a collection and verifies both are retrieved using
+        /// Read method to retrieve all records within a collection
+        /// </summary>
+        [Test]
+        public async void ReadTest9()
+        {
+            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 2", MONGO_COLLECTION_1_NAME);
+
+            IEnumerable<Entry> results = await _asyncReader.ReadAsync<Entry>(MONGO_COLLECTION_1_NAME);
+            Assert.AreEqual(2, results.Count());
+            Assert.AreEqual("Hello World 1", results.ElementAt(0).Message);
+            Assert.AreEqual("Hello World 2", results.ElementAt(1).Message);
+        }
+
         #region    Disctinct
         [Test]
         public async void DistinctTest1()
