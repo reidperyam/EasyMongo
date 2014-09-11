@@ -6,20 +6,19 @@ Latest Release
 EasyMongo Overview
 ==================
 
-  MongoDB and it's C# driver are great but its operations aren't driven by interfaces, making dependency injection and     Inversion of Control for object composition harder than it should be. 
+  MongoDB and it's C# driver are great but its operations aren't driven by interfaces, making dependency injection,     Inversion of Control and testing in support of composite architectures additional development effort. 
   
-  EasyMongo addresses this to support componentized database and collection Read, Write Update 
-  and connection operations. Oerational scoping supports the principle of least responsibility/LoD and is helpful in
-  developing reusable and maintanable software and applications.
+  EasyMongo addresses this to support componentized connection, database, collection and document Read, Write Update operations. Operational scoping supports the principle of least responsibility/LoD and is helpful in
+  developing reusable and maintanable software and applications - thus EasyMongo.
 
 Succinctly you might say that EasyMongo:
   - Is a facade and superset of the official 10gen MongoDB C# driver
-  - Is predecated on architectural operational granularity and least responsibility
   - Supplies additional asynchronous functionality in two flavors:
 		- asynchronous delegate callbacks
 		- System.Threading.Tasks
   - Interface-driven object model simplifies testing and supports DI/IoC.
-  - Abstracts some operations of the underlying 10gen driver for simplistic consumption. 
+  - Reinterfaces operations of the underlying 10gen driver for simplistic client consumption supporting rapid application development. 
+  - Is predecated on architectural operational granularity and least responsibility
 
 Implementation
 ==============
