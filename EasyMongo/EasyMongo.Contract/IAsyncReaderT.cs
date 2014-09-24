@@ -118,5 +118,13 @@ namespace EasyMongo.Contract
         /// <param name="query">The MongoDB query to be used against the argument field (see QueryDocument and QueryBuilder)</param>
         /// <returns>IEnumerable of destinct values for the argument fieldName and query</returns>
         Task<IEnumerable<Y>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+
+        /// <summary>
+        /// Asynchronously executes the argument IMongoQuery against the collection
+        /// </summary>
+        /// <param name="collectionName">The collection to query</param>
+        /// <param name="mongoQuery">The IMongoQuery to execute</param>
+        /// <returns>IEnumerable<T> of read results from the MongoDB</returns>
+        Task<IEnumerable<T>> ExecuteAsync(string collectionName, IMongoQuery mongoQuery);
     }
 }

@@ -73,8 +73,8 @@
     <Compile Include="EasyMongo.Contract\IAsyncDelegateUpdaterT.cs" />
     <Compile Include="EasyMongo.Contract\IAsyncDelegateWriter.cs" />
     <Compile Include="EasyMongo.Contract\IAsyncDelegateWriterT.cs" />
-    <Compile Include="EasyMongo.Contract\ICollectionReader.cs" />
     <Compile Include="EasyMongo.Contract\ICollectionReaderT.cs" />
+    <Compile Include="EasyMongo.Contract\ICollectionReader.cs" />
     <Compile Include="EasyMongo.Contract\ICollectionUpdater.cs" />
     <Compile Include="EasyMongo.Contract\ICollectionUpdaterT.cs" />
     <Compile Include="EasyMongo.Contract\ICollectionWriter.cs" />

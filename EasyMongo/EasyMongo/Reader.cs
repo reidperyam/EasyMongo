@@ -76,6 +76,7 @@ namespace EasyMongo
             return results;
         }
         #endregion Read Against Multiple Collections
+
         #region Read Implementation methods
         private void Find<T>(string collectionName, out List<T> results)
         {
@@ -237,6 +238,24 @@ namespace EasyMongo
         }
         #endregion T
         #endregion Distinct Implementation
+
+        #region    Execute 
+        public IEnumerable<T> Execute<T>(string collectionName, IMongoQuery mongoQuery)
+        {
+            List<T> results;
+            Execute(collectionName, mongoQuery, out results);
+            return results;
+        }
+        #endregion Execute
+
+        #region    Execute Implementation Methods
+        private void Execute<T>(string collectionName, IMongoQuery mongoQuery, out List<T> results)
+        {
+            results = new List<T>();
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Find(mongoQuery));
+        }
+        #endregion Execute Implementation Methods
         #endregion Methods
     }
 
@@ -307,6 +326,11 @@ namespace EasyMongo
         public IEnumerable<Y> Distinct<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
             return _reader.Distinct<Y>(collectionNames, fieldName, query);
+        }
+
+        public IEnumerable<T> Execute(string collectionName, IMongoQuery mongoQuery)
+        {
+            return _reader.Execute<T>(collectionName, mongoQuery);
         }
     }
 }

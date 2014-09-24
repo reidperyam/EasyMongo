@@ -38,6 +38,7 @@ namespace EasyMongo
             _mongoServer = null;
             MongoClient client = new MongoClient(ConnectionString);
             _mongoServer = client.GetServer();
+            _mongoServer.Connect();
         }
 
         /// <summary>
@@ -57,6 +58,7 @@ namespace EasyMongo
             _mongoServer = null;
             MongoClient client = new MongoClient(ConnectionString);
             _mongoServer = await Task.Run(() => client.GetServer());
+            await Task.Run(() => _mongoServer.Connect());
         }
 
         /// <summary>

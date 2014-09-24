@@ -15,7 +15,7 @@ namespace EasyMongo.Test
     public class ServerConnectionTest : IntegrationTestFixture
     {
         #region Synchronous
-        [Test]
+        [Test, ExpectedException(typeof(MongoConnectionException))]
         public void ConstructorBadConnStringTest()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);

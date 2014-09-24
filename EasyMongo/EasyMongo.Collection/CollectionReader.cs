@@ -49,6 +49,12 @@ namespace EasyMongo.Collection
             return _databaseReader.Distinct<T>(_collectionName, fieldName, query);
         }
         #endregion Distinct T
+        #region    Execute
+        public IEnumerable<T> Execute<T>(IMongoQuery mongoQuery)
+        {
+            return _databaseReader.Execute<T>(_collectionName, mongoQuery);
+        }
+        #endregion Execute
         #endregion Synchronous
 
         #region    Asynchronous
@@ -80,6 +86,12 @@ namespace EasyMongo.Collection
             return _databaseReader.DistinctAsync<T>(_collectionName, fieldName, query);
         }
         #endregion Distinct T
+        #region    Execute
+        public Task<IEnumerable<T>> ExecuteAsync<T>(IMongoQuery mongoQuery)
+        {
+            return _databaseReader.ExecuteAsync<T>(_collectionName, mongoQuery);
+        }
+        #endregion Execute
         #endregion Asynchronous
     }
 
@@ -150,6 +162,16 @@ namespace EasyMongo.Collection
         public Task<IEnumerable<Y>> DistinctAsync<Y>(string fieldName, IMongoQuery query)
         {
             return _collectionReader.DistinctAsync<Y>(fieldName, query);
+        }
+
+        public IEnumerable<T> Execute(IMongoQuery mongoQuery)
+        {
+            return _collectionReader.Execute<T>(mongoQuery);
+        }
+
+        public Task<IEnumerable<T>> ExecuteAsync(IMongoQuery mongoQuery)
+        {
+            return _collectionReader.ExecuteAsync<T>(mongoQuery);
         }
     }
 }

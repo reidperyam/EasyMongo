@@ -82,6 +82,11 @@ namespace EasyMongo.Async
         {
             return Task.Run(() => { return _reader.Distinct<Y>(collectionNames, fieldName, query); });
         }
+
+        public Task<IEnumerable<T>> ExecuteAsync<T>(string collectionName, IMongoQuery mongoQuery)
+        {
+            return Task.Run(() => { return _reader.Execute<T>(collectionName, mongoQuery); });
+        }
     }
 
     public class AsyncReader<T> : IAsyncReader<T>
@@ -151,6 +156,11 @@ namespace EasyMongo.Async
         public Task<IEnumerable<Y>> DistinctAsync<Y>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query)
         {
             return Task.Run(() => { return _reader.DistinctAsync<Y>(collectionNames, fieldName, query); });
+        }
+
+        public Task<IEnumerable<T>> ExecuteAsync(string collectionName, IMongoQuery mongoQuery)
+        {
+            return Task.Run(() => { return _reader.ExecuteAsync<T>(collectionName, mongoQuery); });
         }
     }
 }

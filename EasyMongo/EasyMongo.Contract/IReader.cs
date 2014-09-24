@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using System.Runtime.InteropServices;
 
 namespace EasyMongo.Contract
@@ -122,5 +123,13 @@ namespace EasyMongo.Contract
         /// <param name="query">The MongoDB query to be used against the argument field (see QueryDocument and QueryBuilder)</param>
         /// <returns>IEnumerable of destinct values for the argument fieldName and query</returns>
         IEnumerable<T> Distinct<T>(IEnumerable<string> collectionNames, string fieldName, IMongoQuery query);
+
+        /// <summary>
+        /// Synchronously executes the argument IMongoQuery against the collection
+        /// </summary>
+        /// <param name="collectionName">The collection to query</param>
+        /// <param name="mongoQuery">The IMongoQuery to execute</param>
+        /// <returns>IEnumberable<T> of read results from the MongoDB</returns>
+        IEnumerable<T> Execute<T>(string collectionName, IMongoQuery mongoQuery);
     }
 }
