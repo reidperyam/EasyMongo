@@ -1,26 +1,24 @@
 Latest Release
 ==================
 
-	Install-Package EasyMongo -Version 0.1.1-alpha -Pre
+	Install-Package EasyMongo -Version 0.1.2-alpha -Pre
 
 EasyMongo Overview
 ==================
 
-  MongoDB is great but its operations aren't driven by interfaces, making dependency injection and Inversion of
-  Control for object composition harder than it should be. 
+  MongoDB and it's C# driver are great but its operations aren't driven by interfaces, making dependency injection,     Inversion of Control and testing in support of composite architectures additional development effort. 
   
-  EasyMongo a facade to the official 10gen Mongo DB C# driver that componentizes database and collection Read, Write Update 
-  and connection operations. Granular operational scoping supports the principle of least responsibility/LoD and is helpful in
-  developing reusable and maintanable software and applications.
+  EasyMongo addresses this to support componentized connection, database, collection and document Read, Write Update operations. Operational scoping supports the principle of least responsibility/LoD and is helpful in
+  developing reusable and maintanable software and applications - thus EasyMongo.
 
 Succinctly you might say that EasyMongo:
-  - Is a C# facade to the official 10gen MongoDB C# driver providing interface-driven composition and operational granularity.
+  - Is a facade and superset of the official 10gen MongoDB C# driver
   - Supplies additional asynchronous functionality in two flavors:
 		- asynchronous delegate callbacks
 		- System.Threading.Tasks
   - Interface-driven object model simplifies testing and supports DI/IoC.
-  - Available Ninject.Extensions.EasyMongo nuget package supporting DI/IoC with Ninject automagically.
-  - Abstracts some operations of the underlying 10gen driver for simplistic consumption. 
+  - Reinterfaces operations of the underlying 10gen driver for simplistic client consumption supporting rapid application development. 
+  - Is predecated on architectural operational granularity and least responsibility
 
 Implementation
 ==============
@@ -31,7 +29,7 @@ Tests
 =====
 - 350+ end-to-end NUnit integration tests written to execute against a localhost mongoDB server 
 - 93.2% code coverage
-- Execute in 5 minutes
+- Execute in 4 minutes
 - Useful as documentation of functionality
 - Executes against started, localhost mongoDB server (accessible via the connection string: "mongodb://localhost", or within MongoVue simply "localhost")
 
@@ -40,7 +38,7 @@ QuickStart
 
 Install the latest nuget package via Visual Studio's Package Manager Console:
 
-	Install-Package EasyMongo -Version 0.1.1-alpha -Pre
+	Install-Package EasyMongo -Version 0.1.2-alpha -Pre
 	
 Introduction
 ==============
@@ -123,7 +121,6 @@ You can manually wire them up like so:
 	
 ...but it's really designed to integrate into your favorite dependency injection framework. The registrations are simplistic 
 and intuitive so integrating the parts of EasyMongo you need (and nothing else!) is meant to be easy.
-If you use Ninject there's a nuget extension package available: Ninject.Extensions.EasyMongo.
 		
 Examples
 ==============
