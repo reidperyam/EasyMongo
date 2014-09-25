@@ -268,6 +268,39 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual("Hello World 1", _results[0].Message);
         }
+
+        [Test]
+        public async void ExecuteAndsTest1()
+        {
+            AddMongoEntry("Hello World 1");
+            AddMongoEntry("Hello World 2");
+
+            IList<IMongoQuery> queries = new List<IMongoQuery>();
+
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("WORLD", "i")));
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("1")));
+
+            _results.AddRange(await _asyncReader.ExecuteAndsAsync<Entry>(MONGO_COLLECTION_1_NAME, queries));
+            Assert.AreEqual(1, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+
+        [Test]
+        public async void ExecuteOrsTest1()
+        {
+            AddMongoEntry("Hello World 1");
+            AddMongoEntry("Goodbye Yellow Brick Road");
+
+            IList<IMongoQuery> queries = new List<IMongoQuery>();
+
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("WORLD", "i")));
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("Road")));
+
+            _results.AddRange(await _asyncReader.ExecuteOrsAsync<Entry>(MONGO_COLLECTION_1_NAME, queries));
+            Assert.AreEqual(2, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+            Assert.AreEqual("Goodbye Yellow Brick Road", _results[1].Message);
+        }
         #endregion ExecuteAsync
     }
 }

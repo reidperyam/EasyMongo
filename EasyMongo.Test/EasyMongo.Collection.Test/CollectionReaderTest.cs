@@ -198,6 +198,39 @@ namespace EasyMongo.Collection.Test
             Assert.AreEqual("Hello World 1", _results[0].Message);
         }
 
+        [Test]
+        public void ExecuteAndsTest1()
+        {
+            AddMongoEntry("Hello World 1");
+            AddMongoEntry("Hello World 2");
+
+            IList<IMongoQuery> queries = new List<IMongoQuery>();
+
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("WORLD", "i")));
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("1")));
+
+            _results.AddRange(_collectionReader.ExecuteAnds<Entry>(queries));
+            Assert.AreEqual(1, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+
+        [Test]
+        public void ExecuteOrsTest1()
+        {
+            AddMongoEntry("Hello World 1");
+            AddMongoEntry("Goodbye Yellow Brick Road");
+
+            IList<IMongoQuery> queries = new List<IMongoQuery>();
+
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("WORLD", "i")));
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("Road")));
+
+            _results.AddRange(_collectionReader.ExecuteOrs<Entry>(queries));
+            Assert.AreEqual(2, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+            Assert.AreEqual("Goodbye Yellow Brick Road", _results[1].Message);
+        }
+
         #region    Async
         [Test]
         public async void ExecuteAsyncTest1()
@@ -209,6 +242,39 @@ namespace EasyMongo.Collection.Test
             _results.AddRange(await _collectionReader.ExecuteAsync<Entry>( query));
             Assert.AreEqual(1, _results.Count());
             Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+
+        [Test]
+        public async void ExecuteAndsAsyncTest1()
+        {
+            AddMongoEntry("Hello World 1");
+            AddMongoEntry("Hello World 2");
+
+            IList<IMongoQuery> queries = new List<IMongoQuery>();
+
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("WORLD", "i")));
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("1")));
+
+            _results.AddRange(await _collectionReader.ExecuteAndsAsync<Entry>(queries));
+            Assert.AreEqual(1, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+
+        [Test]
+        public async void ExecuteOrsAsyncTest1()
+        {
+            AddMongoEntry("Hello World 1");
+            AddMongoEntry("Goodbye Yellow Brick Road");
+
+            IList<IMongoQuery> queries = new List<IMongoQuery>();
+
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("WORLD", "i")));
+            queries.Add(Query.Matches("Message", new BsonRegularExpression("Road")));
+
+            _results.AddRange(await _collectionReader.ExecuteOrsAsync<Entry>(queries));
+            Assert.AreEqual(2, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+            Assert.AreEqual("Goodbye Yellow Brick Road", _results[1].Message);
         }
         #endregion Async
         #endregion Execute
