@@ -5,6 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using NUnit.Framework;
 using EasyMongo;
+using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Bson;
 using EasyMongo.Test.Base;
@@ -14,12 +15,13 @@ namespace EasyMongo.Async.Test
     [TestFixture]
     public class AsyncReaderTTest : IntegrationTestFixture
     {
+        #region    ReadAsync
         /// <summary>
         /// Writes a MongoTestEntry to a MongoDB and verifies that it was asynchronously retrieved using
         /// Read method to search against a single collection
         /// </summary>
         [Test]
-        public async void ReadTest1()
+        public async void ReadAsyncTest1()
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage);
@@ -34,7 +36,7 @@ namespace EasyMongo.Async.Test
         /// Read method to search against a single collection
         /// </summar
         [Test]
-        public async void ReadTest2()
+        public async void ReadAsyncTest2()
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage);
@@ -49,7 +51,7 @@ namespace EasyMongo.Async.Test
         /// Read method to search against a single collection
         /// </summary>
         [Test]
-        public async void ReadTest3()
+        public async void ReadAsyncTest3()
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage);
@@ -64,7 +66,7 @@ namespace EasyMongo.Async.Test
         /// Read method to search against multiple collections
         /// </summary>
         [Test]
-        public async void ReadTest4()
+        public async void ReadAsyncTest4()
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
@@ -88,7 +90,7 @@ namespace EasyMongo.Async.Test
         /// Read method to search against multiple collections
         /// </summary>
         [Test]
-        public async void ReadTest5()
+        public async void ReadAsyncTest5()
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
@@ -112,7 +114,7 @@ namespace EasyMongo.Async.Test
         /// Read method to search against multiple collections
         /// </summary>
         [Test]
-        public async void ReadTest6()
+        public async void ReadAsyncTest6()
         {
             string entryMessage = "Hello World";
             AddMongoEntry(entryMessage, MONGO_COLLECTION_1_NAME);
@@ -136,7 +138,7 @@ namespace EasyMongo.Async.Test
         /// </summary>
         /// <remarks>Requires manual exception generation from within AsyncDelegateReader<T>.Callback() in order to generate exception handling/></remarks>
         [Test, Ignore]
-        public async void ReadTest7()
+        public async void ReadAsyncTest7()
         {
             System.Diagnostics.Debugger.Launch();
             string entryMessage = "Hello World";
@@ -152,7 +154,7 @@ namespace EasyMongo.Async.Test
         /// Read method to retrieve all records within multiple collections
         /// </summary>
         [Test]
-        public async void ReadTest8()
+        public async void ReadAsyncTest8()
         {
             AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
             AddMongoEntry("Hello World 2", MONGO_COLLECTION_2_NAME);
@@ -168,7 +170,7 @@ namespace EasyMongo.Async.Test
         /// Read method to retrieve all records within a collection
         /// </summary>
         [Test]
-        public async void ReadTest9()
+        public async void ReadAsyncTest9()
         {
             AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
             AddMongoEntry("Hello World 2", MONGO_COLLECTION_1_NAME);
@@ -178,10 +180,11 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual("Hello World 1", results.ElementAt(0).Message);
             Assert.AreEqual("Hello World 2", results.ElementAt(1).Message);
         }
+        #endregion ReadAsync
 
-        #region    Disctinct
+        #region    DistinctAsync
         [Test]
-        public async void DistinctTest1()
+        public async void DistinctAsyncTest1()
         {
             AddMongoEntry("One");
             AddMongoEntry("One");
@@ -197,7 +200,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public async void DistinctTest2()
+        public async void DistinctAsyncTest2()
         {
             // get distinct message values that are not "Two" or "Three"
             var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
@@ -214,7 +217,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public async void DistinctTest3()
+        public async void DistinctAsyncTest3()
         {
             AddMongoEntry("One", MONGO_COLLECTION_1_NAME);
             AddMongoEntry("One", MONGO_COLLECTION_2_NAME);
@@ -231,7 +234,7 @@ namespace EasyMongo.Async.Test
         }
 
         [Test]
-        public async void DistinctTest4()
+        public async void DistinctAsyncTest4()
         {
             // get distinct message values that are not "Two" or "Three"
             var searchQuery = Query.And(Query.NE("Message", "Two"), Query.NE("Message", "Three"));
@@ -247,6 +250,20 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual("One", results.ElementAt(0));
         }
-        #endregion Distinct
+        #endregion DistinctAsync
+
+        #region    ExecuteAsync
+        [Test]
+        public async void ExecuteAsyncTest1()
+        {
+            AddMongoEntry("Hello World 1");
+
+            IMongoQuery query = Query.Matches("Message", new BsonRegularExpression("WORLD", "i"));
+
+            _results.AddRange(await _asyncReaderT.ExecuteAsync(MONGO_COLLECTION_1_NAME, query));
+            Assert.AreEqual(1, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+        #endregion ExecuteAsync
     }
 }

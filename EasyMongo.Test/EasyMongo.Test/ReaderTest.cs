@@ -15,6 +15,7 @@ namespace EasyMongo.Test
     [TestFixture]
     public class ReaderTest : IntegrationTestFixture
     {
+        #region    Read
         /// <summary>
         /// Writes a MongoTestEntry to a MongoDB and verifies that it was retrieved using
         /// Read method to search against a single collection
@@ -126,8 +127,9 @@ namespace EasyMongo.Test
             Assert.AreEqual("Hello World 1", _results[0].Message);
             Assert.AreEqual("Hello World 2", _results[1].Message);
         }
+        #endregion Read
 
-        #region    Distinct 
+        #region    Distinct
         [Test]
         public void DistinctTest1()
         {
@@ -192,5 +194,19 @@ namespace EasyMongo.Test
             Assert.AreEqual("One", list[0]);
         }
         #endregion Distinct
+
+        #region    Execute
+        [Test]
+        public void ExecuteTest1()
+        {
+            AddMongoEntry("Hello World 1");
+
+            IMongoQuery query = Query.Matches("Message", new BsonRegularExpression("WORLD", "i"));
+
+            _results.AddRange(_reader.Execute<Entry>(MONGO_COLLECTION_1_NAME, query));
+            Assert.AreEqual(1, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+        #endregion Execute
     }
 }

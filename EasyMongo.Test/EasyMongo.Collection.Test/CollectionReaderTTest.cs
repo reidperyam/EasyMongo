@@ -22,6 +22,49 @@ namespace EasyMongo.Collection.Test
             Assert.IsNotNull(_collectionReader);
         }
 
+        #region    Read
+        [Test]
+        public void ReadTest1()
+        {
+            AddMongoEntry();
+
+            _results.AddRange(_collectionReaderT.Read("TimeStamp", _beforeTest, DateTime.Now));
+            Assert.AreEqual(1, _results.Count());
+        }
+
+        [Test]
+        public void ReadTest2()
+        {
+            AddMongoEntry();
+
+            _results.AddRange(_collectionReaderT.Read("Message", "Hello"));
+            Assert.AreEqual(1, _results.Count());
+        }
+
+        [Test]
+        public void ReadTest3()
+        {
+            AddMongoEntry();
+
+            _results.AddRange(_collectionReaderT.Read("Message","Hello","TimeStamp", _beforeTest, DateTime.Now));
+            Assert.AreEqual(1, _results.Count());
+        }
+
+        [Test]
+        public void ReadTest4()
+        {
+            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 2", MONGO_COLLECTION_1_NAME);
+            AddMongoEntry("Hello World 3", MONGO_COLLECTION_1_NAME);
+
+            _results.AddRange(_collectionReaderT.Read());
+            Assert.AreEqual(3, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+            Assert.AreEqual("Hello World 2", _results[1].Message);
+            Assert.AreEqual("Hello World 3", _results[2].Message);
+        }
+
+        #region    Async
         [Test]
         public async void ReadAsyncTest1()
         {
@@ -69,47 +112,8 @@ namespace EasyMongo.Collection.Test
             Assert.AreEqual("Hello World 2", results.ElementAt(1).Message);
             Assert.AreEqual("Hello World 3", results.ElementAt(2).Message);
         }
-
-        [Test]
-        public void ReadTest1()
-        {
-            AddMongoEntry();
-
-            _results.AddRange(_collectionReaderT.Read("TimeStamp", _beforeTest, DateTime.Now));
-            Assert.AreEqual(1, _results.Count());
-        }
-
-        [Test]
-        public void ReadTest2()
-        {
-            AddMongoEntry();
-
-            _results.AddRange(_collectionReaderT.Read("Message", "Hello"));
-            Assert.AreEqual(1, _results.Count());
-        }
-
-        [Test]
-        public void ReadTest3()
-        {
-            AddMongoEntry();
-
-            _results.AddRange(_collectionReaderT.Read("Message","Hello","TimeStamp", _beforeTest, DateTime.Now));
-            Assert.AreEqual(1, _results.Count());
-        }
-
-        [Test]
-        public void ReadTest4()
-        {
-            AddMongoEntry("Hello World 1", MONGO_COLLECTION_1_NAME);
-            AddMongoEntry("Hello World 2", MONGO_COLLECTION_1_NAME);
-            AddMongoEntry("Hello World 3", MONGO_COLLECTION_1_NAME);
-
-            _results.AddRange(_collectionReaderT.Read());
-            Assert.AreEqual(3, _results.Count());
-            Assert.AreEqual("Hello World 1", _results[0].Message);
-            Assert.AreEqual("Hello World 2", _results[1].Message);
-            Assert.AreEqual("Hello World 3", _results[2].Message);
-        }
+        #endregion Async 
+        #endregion Read
 
         #region    Distinct T
         [Test]
@@ -178,5 +182,33 @@ namespace EasyMongo.Collection.Test
             Assert.AreEqual("One", results.ElementAt(0));
         }
         #endregion Distinct T
+
+        #region    Execute
+        [Test]
+        public void ExecuteTest1()
+        {
+            AddMongoEntry("Hello World 1");
+
+            IMongoQuery query = Query.Matches("Message", new BsonRegularExpression("WORLD", "i"));
+
+            _results.AddRange(_collectionReaderT.Execute(query));
+            Assert.AreEqual(1, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+
+        #region    Async
+        [Test]
+        public async void ExecuteAsyncTest1()
+        {
+            AddMongoEntry("Hello World 1");
+
+            IMongoQuery query = Query.Matches("Message", new BsonRegularExpression("WORLD", "i"));
+
+            _results.AddRange(await _collectionReaderT.ExecuteAsync(query));
+            Assert.AreEqual(1, _results.Count());
+            Assert.AreEqual("Hello World 1", _results[0].Message);
+        }
+        #endregion Async
+        #endregion Execute
     }
 }
