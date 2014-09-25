@@ -246,6 +246,18 @@ namespace EasyMongo
             Execute(collectionName, mongoQuery, out results);
             return results;
         }
+        public IEnumerable<T> ExecuteAnds<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            List<T> results;
+            ExecuteAnds(collectionName, mongoQueries, out results);
+            return results;
+        }
+        public IEnumerable<T> ExecuteOrs<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            List<T> results;
+            ExecuteOrs(collectionName, mongoQueries, out results);
+            return results;
+        }
         #endregion Execute
 
         #region    Execute Implementation Methods
@@ -254,6 +266,18 @@ namespace EasyMongo
             results = new List<T>();
             var collection = _databaseConnection.GetCollection<T>(collectionName);
             results.AddRange(collection.Find(mongoQuery));
+        }
+        private void ExecuteAnds<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries, out List<T> results)
+        {
+            results = new List<T>();
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Find(Query.And(mongoQueries)));
+        }
+        private void ExecuteOrs<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries, out List<T> results)
+        {
+            results = new List<T>();
+            var collection = _databaseConnection.GetCollection<T>(collectionName);
+            results.AddRange(collection.Find(Query.Or(mongoQueries)));
         }
         #endregion Execute Implementation Methods
         #endregion Methods
@@ -331,6 +355,16 @@ namespace EasyMongo
         public IEnumerable<T> Execute(string collectionName, IMongoQuery mongoQuery)
         {
             return _reader.Execute<T>(collectionName, mongoQuery);
+        }
+
+        public IEnumerable<T> ExecuteAnds(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _reader.ExecuteAnds<T>(collectionName, mongoQueries);
+        }
+
+        public IEnumerable<T> ExecuteOrs(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _reader.ExecuteOrs<T>(collectionName, mongoQueries);
         }
     }
 }

@@ -25,7 +25,11 @@ namespace EasyMongo.Contract
         Task<IEnumerable<T>> DistinctAsync<T>(string fieldName, IMongoQuery query);
 
         IEnumerable<T> Execute<T>(IMongoQuery mongoQuery);
+        IEnumerable<T> ExecuteAnds<T>(IEnumerable<IMongoQuery> mongoQueries);
+        IEnumerable<T> ExecuteOrs<T>(IEnumerable<IMongoQuery> mongoQueries);
 
         Task<IEnumerable<T>> ExecuteAsync<T>(IMongoQuery mongoQuery);
+        Task<IEnumerable<T>> ExecuteAndsAsync<T>(IEnumerable<IMongoQuery> mongoQueries);
+        Task<IEnumerable<T>> ExecuteOrsAsync<T>(IEnumerable<IMongoQuery> mongoQueries);
     }
 }

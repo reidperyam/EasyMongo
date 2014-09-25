@@ -89,6 +89,14 @@ namespace EasyMongo.Database
         {
             return _reader.Execute<T>(collectionName, mongoQuery);
         }
+        public IEnumerable<T> ExecuteAnds<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _reader.ExecuteAnds<T>(collectionName, mongoQueries);
+        }
+        public IEnumerable<T> ExecuteOrs<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _reader.ExecuteOrs<T>(collectionName, mongoQueries);
+        }
         #endregion Execute
         #endregion Synchronous
 
@@ -156,6 +164,14 @@ namespace EasyMongo.Database
         public Task<IEnumerable<T>> ExecuteAsync<T>(string collectionName, IMongoQuery mongoQuery)
         {
             return _asyncReader.ExecuteAsync<T>(collectionName, mongoQuery);
+        }
+        public Task<IEnumerable<T>> ExecuteAndsAsync<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _asyncReader.ExecuteAndsAsync<T>(collectionName, mongoQueries);
+        }
+        public Task<IEnumerable<T>> ExecuteOrsAsync<T>(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _asyncReader.ExecuteOrsAsync<T>(collectionName, mongoQueries);
         }
         #endregion Execute
         #endregion Asynchronous
@@ -238,6 +254,14 @@ namespace EasyMongo.Database
         {
             return _databaseReader.Execute<T>(collectionName, mongoQuery);
         }
+        public IEnumerable<T> ExecuteAnds(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _databaseReader.ExecuteAnds<T>(collectionName, mongoQueries);
+        }
+        public IEnumerable<T> ExecuteOrs(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _databaseReader.ExecuteOrs<T>(collectionName, mongoQueries);
+        }
         #endregion Execute
         #endregion Synchronous
 
@@ -308,6 +332,14 @@ namespace EasyMongo.Database
         public Task<IEnumerable<T>> ExecuteAsync(string collectionName, IMongoQuery mongoQuery)
         {
             return _databaseReader.ExecuteAsync<T>(collectionName, mongoQuery);
+        }
+        public Task<IEnumerable<T>> ExecuteAndsAsync(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _databaseReader.ExecuteAndsAsync<T>(collectionName, mongoQueries);
+        }
+        public Task<IEnumerable<T>> ExecuteOrsAsync(string collectionName, IEnumerable<IMongoQuery> mongoQueries)
+        {
+            return _databaseReader.ExecuteOrsAsync<T>(collectionName, mongoQueries);
         }
         #endregion Execute
         #endregion Asynchronous

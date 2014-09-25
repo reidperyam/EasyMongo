@@ -126,5 +126,19 @@ namespace EasyMongo.Contract
         /// <param name="mongoQuery">The IMongoQuery to execute</param>
         /// <returns>IEnumerable<T> of read results from the MongoDB</returns>
         Task<IEnumerable<T>> ExecuteAsync(string collectionName, IMongoQuery mongoQuery);
+        /// <summary>
+        /// Asynchronously executes the argument IMongoQuerys against the collection as "AND"s
+        /// </summary>
+        /// <param name="collectionName">The collection to query</param>
+        /// <param name="mongoQueries">An enumerator of IMongoQuerys to execute</param>
+        /// <returns>Task<IEnumberable<T>>  of read results from the MongoDB</returns>
+        Task<IEnumerable<T>> ExecuteAndsAsync(string collectionName, IEnumerable<IMongoQuery> mongoQueries);
+        /// <summary>
+        /// Asynchronously executes the argument IMongoQuerys against the collection as "OR"s
+        /// </summary>
+        /// <param name="collectionName">The collection to query</param>
+        /// <param name="mongoQueries">An enumerator of IMongoQuerys to execute</param>
+        /// <returns>Task<IEnumberable<T>>  of read results from the MongoDB</returns>
+        Task<IEnumerable<T>> ExecuteOrsAsync(string collectionName, IEnumerable<IMongoQuery> mongoQueries);
     }
 }
