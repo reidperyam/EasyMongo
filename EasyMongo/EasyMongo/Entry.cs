@@ -12,7 +12,7 @@ using EasyMongo.Contract;
 namespace EasyMongo
 {
     /// <summary>
-    /// An class useful for inheriting MongoDB model classes from for development or testing purposes.
+    /// A class useful for inheriting MongoDB model classes from for development or testing purposes.
     /// </summary>
     public class Entry
     {
