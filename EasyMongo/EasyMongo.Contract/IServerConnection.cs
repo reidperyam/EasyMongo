@@ -46,16 +46,6 @@ namespace EasyMongo.Contract
 
         MongoDatabase GetDatabase(string databaseName, WriteConcern writeConcern);
 
-        IDisposable RequestStart(MongoDatabase mongoDatabase);
-
-        IDisposable RequestStart(MongoDatabase mongoDatabase, MongoServerInstance mongoServerInstance);
-
-        IDisposable RequestStart(MongoDatabase mongoDatabase, ReadPreference readPreference);
-
-        void RequestDone();
-
-        GetLastErrorResult GetLastError();
-
         MongoDatabase this[string databaseName]
         {
             get;

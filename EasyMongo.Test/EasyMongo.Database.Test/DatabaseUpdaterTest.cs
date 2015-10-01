@@ -375,7 +375,6 @@ namespace EasyMongo.Database.Test
             WriteConcernResult result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
             Assert.AreEqual(1, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);
@@ -409,7 +408,6 @@ namespace EasyMongo.Database.Test
             WriteConcernResult result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
             Assert.AreEqual(1, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);
@@ -442,7 +440,6 @@ namespace EasyMongo.Database.Test
             result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
             Assert.AreEqual(2, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);
@@ -473,7 +470,6 @@ namespace EasyMongo.Database.Test
             WriteConcernResult result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, _writeConcern);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
             Assert.AreEqual(1, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);
@@ -507,7 +503,6 @@ namespace EasyMongo.Database.Test
             WriteConcernResult result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.Single, _writeConcern);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
             Assert.AreEqual(1, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);
@@ -540,7 +535,6 @@ namespace EasyMongo.Database.Test
             result = await _databaseUpdater.RemoveAsync<Entry>(MONGO_COLLECTION_1_NAME, searchQuery, RemoveFlags.None, _writeConcern);
 
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.Ok);
             Assert.IsFalse(result.HasLastErrorMessage);
             Assert.AreEqual(2, result.DocumentsAffected);
             Assert.IsFalse(result.UpdatedExisting);

@@ -197,7 +197,7 @@ namespace EasyMongo
                 case MongoServerState.Connected: break;
                 case MongoServerState.Connecting: _serverConnectionResetEvent.WaitOne(); // wait for the ServerConnection to connect
                     break;
-                case MongoServerState.Disconnected: throw new MongoConnectionException("DatabaseConnection is not connected");
+                case MongoServerState.Disconnected: throw new Exception("DatabaseConnection is not connected");
             }
         }
 
@@ -229,31 +229,6 @@ namespace EasyMongo
         public MongoDatabase GetDatabase(string databaseName, WriteConcern writeConcern)
         {
             return _mongoServer.GetDatabase(databaseName, writeConcern);
-        }
-
-        public IDisposable RequestStart(MongoDatabase mongoDatabase)
-        {
-            return _mongoServer.RequestStart(mongoDatabase);
-        }
-
-        public IDisposable RequestStart(MongoDatabase mongoDatabase, MongoServerInstance mongoServerInstance)
-        {
-            return _mongoServer.RequestStart(mongoDatabase, mongoServerInstance);
-        }
-
-        public IDisposable RequestStart(MongoDatabase mongoDatabase, ReadPreference readPreference)
-        {
-            return _mongoServer.RequestStart(mongoDatabase, readPreference);
-        }
-
-        public void RequestDone()
-        {
-            _mongoServer.RequestDone();
-        }
-
-        public GetLastErrorResult GetLastError()
-        {
-            return _mongoServer.GetLastError();
         }
         #endregion   MongoDB Driver pass-throughs
 

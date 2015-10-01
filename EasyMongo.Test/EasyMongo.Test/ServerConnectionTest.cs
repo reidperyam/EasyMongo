@@ -322,24 +322,6 @@ namespace EasyMongo.Test
             Assert.AreEqual(MONGO_COLLECTION_1_NAME, collectionNames[0]);
             Assert.AreEqual("system.indexes", collectionNames[1]);
         }
-
-        [Test]
-        public void GetLastErrorTest()
-        {
-            MongoDatabase mongoDatabase = _mongoServerConnection[MONGO_DATABASE_1_NAME];
-            _mongoServerConnection.RequestStart(mongoDatabase);
-
-            AddMongoEntry(collectionName: MONGO_COLLECTION_1_NAME);
-
-            GetLastErrorResult getLastErrorResult = _mongoServerConnection.GetLastError();
-
-            Assert.IsNotNull(getLastErrorResult);
-            Assert.IsTrue(getLastErrorResult.Ok);
-            Assert.IsNullOrEmpty(getLastErrorResult.LastErrorMessage);
-            Assert.IsFalse(getLastErrorResult.HasLastErrorMessage);
-
-            _mongoServerConnection.RequestDone();
-        }
         #endregion Synchronous
     }
 }

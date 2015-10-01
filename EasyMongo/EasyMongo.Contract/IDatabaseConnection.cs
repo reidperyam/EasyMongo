@@ -45,14 +45,6 @@ namespace  EasyMongo.Contract
 
         void DropAllCollections<T>();
 
-        IDisposable RequestStart(MongoServerInstance mongoServerInstance);
-
-        IDisposable RequestStart(ReadPreference readPreference);
-
-        void RequestDone();
-
-        GetLastErrorResult GetLastError();
-
         MongoCollection this[string collectionName]
         {
             get;

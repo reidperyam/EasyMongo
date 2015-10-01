@@ -204,7 +204,7 @@ namespace EasyMongo
             }
             catch(NullReferenceException ex)
             {
-                throw new MongoConnectionException("DatabaseConnection not connected",ex);
+                throw new Exception("DatabaseConnection not connected",ex);
             }
         }
 
@@ -223,7 +223,7 @@ namespace EasyMongo
             }
             catch (NullReferenceException ex)
             {
-                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+                throw new Exception("DatabaseConnection not connected", ex);
             }
         }
 
@@ -237,7 +237,7 @@ namespace EasyMongo
             }
             catch (NullReferenceException ex)
             {
-                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+                throw new Exception("DatabaseConnection not connected", ex);
             }
         }
 
@@ -250,7 +250,7 @@ namespace EasyMongo
             }
             catch (NullReferenceException ex)
             {
-                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+                throw new Exception("DatabaseConnection not connected", ex);
             }
         }
 
@@ -267,7 +267,7 @@ namespace EasyMongo
             }
             catch (NullReferenceException ex)
             {
-                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+                throw new Exception("DatabaseConnection not connected", ex);
             }
         }
 
@@ -280,7 +280,7 @@ namespace EasyMongo
             }
             catch (NullReferenceException ex)
             {
-                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+                throw new Exception("DatabaseConnection not connected", ex);
             }
         }
 
@@ -297,28 +297,8 @@ namespace EasyMongo
             }
             catch (NullReferenceException ex)
             {
-                throw new MongoConnectionException("DatabaseConnection not connected", ex);
+                throw new Exception("DatabaseConnection not connected", ex);
             }
-        }
-
-        public IDisposable RequestStart(MongoServerInstance mongoServerInstance)
-        {
-            return MongoServerConnection.RequestStart(Db, mongoServerInstance);
-        }
-
-        public IDisposable RequestStart(ReadPreference readPreference)
-        {
-            return MongoServerConnection.RequestStart(Db, readPreference);
-        }
-
-        public void RequestDone()
-        {
-            MongoServerConnection.RequestDone();
-        }
-
-        public GetLastErrorResult GetLastError()
-        {
-            return MongoServerConnection.GetLastError();
         }
 
         // Define the indexer, which will allow client code 
