@@ -77,7 +77,7 @@ namespace EasyMongo.Async.Test
 
         // test a connected asynch serverConn injected into an unconnected asynch DatabaseConnection
         // that is then leveraged by direct usage
-        [Test, ExpectedException(typeof(MongoConnectionException), ExpectedMessage = "DatabaseConnection not connected")]
+        [Test, ExpectedException(typeof(Exception), ExpectedMessage = "DatabaseConnection not connected")]
         public void AsynchronousTest3()
         {
             // testBase class receives the connection call back after the asynch connection occurs
@@ -121,7 +121,7 @@ namespace EasyMongo.Async.Test
             Assert.AreEqual(MongoServerState.Connected, _mongoDatabaseConnection.State);
         }
 
-        [Test, ExpectedException(typeof(MongoConnectionException), ExpectedMessage = "DatabaseConnection not connected")]
+        [Test, ExpectedException(typeof(Exception), ExpectedMessage = "DatabaseConnection not connected")]
         public void AsynchronousTest6()
         {
             _mongoServerConnection = new ServerConnection(MONGO_CONNECTION_STRING_BAD);/**/

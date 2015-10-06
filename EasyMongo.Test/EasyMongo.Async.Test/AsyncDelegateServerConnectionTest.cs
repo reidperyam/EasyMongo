@@ -61,7 +61,7 @@ namespace EasyMongo.Async.Test
 
             Assert.AreEqual(ConnectionResult.Failure, _serverConnectionResult);
             Assert.IsTrue(_mongoServerConnection.State == MongoServerState.Disconnected);
-            Assert.AreEqual("Failure",_serverConnectionReturnMessage);
+            Assert.AreEqual("The operation has timed out.",_serverConnectionReturnMessage);
         }
 
         #endregion Asynchronous
